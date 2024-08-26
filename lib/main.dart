@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fpl/themes.dart';
 //import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -18,7 +19,7 @@ final GoRouter router = GoRouter(
   navigatorKey: NavigationService.navigatorKey,
   routes: <RouteBase>[
     GoRoute(
-      path: '/home',
+      path: '/',
       builder: (BuildContext context, GoRouterState state) {
         return const LeagueView();
       },
@@ -42,10 +43,11 @@ class FplApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const fplTheme = FplTheme();
     return MaterialApp.router(
       routerConfig: router,
-      //theme: ThemeData(colorScheme: const RobinSystem().dark),
-      //color: const RobinSystem().dark.surface,
+      title: 'FPL',
+      theme: fplTheme.toThemeData(),
     );
   }
 }
