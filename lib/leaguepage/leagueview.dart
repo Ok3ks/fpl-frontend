@@ -3,12 +3,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LeagueView extends StatelessWidget {
-  const LeagueView({super.key});
+  // AsyncSnapshot<Object?>  data;
+  LeagueView({
+    super.key,
+  });
+  // Future<Map<dynamic, dynamic>> report ;
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +23,120 @@ class LeagueView extends StatelessWidget {
     final double height = size.height;
 
     return Row(children: [
-      ChooseLeague(),
-      Container(
-        color: MaterialTheme.darkMediumContrastScheme().onSurface,
-        child:Column(children: [AMetrics(), PointsMetrics(title: "Points",), BMetrics(), TransferMetrics()])
-    )]);
+      SizedBox(
+          width: width / 3,
+          height: height,
+          child: Card(
+              child: Row(children: [
+            SizedBox(
+                width: 150,
+                height: 50,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      side: BorderSide(
+                          width: 1.5,
+                          color:
+                              MaterialTheme.darkMediumContrastScheme().primary),
+                      borderRadius: BorderRadius.circular(12)),
+                  color:
+                      MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                  child: TextField(
+                    maxLength: 12,
+                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    cursorColor:
+                        MaterialTheme.darkMediumContrastScheme().primary,
+                    textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        disabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                        fillColor: Colors.white,
+                        iconColor: Colors.white),
+                    cursorHeight: 20,
+                    autocorrect: false,
+                  ),
+                )),
+            IconButton(
+              icon: Icon(Icons.keyboard_return,
+                  color: MaterialTheme.darkMediumContrastScheme().primary),
+              onPressed: () async {
+                // report =await pullStats(538731, 3);
+              },
+            )
+          ]))),
+      FutureBuilder(
+          future: pullStats(538731, 3),
+          builder: (BuildContext, snapshot) {
+            // if (snapshot.hasData) {
+            var obj = snapshot.data;
+            if (snapshot.hasData) {
+              // print (obj);
+              return LeagueStats(data: obj);
+            } else {
+              return const Text("No data");
+            }
+            // return LeagueStats(data: snapshot.data?['data']);
+          }
+          // else
+          //   return Text("No data");
+          // }
+          )
+    ]);
+  }
+}
+
+class LeagueStats extends StatelessWidget {
+  QueryResult data;
+  LeagueStats({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    print(data.data?['leagueWeeklyReport']);
+    print("--");
+    print(data.data?['leagueWeeklyReport']['captain']);
+
+    return SingleChildScrollView(
+        child: Container(
+            color: MaterialTheme.darkMediumContrastScheme().onSurface,
+            child: Column(children: [
+              AMetrics(data: data),
+              // PointsMetrics(title: "Points"),
+              // LeagueAverageCard(title: "league_Average", data: leagueAverage),
+              CaptainMetrics(data: data),
+
+              Column(children: [
+                const Text("Transfer Impact",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12)),
+                TransferMetrics(data: data)
+              ]),
+
+              Column(children: [
+                const Text("Bench Effect",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12)),
+                BenchMetrics()
+              ]),
+            ])));
   }
 }
 
@@ -34,14 +149,53 @@ class ChooseLeague extends StatelessWidget {
     final double width = size.width;
     final double height = size.height;
 
-    return SizedBox(width: width / 3, height: height, child: Card());
+    return SizedBox(
+        width: width / 3,
+        height: height,
+        child: Card(
+            child: Row(children: [
+          Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
+                  borderRadius: BorderRadius.circular(18)),
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+              child: Text("mAn")),
+          // const TextField(autocorrect: false, cursorHeight: 5,)),
+          IconButton(
+            icon: Icon(Icons.keyboard_return),
+            onPressed: () {},
+          )
+        ])));
+    //Icon button onPressed, then change the value of the future provider
+    //graphql response, which is pullStats
+  }
+}
+
+class BenchMetrics extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+        height: 300,
+        width: 500,
+        //height: height,
+        child: Card(
+            shadowColor:
+                MaterialTheme.darkMediumContrastScheme().secondaryContainer,
+            color: MaterialTheme.darkMediumContrastScheme().onSurface,
+            child: Column(children: [BenchMetricsCard(), BenchMetricsCard()])
+            // Text("Bench Points")
+            ));
   }
 }
 
 class AMetrics extends StatelessWidget {
-  AMetrics({super.key});
+  dynamic data;
+  AMetrics({super.key, required this.data});
 
   final double gap = 10;
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
@@ -52,20 +206,34 @@ class AMetrics extends StatelessWidget {
         width: width,
         //height: height,
         child: Card(
-            shadowColor: MaterialTheme.darkMediumContrastScheme().secondaryContainer,
+            shadowColor:
+                MaterialTheme.darkMediumContrastScheme().secondaryContainer,
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
             //elevation: 0,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("Metrics",
+              Text("Performance",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold)),
               //if (width > 500) : //Switch to list view
-              SizedBox(height:20),
+              SizedBox(height: 20),
+              Center(child: Text("----Chart of rank rise and drop---")),
               Row(children: [
-                MetricsCard(title: "Differential Captain"),
-                MetricsCard(title: "Highest Captain"),
-                MetricsCard(title: "Highest capped")
+                MetricsCard(
+                    title: "Exceptional ",
+                    data: data.data?['leagueWeeklyReport']['exceptional']
+                        ['score']),
+                MetricsCard(
+                    title: "League Average",
+                    data: data.data?['leagueWeeklyReport']['leagueAverage']
+                        .ceilToDouble()
+                        .toString()),
+                if (data.data?['leagueWeeklyReport']['abysmal']['score'] !=
+                    null)
+                  MetricsCard(
+                      title: "Abysmal ",
+                      data: data.data?['leagueWeeklyReport']['abysmal']
+                          ['score']),
               ]),
               Align(
                   alignment: Alignment.bottomRight,
@@ -79,9 +247,9 @@ class AMetrics extends StatelessWidget {
   }
 }
 
-
-class BMetrics extends StatelessWidget {
-  BMetrics({super.key});
+class CaptainMetrics extends StatelessWidget {
+  dynamic data;
+  CaptainMetrics({super.key, required this.data});
 
   final double gap = 10;
   @override
@@ -98,14 +266,20 @@ class BMetrics extends StatelessWidget {
             //elevation: 0,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("Points",
+              Text("Captain Points",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold)),
               //if (width > 500) : //Switch to list view
               Row(children: [
-                MetricsCard(title: "Top differential"),
-                MetricsCard(title: "Captain"),
-                MetricsCard(title: "Bench/Auto-sub")
+                MetricsCard(
+                    title: "Differential Captain",
+                    data: data
+                        .data?['leagueWeeklyReport']['captain'].first['count']),
+                MetricsCard(
+                    title: "Most Captained",
+                    data: data
+                        .data?['leagueWeeklyReport']['captain'].last['count']),
+                // MetricsCard(title: "Bench/Auto-sub", data: data.data?['leagueWeeklyReport']['captain'][0]['player'])
               ]),
               Align(
                   alignment: Alignment.bottomRight,
@@ -154,9 +328,124 @@ class LeagueRank extends StatelessWidget {
 //   }
 // }
 
+class LeagueAverageCard extends StatelessWidget {
+  final String title;
+  double data;
+
+  LeagueAverageCard({super.key, required this.title, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.sizeOf(context);
+
+    // print(data);
+    // // ['leagueWeeklyReport']['captain'][0]['count']);
+    return Row(children: [
+      SizedBox(
+        width: 200,
+        height: 150,
+        child: Card(
+            // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    width: 1.5,
+                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                borderRadius: BorderRadius.circular(18)),
+            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title, style: TextStyle(color: Colors.white)),
+                  SizedBox(height: 7.5),
+                  Center(
+                      child: Text(
+                    "${data.ceilToDouble()}",
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color:
+                            MaterialTheme.darkMediumContrastScheme().primary),
+                  )),
+                  Text(
+                    "Comments",
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color:
+                            MaterialTheme.darkMediumContrastScheme().onSurface),
+                  ),
+                ],
+              ),
+            )),
+      )
+    ]);
+  }
+}
+
+class BenchMetricsCard extends StatelessWidget {
+  BenchMetricsCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.sizeOf(context);
+
+    return Row(children: [
+      SizedBox(
+        width: 200,
+        height: 75,
+        child: Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    width: 1.5,
+                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                borderRadius: BorderRadius.circular(18)),
+            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("A",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface)),
+                      Text("B",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface)),
+                      Text("C",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface)),
+                      Text("D",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface)),
+                    ],
+                  ),
+                  const SizedBox(height: 3),
+                  Center(
+                      child: Text("Team Name",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface))),
+                ],
+              ),
+            )),
+      )
+    ]);
+  }
+}
+
 class MetricsCard extends StatelessWidget {
   final String title;
-  const MetricsCard({super.key, required this.title});
+  dynamic data;
+  MetricsCard({super.key, required this.title, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +472,7 @@ class MetricsCard extends StatelessWidget {
                   Text(title, style: TextStyle(color: Colors.white)),
                   SizedBox(height: 7.5),
                   Text(
-                    "25",
+                    "${data.toString()}",
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -212,22 +501,22 @@ class MetricsCard extends StatelessWidget {
   }
 }
 
-
 class TransferMetrics extends StatelessWidget {
   // final String title;
-  const TransferMetrics({super.key});
+  dynamic data;
+  TransferMetrics({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
+    List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
 
-    return Column(children: 
-    List.generate(3, (index) {
-      return TransferTile();
+    return Column(
+        children: List.generate(2, (index) {
+      return TransferTile(keys: transferImpactKeys[index], data: data);
     }));
   }
 }
-
 
 class PointsMetrics extends StatelessWidget {
   final String title;
@@ -238,8 +527,7 @@ class PointsMetrics extends StatelessWidget {
     final Size size = MediaQuery.sizeOf(context);
     double leagueAverage = values["league_average"];
 
-    return 
-    Row(children: [
+    return Row(children: [
       SizedBox(
         width: 200,
         height: 150,
@@ -290,50 +578,269 @@ class PointsMetrics extends StatelessWidget {
 }
 
 class TransferTile extends StatelessWidget {
-  const TransferTile({super.key});
+  // bool isOutTransfer;
+  // bool isInTransfer;
+  dynamic data;
+  String keys;
 
-  @override 
+  TransferTile({super.key, required this.data, required this.keys});
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: 500,
-        height: 45,
-        child: Card(
-          shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: 1.5,
-                    color: MaterialTheme.darkMediumContrastScheme().primary),
-                borderRadius: BorderRadius.circular(8)),
-            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-        child: 
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-          Text("Bernardo ", style: TextStyle(color: MaterialTheme.darkMediumContrastScheme().onSurface),),
-          //const SizedBox(width: 20,),
-          Text("WHU|FUL|ARS", style: TextStyle(color: MaterialTheme.darkMediumContrastScheme().onSurface, fontSize: 10),),
-          const Icon(Icons.arrow_circle_right_sharp, color: Colors.red,),
-          const Icon(Icons.arrow_circle_left_sharp, color: Colors.green,),
-          Text("18", style: TextStyle(color: MaterialTheme.darkMediumContrastScheme().primary, fontSize: 10, fontWeight: FontWeight.bold),),
+    List<dynamic> bestTransferIn =
+        data.data?['leagueWeeklyReport']['bestTransferIn'];
+    List<dynamic> worstTransferIn =
+        data.data?['leagueWeeklyReport']['worstTransferIn'];
 
-        ]))));
-
-        //League Average and visualizing this
-        //Bench Act
+    // .first['playerIn'].toString
+    if (keys == 'bestTransferIn') {
+      return SizedBox(
+          width: 500,
+          height: 45,
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
+                  borderRadius: BorderRadius.circular(8)),
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+              child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${bestTransferIn.first['pointsDelta']}",
+                          style: TextStyle(
+                              color: bestTransferIn.first['pointsDelta'] > 0
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Column(children: [
+                          Text(
+                            "${bestTransferIn.first['playerIn']}",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface),
+                          ),
+                          //const SizedBox(width: 20,),
+                          Text(
+                            "WHU|FUL|ARS",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface,
+                                fontSize: 9),
+                          ),
+                        ]),
+                        // if (isOutTransfer)
+                        const Icon(
+                          Icons.arrow_circle_right_sharp,
+                          color: Colors.red,
+                        ),
+                        // if (isInTransfer)
+                        const Icon(
+                          Icons.arrow_circle_left_sharp,
+                          color: Colors.green,
+                        ),
+                        Column(children: [
+                          Text(
+                            "${bestTransferIn.first['playerOut']}",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface),
+                          ),
+                          //const SizedBox(width: 20,),
+                          Text(
+                            "WHU|FUL|ARS",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface,
+                                fontSize: 9),
+                          ),
+                        ]),
+                        SizedBox(
+                            // clipBehavior: Clip.hardEdge,
+                            height: 40,
+                            width: 50,
+                            child: Center(
+                              child: Text(
+                                "${bestTransferIn.first['teamName']}",
+                                style: TextStyle(
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .onSurface,
+                                  fontSize: 10,
+                                ),
+                              ),
+                            ))
+                      ]))));
+    } else if (keys == "worstTransferIn") {
+      return SizedBox(
+          width: 500,
+          height: 45,
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
+                  borderRadius: BorderRadius.circular(8)),
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+              child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${worstTransferIn.first['pointsDelta']}",
+                          style: TextStyle(
+                              color: bestTransferIn.first['pointsDelta'] < 0
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Column(children: [
+                          Text(
+                            "${worstTransferIn.first['playerIn']}",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface),
+                          ),
+                          //const SizedBox(width: 20,),
+                          Text(
+                            "WHU|FUL|ARS",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface,
+                                fontSize: 9),
+                          ),
+                        ]),
+                        // if (isOutTransfer)
+                        const Icon(
+                          Icons.arrow_circle_right_sharp,
+                          color: Colors.red,
+                        ),
+                        // if (isInTransfer)
+                        const Icon(
+                          Icons.arrow_circle_left_sharp,
+                          color: Colors.green,
+                        ),
+                        Column(children: [
+                          Text(
+                            "${worstTransferIn.first['playerOut']}",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface),
+                          ),
+                          //const SizedBox(width: 20,),
+                          Text(
+                            "WHU|FUL|ARS",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface,
+                                fontSize: 9),
+                          ),
+                        ]),
+                        SizedBox(
+                            // clipBehavior: Clip.hardEdge,
+                            height: 40,
+                            width: 50,
+                            child: Center(
+                              child: Text(
+                                "${worstTransferIn.first['teamName']}",
+                                style: TextStyle(
+                                    color:
+                                        MaterialTheme.darkMediumContrastScheme()
+                                            .onSurface,
+                                    fontSize: 10),
+                              ),
+                            ))
+                      ]))));
+    } else {
+      return SizedBox(
+          width: 500,
+          height: 45,
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
+                  borderRadius: BorderRadius.circular(8)),
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+              child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${worstTransferIn.first['pointsDelta']}",
+                          style: TextStyle(
+                              color: bestTransferIn.first['pointsDelta'] < 0
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Column(children: [
+                          Text(
+                            "${worstTransferIn.first['playerIn']}",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface),
+                          ),
+                          Text(
+                            "WHU|FUL|ARS",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface,
+                                fontSize: 9),
+                          ),
+                        ]),
+                        const Icon(
+                          Icons.arrow_circle_right_sharp,
+                          color: Colors.red,
+                        ),
+                        const Icon(
+                          Icons.arrow_circle_left_sharp,
+                          color: Colors.green,
+                        ),
+                        Column(children: [
+                          Text(
+                            "${worstTransferIn.first['playerOut']}",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface),
+                          ),
+                          //const SizedBox(width: 20,),
+                          Text(
+                            "WHU|FUL|ARS",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface,
+                                fontSize: 9),
+                          ),
+                        ]),
+                        Text(
+                          "${worstTransferIn.first['teamName']}",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface),
+                        ),
+                      ]))));
+    }
+    //League Average and visualizing this
+    //Bench Act
   }
 }
 
 Map<String, dynamic> loadFile(String jsonPath) {
-
-  String jsonString = """ {"captain": {"328": 8, "401": 6, "351": 4, "317": 1}, "promoted_vice": [], "chips": {},
+  String jsonString =
+      """ {"captain": {"328": 8, "401": 6, "351": 4, "317": 1}, "promoted_vice": [], "chips": {},
                            "exceptional": [["Hashira", 89]], "abysmal": [], "league_average": 67.84210526315789, "rise": [], "fall": [[19, 0, "Ayodeji Omoniyi"], [18, 0, "coker sunkanmi"], [17, 0, "Hassan Howlader"], [15, 0, "Martins Omoniyi"]], "most_transferred_out": [], "least_transferred_out": [], "most_transferred_in": [], "least_transferred_in": [], "best_transfer_in": [], "worst_transfer_in": [], "most_points_on_bench": [["Potters touch", {"Dean Henderson": 2, "Harry Winks": 2, "Jo\u0161ko Gvardiol": 7, "Wout Faes": 1}, 12], ["Just Chillin'", {"Mark Flekken": 4, "Rodrigo Muniz Carvalho": 2, "Antonee Robinson": 2, "Valent\u00edn Barco": 0}, 8], ["Sukeyinc", {"Robert S\u00e1nchez": 2, "Joachim Andersen": 0, "Ezri Konsa Ngoyo": 2,
                            "Harry Winks": 2}, 6]], "jammy_points": [["Bulldozers FC", ["Antonee Robinson", "Wout Faes"],
                           ["Kyle Walker", "Valent\u00edn Barco"], 3], ["Potters touch", [], [], 0], ["the eye test", [], [], 0]]} """;
   // Parse JSON string into a Map
   final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-  print(jsonMap);
+  // print(jsonMap);
   return jsonMap;
 }
 
