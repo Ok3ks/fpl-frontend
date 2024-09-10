@@ -21,7 +21,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const LeagueView();
+        return LeagueView();
       },
     ),
     GoRoute(

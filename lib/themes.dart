@@ -577,7 +577,9 @@ class FplTheme extends ThemeExtension<FplTheme> {
         //   backgroundColor: isLight ? neutralColor : colorScheme.surface
         // ),
         chipTheme: ChipThemeData(backgroundColor: Colors.greenAccent),
-        cardTheme: CardTheme(color: MaterialTheme.darkMediumContrastScheme().secondaryContainer,));
+        cardTheme: CardTheme(
+          color: MaterialTheme.darkMediumContrastScheme().secondaryContainer,
+        ));
   }
 }
 
