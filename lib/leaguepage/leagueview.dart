@@ -6,28 +6,41 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
+import 'benchmetrics.dart';
 
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
+final leagueProvider = StateProvider<double?>((ref) {
+  return null;
+});
 
-class LeagueView extends StatelessWidget {
-  // AsyncSnapshot<Object?>  data;
-  LeagueView({
-    super.key,
-  });
-  // Future<Map<dynamic, dynamic>> report ;
+final gameweekProvider = StateProvider<int>((ref) {
+  return 1;
+});
+
+class LeagueView extends ConsumerStatefulWidget {
+  LeagueView({super.key,});
 
   @override
+  ConsumerState<LeagueView> createState() => LeagueViewState();
+}
+
+class LeagueViewState extends ConsumerState<LeagueView> {
+  @override
   Widget build(BuildContext context) {
+    TextEditingController leagueIdController = TextEditingController();
+
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width;
     final double height = size.height;
+    String? leagueId;
 
     return Row(children: [
       SizedBox(
-          width: width / 3,
+          width: (width / 3) - 30,
           height: height,
           child: Card(
-              child: Row(children: [
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
             SizedBox(
                 width: 150,
                 height: 50,
@@ -40,13 +53,18 @@ class LeagueView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12)),
                   color:
                       MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                  child: TextField(
+                  child: TextFormField(
+                    keyboardType: TextInputType.number,
+                    controller: leagueIdController,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.digitsOnly
+                    ],
                     maxLength: 12,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     style: TextStyle(fontSize: 20, color: Colors.white),
                     cursorColor:
                         MaterialTheme.darkMediumContrastScheme().primary,
-                    textInputAction: TextInputAction.done,
+                    // textInputAction: TextInputAction.done,
                     decoration: InputDecoration(
                         focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(
@@ -64,7 +82,7 @@ class LeagueView extends StatelessWidget {
                             borderSide: BorderSide(
                                 color: MaterialTheme.darkMediumContrastScheme()
                                     .primaryContainer)),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
                         fillColor: Colors.white,
                         iconColor: Colors.white),
                     cursorHeight: 20,
@@ -75,28 +93,49 @@ class LeagueView extends StatelessWidget {
               icon: Icon(Icons.keyboard_return,
                   color: MaterialTheme.darkMediumContrastScheme().primary),
               onPressed: () async {
-                // report =await pullStats(538731, 3);
+                ref.read(leagueProvider.notifier)
+                    .state = double.tryParse(leagueIdController.text);
+                if (leagueIdController.text.length > 1) { //TODO More data validation for league code, Also be able to parse link
+                  setState(() {});
+                }
               },
             )
           ]))),
-      FutureBuilder(
-          future: pullStats(538731, 3),
-          builder: (BuildContext, snapshot) {
-            // if (snapshot.hasData) {
-            var obj = snapshot.data;
-            if (snapshot.hasData) {
-              // print (obj);
-              return LeagueStats(data: obj);
-            } else {
-              return const Text("No data");
-            }
-            // return LeagueStats(data: snapshot.data?['data']);
-          }
-          // else
-          //   return Text("No data");
-          // }
-          )
+        LeagueStatsView()
     ]);
+  }
+}
+
+class LeagueStatsView extends ConsumerStatefulWidget {
+  LeagueStatsView({super.key,});
+
+  @override
+  ConsumerState<LeagueStatsView> createState() => LeagueStatsViewState();
+}
+
+class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
+
+  @override
+  Widget build(BuildContext context) {
+    final leagueId = ref.watch(leagueProvider);
+
+    print(leagueId);
+
+    if (leagueId != null) {
+    return FutureBuilder(
+        future: pullStats(leagueId, 3),
+        builder: (context, snapshot) {
+          var obj = snapshot.data;
+          if (snapshot.hasData) {
+            return LeagueStats(data: obj);
+          } else if(snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else {
+            return const Text("No Data");
+          }
+
+        });}
+    return const Text("Provide Information about this league", style: TextStyle(fontSize: 15),);
   }
 }
 
@@ -107,8 +146,6 @@ class LeagueStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(data.data?['leagueWeeklyReport']);
-    print("--");
-    print(data.data?['leagueWeeklyReport']['captain']);
 
     return SingleChildScrollView(
         child: Container(
@@ -118,7 +155,6 @@ class LeagueStats extends StatelessWidget {
               // PointsMetrics(title: "Points"),
               // LeagueAverageCard(title: "league_Average", data: leagueAverage),
               CaptainMetrics(data: data),
-
               Column(children: [
                 const Text("Transfer Impact",
                     style: TextStyle(
@@ -134,7 +170,7 @@ class LeagueStats extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 12)),
-                BenchMetrics()
+                BenchMetrics(data:data)
               ]),
             ])));
   }
@@ -173,22 +209,7 @@ class ChooseLeague extends StatelessWidget {
   }
 }
 
-class BenchMetrics extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-        height: 300,
-        width: 500,
-        //height: height,
-        child: Card(
-            shadowColor:
-                MaterialTheme.darkMediumContrastScheme().secondaryContainer,
-            color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            child: Column(children: [BenchMetricsCard(), BenchMetricsCard()])
-            // Text("Bench Points")
-            ));
-  }
-}
+
 
 class AMetrics extends StatelessWidget {
   dynamic data;
@@ -302,31 +323,6 @@ class LeagueRank extends StatelessWidget {
   }
 }
 
-// class WeeklyAverage extends StatelessWidget {
-//   const WeeklyAverage({super.key});
-
-//   final double gap = 10;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final Size size = MediaQuery.sizeOf(context);
-//     final double width = size.width * 2 / 3;
-
-//     return SizedBox(
-//         width: width - gap * 2,
-//         height: 100,
-//         child: Card(
-//           color: Colors.blue,
-//           child: Row(
-//               children: List.generate(4, (index) {
-//             return Container(
-//                 width: 50,
-//                 color: Colors.grey,
-//                 child: const Column(children: [const Text("10")]));
-//           })),
-//         ));
-//   }
-// }
 
 class LeagueAverageCard extends StatelessWidget {
   final String title;
@@ -338,8 +334,6 @@ class LeagueAverageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
 
-    // print(data);
-    // // ['leagueWeeklyReport']['captain'][0]['count']);
     return Row(children: [
       SizedBox(
         width: 200,
@@ -384,63 +378,8 @@ class LeagueAverageCard extends StatelessWidget {
   }
 }
 
-class BenchMetricsCard extends StatelessWidget {
-  BenchMetricsCard({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
 
-    return Row(children: [
-      SizedBox(
-        width: 200,
-        height: 75,
-        child: Card(
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: 1.5,
-                    color: MaterialTheme.darkMediumContrastScheme().primary),
-                borderRadius: BorderRadius.circular(18)),
-            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("A",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface)),
-                      Text("B",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface)),
-                      Text("C",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface)),
-                      Text("D",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface)),
-                    ],
-                  ),
-                  const SizedBox(height: 3),
-                  Center(
-                      child: Text("Team Name",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface))),
-                ],
-              ),
-            )),
-      )
-    ]);
-  }
-}
 
 class MetricsCard extends StatelessWidget {
   final String title;
@@ -512,6 +451,7 @@ class TransferMetrics extends StatelessWidget {
     List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
 
     return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(2, (index) {
       return TransferTile(keys: transferImpactKeys[index], data: data);
     }));
@@ -594,7 +534,7 @@ class TransferTile extends StatelessWidget {
     // .first['playerIn'].toString
     if (keys == 'bestTransferIn') {
       return SizedBox(
-          width: 500,
+          width: 400,
           height: 45,
           child: Card(
               shape: RoundedRectangleBorder(
@@ -676,7 +616,7 @@ class TransferTile extends StatelessWidget {
                       ]))));
     } else if (keys == "worstTransferIn") {
       return SizedBox(
-          width: 500,
+          width: 400,
           height: 45,
           child: Card(
               shape: RoundedRectangleBorder(
@@ -840,7 +780,6 @@ Map<String, dynamic> loadFile(String jsonPath) {
                           ["Kyle Walker", "Valent\u00edn Barco"], 3], ["Potters touch", [], [], 0], ["the eye test", [], [], 0]]} """;
   // Parse JSON string into a Map
   final Map<String, dynamic> jsonMap = jsonDecode(jsonString);
-  // print(jsonMap);
   return jsonMap;
 }
 
