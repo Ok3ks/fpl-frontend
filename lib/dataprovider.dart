@@ -5,10 +5,13 @@ import "package:fpl/graphql_schemas.dart";
 import "dart:js_interop";
 
 Future<dynamic> pullStats(double leagueId, double gameweek) async {
+
+  print(leagueId);
   try {
     QueryResult results = await client.value.query(QueryOptions(
         document: gql(AllQueries.getLeagueStats), //
         fetchPolicy: null,
+        cacheRereadPolicy: null,
         variables: {
           "leagueId": leagueId, //538731,
           "gameweek": gameweek, //3
@@ -24,6 +27,7 @@ Future<dynamic> pullStats(double leagueId, double gameweek) async {
     return results;
     // }
   } catch (e) {
+    print(e);
     return false;
     // Log.logger.e("Error during synchronization: $e");
   }
