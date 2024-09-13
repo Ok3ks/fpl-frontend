@@ -12,7 +12,7 @@ final leagueProvider = StateProvider<double?>((ref) {
   return null;
 });
 
-final gameweekProvider = StateProvider<int>((ref) {
+final gameweekProvider = StateProvider<double>((ref) {
   return 1;
 });
 
@@ -118,12 +118,13 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
   @override
   Widget build(BuildContext context) {
     final leagueId = ref.watch(leagueProvider);
+    final gameweek = ref.watch(gameweekProvider);
 
     print(leagueId);
 
     if (leagueId != null) {
     return FutureBuilder(
-        future: pullStats(leagueId, 3),
+        future: pullStats(leagueId, gameweek),
         builder: (context, snapshot) {
           var obj = snapshot.data;
           if (snapshot.hasData) {
@@ -155,12 +156,14 @@ class LeagueStats extends StatelessWidget {
               // PointsMetrics(title: "Points"),
               // LeagueAverageCard(title: "league_Average", data: leagueAverage),
               CaptainMetrics(data: data),
+              if (data.data?['leagueWeeklyReport']['bestTransferIn'].length >=1)
               Column(children: [
                 const Text("Transfer Impact",
                     style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
                         fontSize: 12)),
+
                 TransferMetrics(data: data)
               ]),
 
@@ -518,12 +521,12 @@ class PointsMetrics extends StatelessWidget {
 }
 
 class TransferTile extends StatelessWidget {
-  // bool isOutTransfer;
-  // bool isInTransfer;
+
   dynamic data;
   String keys;
 
   TransferTile({super.key, required this.data, required this.keys});
+
   @override
   Widget build(BuildContext context) {
     List<dynamic> bestTransferIn =
@@ -531,7 +534,6 @@ class TransferTile extends StatelessWidget {
     List<dynamic> worstTransferIn =
         data.data?['leagueWeeklyReport']['worstTransferIn'];
 
-    // .first['playerIn'].toString
     if (keys == 'bestTransferIn') {
       return SizedBox(
           width: 400,
