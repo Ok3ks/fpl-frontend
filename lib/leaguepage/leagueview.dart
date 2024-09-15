@@ -13,7 +13,7 @@ final leagueProvider = StateProvider<double?>((ref) {
 });
 
 final gameweekProvider = StateProvider<double>((ref) {
-  return 1;
+  return 1; //TODO This can be dynamically populated, some can be parsed directly from fpl website
 });
 
 class LeagueView extends ConsumerStatefulWidget {
@@ -37,11 +37,17 @@ class LeagueViewState extends ConsumerState<LeagueView> {
       SizedBox(
           width: (width / 3) - 30,
           height: height,
-          child: Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+          child: Center(
+          child:Card(
+              child:
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-            SizedBox(
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
                 width: 150,
                 height: 50,
                 child: Card(
@@ -100,9 +106,71 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                 }
               },
             )
-          ]))),
+            ]),
+                  GameweekWidget()
+              ]
+
+          )),
+    )),
         LeagueStatsView()
     ]);
+  }
+}
+
+class GameweekWidget extends ConsumerWidget {
+  GameweekWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final  currGameweek = ref.watch(gameweekProvider);
+
+   return SizedBox(
+        height: 50,
+        width: 180,
+        child: Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    width: 0,
+                    color:
+                    MaterialTheme.darkMediumContrastScheme().primaryContainer),
+                borderRadius: BorderRadius.circular(12)),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              IconButton(
+                  icon: const Icon(Icons.keyboard_arrow_left, size: 15, color: Colors.white,),
+                  onPressed: () {
+                    final prevGameweek = ref.watch(gameweekProvider);
+                    if (prevGameweek - 1 >= 1) {
+                      ref
+                          .watch(gameweekProvider.notifier)
+                          .state = prevGameweek - 1;
+                    }}),
+          SizedBox(
+            width: 80,
+            height: 50,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
+                  borderRadius: BorderRadius.circular(18)),
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+              child: Center(
+                  child:Text(currGameweek.toString(),
+                  style: TextStyle(color:MaterialTheme.darkMediumContrastScheme().onSurface, fontSize: 15)),
+                )),),
+          // const TextField(autocorrect: false, cursorHeight: 5,)),
+              IconButton(
+                  icon: Icon(Icons.keyboard_arrow_right, size: 15,color: Colors.white,),
+                  onPressed: () {
+                    if (currGameweek + 1 <= 38) {
+                      ref.watch(gameweekProvider.notifier).state = currGameweek +1;
+                    }
+                  }
+              ),
+
+        ])));
   }
 }
 
@@ -117,10 +185,9 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 
   @override
   Widget build(BuildContext context) {
+
     final leagueId = ref.watch(leagueProvider);
     final gameweek = ref.watch(gameweekProvider);
-
-    print(leagueId);
 
     if (leagueId != null) {
     return FutureBuilder(
@@ -141,20 +208,18 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 }
 
 class LeagueStats extends StatelessWidget {
+
   QueryResult data;
   LeagueStats({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    print(data.data?['leagueWeeklyReport']);
 
     return SingleChildScrollView(
         child: Container(
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
             child: Column(children: [
               AMetrics(data: data),
-              // PointsMetrics(title: "Points"),
-              // LeagueAverageCard(title: "league_Average", data: leagueAverage),
               CaptainMetrics(data: data),
               if (data.data?['leagueWeeklyReport']['bestTransferIn'].length >=1)
               Column(children: [
