@@ -13,7 +13,7 @@ final leagueProvider = StateProvider<double?>((ref) {
 });
 
 final gameweekProvider = StateProvider<double>((ref) {
-  return 1; //TODO This can be dynamically populated, some can be parsed directly from fpl website
+  return 1;
 });
 
 class LeagueView extends ConsumerStatefulWidget {
@@ -28,11 +28,15 @@ class LeagueViewState extends ConsumerState<LeagueView> {
   Widget build(BuildContext context) {
     TextEditingController leagueIdController = TextEditingController();
 
+    Orientation orientation = MediaQuery.of(context).orientation;
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width;
     final double height = size.height;
-    String? leagueId;
 
+    print("width: $width");
+    print("height: $height");
+
+    if (orientation == Orientation.landscape) {
     return Row(children: [
       SizedBox(
           width: (width / 3) - 30,
@@ -59,7 +63,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                       borderRadius: BorderRadius.circular(12)),
                   color:
                       MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                  child: TextFormField(
+                  child: TextField(
                     keyboardType: TextInputType.number,
                     controller: leagueIdController,
                     inputFormatters: <TextInputFormatter>[
@@ -67,7 +71,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                     ],
                     maxLength: 12,
                     maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 10, color: Colors.white),
                     cursorColor:
                         MaterialTheme.darkMediumContrastScheme().primary,
                     // textInputAction: TextInputAction.done,
@@ -107,21 +111,102 @@ class LeagueViewState extends ConsumerState<LeagueView> {
               },
             )
             ]),
-                  GameweekWidget()
-              ]
-
+                  GameweekWidget()]
           )),
     )),
         LeagueStatsView()
-    ]);
+    ]);}
+    //Left becomes top
+    else {
+      return
+        SingleChildScrollView(child: Column(
+          children: [
+        SizedBox(
+            width: width,
+            //height: (height/3) - 30,
+              child: Card(
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                             mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                  width: 150,
+                                  height: 50,
+                                  child: Card(
+                                    shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            width: 1.5,
+                                            color:
+                                            MaterialTheme.darkMediumContrastScheme().primary),
+                                        borderRadius: BorderRadius.circular(12)),
+                                    color:
+                                    MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                                    child: TextField(
+                                      keyboardType: TextInputType.number,
+                                      controller: leagueIdController,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      maxLength: 12,
+                                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                                      style: TextStyle(fontSize: 10, color: Colors.white),
+                                      cursorColor:
+                                      MaterialTheme.darkMediumContrastScheme().primary,
+                                      // textInputAction: TextInputAction.done,
+                                      decoration: InputDecoration(
+                                          focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: MaterialTheme.darkMediumContrastScheme()
+                                                      .primaryContainer)),
+                                          disabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: MaterialTheme.darkMediumContrastScheme()
+                                                      .primaryContainer)),
+                                          enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: MaterialTheme.darkMediumContrastScheme()
+                                                      .primaryContainer)),
+                                          border: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: MaterialTheme.darkMediumContrastScheme()
+                                                      .primaryContainer)),
+                                          contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                          fillColor: Colors.white,
+                                          iconColor: Colors.white),
+                                      cursorHeight: 20,
+                                      autocorrect: false,
+                                    ),
+                                  )),
+                              IconButton(
+                                icon: Icon(Icons.keyboard_return,
+                                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                                onPressed: () async {
+                                  ref.read(leagueProvider.notifier)
+                                      .state = double.tryParse(leagueIdController.text);
+                                  if (leagueIdController.text.length > 1) { //TODO More data validation for league code, Also be able to parse link
+                                    setState(() {});
+                                  }
+                                },
+                              )
+                            ]),
+                        GameweekWidget()
+                      ]
+                  )),
+            ),
+        LeagueStatsView()
+      ]));}
+    }
   }
-}
 
 class GameweekWidget extends ConsumerWidget {
   GameweekWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final  currGameweek = ref.watch(gameweekProvider);
 
    return SizedBox(
@@ -160,9 +245,8 @@ class GameweekWidget extends ConsumerWidget {
                   child:Text(currGameweek.toString(),
                   style: TextStyle(color:MaterialTheme.darkMediumContrastScheme().onSurface, fontSize: 15)),
                 )),),
-          // const TextField(autocorrect: false, cursorHeight: 5,)),
               IconButton(
-                  icon: Icon(Icons.keyboard_arrow_right, size: 15,color: Colors.white,),
+                  icon: const Icon(Icons.keyboard_arrow_right, size: 15,color: Colors.white,),
                   onPressed: () {
                     if (currGameweek + 1 <= 38) {
                       ref.watch(gameweekProvider.notifier).state = currGameweek +1;
@@ -216,30 +300,16 @@ class LeagueStats extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return SingleChildScrollView(
-        child: Container(
+          child:Container(
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            child: Column(children: [
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
               AMetrics(data: data),
               CaptainMetrics(data: data),
               if (data.data?['leagueWeeklyReport']['bestTransferIn'].length >=1)
-              Column(children: [
-                const Text("Transfer Impact",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12)),
-
-                TransferMetrics(data: data)
-              ]),
-
-              Column(children: [
-                const Text("Bench Effect",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12)),
-                BenchMetrics(data:data)
-              ]),
+                TransferMetrics(data: data),
+                BenchMetrics(data:data),
             ])));
   }
 }
@@ -249,6 +319,7 @@ class ChooseLeague extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width;
     final double height = size.height;
@@ -265,7 +336,7 @@ class ChooseLeague extends StatelessWidget {
                       color: MaterialTheme.darkMediumContrastScheme().primary),
                   borderRadius: BorderRadius.circular(18)),
               color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-              child: Text("mAn")),
+              child: Text("Man")),
           // const TextField(autocorrect: false, cursorHeight: 5,)),
           IconButton(
             icon: Icon(Icons.keyboard_return),
@@ -289,24 +360,32 @@ class AMetrics extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width * 2 / 3;
-    final double height = size.height;
+    // final double height = size.height;
 
     return SizedBox(
-        width: width,
-        //height: height,
         child: Card(
             shadowColor:
                 MaterialTheme.darkMediumContrastScheme().secondaryContainer,
+            elevation: 2,
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
             //elevation: 0,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("Performance",
+              Row(
+                    children: [
+                      Text("Performance",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold)),
+            IconButton(
+                onPressed: () {},
+                icon: Transform.rotate(
+                    angle: 55,
+                    child: Icon(Icons.expand_circle_down_outlined,
+                        size: 18))),
+            ]),
+
               //if (width > 500) : //Switch to list view
               SizedBox(height: 20),
-              Center(child: Text("----Chart of rank rise and drop---")),
               Row(children: [
                 MetricsCard(
                     title: "Exceptional ",
@@ -324,14 +403,6 @@ class AMetrics extends StatelessWidget {
                       data: data.data?['leagueWeeklyReport']['abysmal']
                           ['score']),
               ]),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: Transform.rotate(
-                          angle: 55,
-                          child: Icon(Icons.expand_circle_down_outlined,
-                              size: 18))))
             ])));
   }
 }
@@ -348,16 +419,24 @@ class CaptainMetrics extends StatelessWidget {
     final double height = size.height;
 
     return SizedBox(
-        width: width,
-        //height: height,
         child: Card(
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            //elevation: 0,
+            elevation: 2,
             child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text("Captain Points",
+                Column(crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+              Row(
+                    children: [
+                      Text("Captain Points",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold)),
+            IconButton(
+                onPressed: () {},
+                icon: Transform.rotate(
+                    angle: 55,
+                    child: Icon(Icons.expand_circle_down_outlined,
+                        size: 18))),],
+              ),
               //if (width > 500) : //Switch to list view
               Row(children: [
                 MetricsCard(
@@ -368,16 +447,7 @@ class CaptainMetrics extends StatelessWidget {
                     title: "Most Captained",
                     data: data
                         .data?['leagueWeeklyReport']['captain'].last['count']),
-                // MetricsCard(title: "Bench/Auto-sub", data: data.data?['leagueWeeklyReport']['captain'][0]['player'])
               ]),
-              Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                      onPressed: () {},
-                      icon: Transform.rotate(
-                          angle: 55,
-                          child: Icon(Icons.expand_circle_down_outlined,
-                              size: 18))))
             ])));
   }
 }
@@ -390,7 +460,6 @@ class LeagueRank extends StatelessWidget {
     return const Text("League-Rank 1/ Total Points");
   }
 }
-
 
 class LeagueAverageCard extends StatelessWidget {
   final String title;
@@ -431,13 +500,6 @@ class LeagueAverageCard extends StatelessWidget {
                         color:
                             MaterialTheme.darkMediumContrastScheme().primary),
                   )),
-                  Text(
-                    "Comments",
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color:
-                            MaterialTheme.darkMediumContrastScheme().onSurface),
-                  ),
                 ],
               ),
             )),
@@ -460,8 +522,8 @@ class MetricsCard extends StatelessWidget {
 
     return Row(children: [
       SizedBox(
-        width: 200,
-        height: 150,
+        width: 150,
+        height: 100,
         child: Card(
             // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
             shape: RoundedRectangleBorder(
@@ -476,7 +538,7 @@ class MetricsCard extends StatelessWidget {
                 //mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: TextStyle(color: Colors.white)),
+                  Text(title, style: TextStyle(color: Colors.white, fontSize: 11)),
                   SizedBox(height: 7.5),
                   Text(
                     "${data.toString()}",
@@ -485,13 +547,6 @@ class MetricsCard extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                         color:
                             MaterialTheme.darkMediumContrastScheme().primary),
-                  ),
-                  Text(
-                    "Comments",
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color:
-                            MaterialTheme.darkMediumContrastScheme().onSurface),
                   ),
                   Align(
                       alignment: Alignment.bottomRight,
@@ -518,11 +573,23 @@ class TransferMetrics extends StatelessWidget {
     final Size size = MediaQuery.sizeOf(context);
     List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
 
-    return Column(
+    return Card(
+        color: MaterialTheme.darkMediumContrastScheme().onSurface,
+        elevation: 2,
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+        const Text("Transfer Impact",
+        style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 12)),
+     Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: List.generate(2, (index) {
       return TransferTile(keys: transferImpactKeys[index], data: data);
-    }));
+    }))]));
   }
 }
 
