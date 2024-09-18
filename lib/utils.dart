@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'constants.dart';
 import 'dataprovider.dart';
@@ -21,7 +22,6 @@ dynamic getCurrentGameweek() async {
   } finally {
     client.close();
   }
-
   // var url =  Uri.https(Constants.fplUrl);
   // print(url);
   // var response = await http.post(url, body: {});

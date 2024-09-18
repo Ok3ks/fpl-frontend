@@ -9,6 +9,7 @@ import 'benchmetrics.dart';
 import 'captainmetrics.dart';
 import 'dart:convert';
 import 'transfermetrics.dart';
+import 'performancemetrics.dart';
 
 
 class LeagueView extends ConsumerStatefulWidget {
@@ -250,7 +251,7 @@ class LeagueStats extends StatelessWidget {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-              AMetrics(data: data),
+              PerformanceMetrics(data: data),
               CaptainMetrics(data: data),
               if (data.data?['leagueWeeklyReport']['bestTransferIn'].length >=1)
                 TransferMetrics(data: data),
@@ -293,64 +294,6 @@ class ChooseLeague extends StatelessWidget {
   }
 }
 
-
-
-class AMetrics extends StatelessWidget {
-  dynamic data;
-  AMetrics({super.key, required this.data});
-
-  final double gap = 10;
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
-    final double width = size.width * 2 / 3;
-    // final double height = size.height;
-
-    return SizedBox(
-        child: Card(
-            shadowColor:
-                MaterialTheme.darkMediumContrastScheme().secondaryContainer,
-            elevation: 2,
-            color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            //elevation: 0,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Row(
-                    children: [
-                      const Text("Performance",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
-            IconButton(
-                onPressed: () {},
-                icon: Transform.rotate(
-                    angle: 55,
-                    child: const Icon(Icons.expand_circle_down_outlined,
-                        size: 18))),
-            ]),
-
-              //if (width > 500) : //Switch to list view
-              SizedBox(height: 20),
-              Row(children: [
-                MetricsCard(
-                    title: "Exceptional ",
-                    data: data.data?['leagueWeeklyReport']['exceptional']
-                        ['score']),
-                MetricsCard(
-                    title: "League Average",
-                    data: data.data?['leagueWeeklyReport']['leagueAverage']
-                        .ceilToDouble()
-                        .toString()),
-                if (data.data?['leagueWeeklyReport']['abysmal']['score'] !=
-                    null)
-                  MetricsCard(
-                      title: "Abysmal ",
-                      data: data.data?['leagueWeeklyReport']['abysmal']
-                          ['score']),
-              ]),
-            ])));
-  }
-}
 
 
 class LeagueRank extends StatelessWidget {
