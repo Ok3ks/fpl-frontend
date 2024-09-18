@@ -57,6 +57,7 @@ class CaptainMetricsCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final Size size = MediaQuery.sizeOf(context);
     final gameweek = ref.watch(gameweekProvider);
 
@@ -68,81 +69,90 @@ class CaptainMetricsCard extends ConsumerWidget {
           FutureBuilder(
             future: pullPlayerStats(data['player'], gameweek),
             builder: (context, snapshot) {
-              var obj = snapshot.data;
-              // print(obj.data?['player']['info']['playerName']);
-              return Card(
-                // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                          width: 1.5,
-                          color: MaterialTheme
-                              .darkMediumContrastScheme()
-                              .primary),
-                      borderRadius: BorderRadius.circular(18)),
-                  color: MaterialTheme
-                      .darkMediumContrastScheme()
-                      .primaryContainer,
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+              if (snapshot.connectionState == ConnectionState.done) {
+                var obj = snapshot.data;
+                // print(obj.data?['player']['info']['playerName']);
+                return Card(
+                  // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            width: 1.5,
+                            color: MaterialTheme
+                                .darkMediumContrastScheme()
+                                .primary),
+                        borderRadius: BorderRadius.circular(18)),
+                    color: MaterialTheme
+                        .darkMediumContrastScheme()
+                        .primaryContainer,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "${obj
+                                      .data['player']['gameweekScore']['totalPoints'] *
+                                      2}",
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                      MaterialTheme
+                                          .darkMediumContrastScheme()
+                                          .primary),
+                                ),
+                                const SizedBox(width: 6),
+                                Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Text(
+                                        data['count'].toString(),
+                                        style: const TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color:
+                                            Colors.white)))
+                                // Icon(Icons.copyright,
+                                //     size: 18,
+                                //     fill: 0,
+                                //     color: MaterialTheme.darkMediumContrastScheme()
+                                //         .onSurface)
+                              ]),
+                          // SizedBox(height: 7.5),
                           Text(
-                          "${obj.data?['player']['gameweekScore']['totalPoints']*2}",
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color:
-                              MaterialTheme
-                                  .darkMediumContrastScheme()
-                                  .primary),
-                        ),
-                          SizedBox(width: 6),
-                          Align(
-                              alignment: Alignment.bottomRight,
-                      child: Text(
-                              "${data['count'].toString()}",
-                              style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                  Colors.white)))
-                          // Icon(Icons.copyright,
-                          //     size: 18,
-                          //     fill: 0,
-                          //     color: MaterialTheme.darkMediumContrastScheme()
-                          //         .onSurface)
-                      ]),
-                        // SizedBox(height: 7.5),
-                        Text(
-                          "${obj.data?['player']['info']['playerName']}",
-                          style: TextStyle(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color:
-                              MaterialTheme
-                                  .darkMediumContrastScheme()
-                                  .primary),
-                        ),
-                        Text(title, style: const TextStyle(
-                            color: Colors.grey, fontSize: 11)),
-                            // "${data['count'].toString()}",
-                        // Align(
-                        //     alignment: Alignment.bottomRight,
-                        //     child: Icon(Icons.copyright,
-                        //         size: 18,
-                        //         fill: 0,
-                        //         color: MaterialTheme.darkMediumContrastScheme()
-                        //             .onSurface))
-                      ],
-                    ),
-                  ));
-            },
-          )
+                            // "",
+                            "${obj.data['player']['info']['playerName']}",
+                            style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                MaterialTheme
+                                    .darkMediumContrastScheme()
+                                    .primary),
+                          ),
+                          Text(title, style: const TextStyle(
+                              color: Colors.grey, fontSize: 11)),
+                          // "${data['count'].toString()}",
+                          // Align(
+                          //     alignment: Alignment.bottomRight,
+                          //     child: Icon(Icons.copyright,
+                          //         size: 18,
+                          //         fill: 0,
+                          //         color: MaterialTheme.darkMediumContrastScheme()
+                          //             .onSurface))
+                        ],
+                      ),
+                    ));
+
+              }
+              else {
+                return const LinearProgressIndicator();
+              }
+            }
+  )
       )]);
   }
 }

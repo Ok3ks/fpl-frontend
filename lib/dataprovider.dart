@@ -59,6 +59,25 @@ Future<dynamic> pullPlayerStats(double playerId, double gameweek) async {
   }
 }
 
+Future<dynamic> pullPlayersStats(List<double> playerIds, double gameweek) async {
+  try {
+    QueryResult results = await client.value.query(QueryOptions(
+        document: gql(AllQueries.getPlayersStats), //
+        fetchPolicy: null,
+        cacheRereadPolicy: null,
+        variables: {
+          "ids": playerIds, //4,
+          "gameweek": gameweek, //3
+        }));
+    return results;
+    // }
+  } catch (e) {
+    print(e);
+    return false;
+    // Log.logger.e("Error during synchronization: $e");
+  }
+}
+
 final leagueProvider = StateProvider<double?>((ref) {
   return null;
 });
