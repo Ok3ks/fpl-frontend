@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlayerView extends StatelessWidget {
-  const PlayerView({super.key});
+class ParticipantView extends StatelessWidget {
+  const ParticipantView({super.key});
 
   @override
   Widget build(BuildContext context) {
