@@ -1,20 +1,15 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
+import 'package:fpl/utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'benchmetrics.dart';
+import 'captainmetrics.dart';
+import 'dart:convert';
+import 'transfermetrics.dart';
 
-final leagueProvider = StateProvider<double?>((ref) {
-  return null;
-});
-
-final gameweekProvider = StateProvider<double>((ref) {
-  return 1;
-});
 
 class LeagueView extends ConsumerStatefulWidget {
   LeagueView({super.key,});
@@ -66,6 +61,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                   child: TextField(
                     keyboardType: TextInputType.number,
                     controller: leagueIdController,
+                    autocorrect:false,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.digitsOnly
                     ],
@@ -96,17 +92,17 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                         fillColor: Colors.white,
                         iconColor: Colors.white),
                     cursorHeight: 20,
-                    autocorrect: false,
                   ),
                 )),
             IconButton(
               icon: Icon(Icons.keyboard_return,
                   color: MaterialTheme.darkMediumContrastScheme().primary),
               onPressed: () async {
+                if (leagueIdController.text.length > 1) {
                 ref.read(leagueProvider.notifier)
                     .state = double.tryParse(leagueIdController.text);
-                if (leagueIdController.text.length > 1) { //TODO More data validation for league code, Also be able to parse link
-                  setState(() {});
+                // if (leagueIdController.text.length > 1) { //TODO More data validation for league code, Also be able to parse link
+                //   setState(() {});
                 }
               },
             )
@@ -201,62 +197,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     }
   }
 
-class GameweekWidget extends ConsumerWidget {
-  GameweekWidget({super.key});
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-
-    final  currGameweek = ref.watch(gameweekProvider);
-
-   return SizedBox(
-        height: 50,
-        width: 180,
-        child: Card(
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: 0,
-                    color:
-                    MaterialTheme.darkMediumContrastScheme().primaryContainer),
-                borderRadius: BorderRadius.circular(12)),
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              IconButton(
-                  icon: const Icon(Icons.keyboard_arrow_left, size: 15, color: Colors.white,),
-                  onPressed: () {
-                    final prevGameweek = ref.watch(gameweekProvider);
-                    if (prevGameweek - 1 >= 1) {
-                      ref
-                          .watch(gameweekProvider.notifier)
-                          .state = prevGameweek - 1;
-                    }}),
-          SizedBox(
-            width: 80,
-            height: 50,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      width: 1.5,
-                      color: MaterialTheme.darkMediumContrastScheme().primary),
-                  borderRadius: BorderRadius.circular(18)),
-              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-              child: Center(
-                  child:Text(currGameweek.toString(),
-                  style: TextStyle(color:MaterialTheme.darkMediumContrastScheme().onSurface, fontSize: 15)),
-                )),),
-              IconButton(
-                  icon: const Icon(Icons.keyboard_arrow_right, size: 15,color: Colors.white,),
-                  onPressed: () {
-                    if (currGameweek + 1 <= 38) {
-                      ref.watch(gameweekProvider.notifier).state = currGameweek +1;
-                    }
-                  }
-              ),
-
-        ])));
-  }
-}
 
 class LeagueStatsView extends ConsumerStatefulWidget {
   LeagueStatsView({super.key,});
@@ -274,7 +215,11 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
     final gameweek = ref.watch(gameweekProvider);
 
     if (leagueId != null) {
-    return FutureBuilder(
+    return Column(
+      children: [
+        Text("$leagueId",  style: const TextStyle(
+        color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)), //TODO: Add leagueName,
+      FutureBuilder(
         future: pullStats(leagueId, gameweek),
         builder: (context, snapshot) {
           var obj = snapshot.data;
@@ -286,7 +231,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
             return const Text("No Data");
           }
 
-        });}
+        })]);}
     return const Text("Provide Information about this league", style: TextStyle(fontSize: 15),);
   }
 }
@@ -373,14 +318,14 @@ class AMetrics extends StatelessWidget {
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
                     children: [
-                      Text("Performance",
+                      const Text("Performance",
                   style: TextStyle(
                       color: Colors.black, fontWeight: FontWeight.bold)),
             IconButton(
                 onPressed: () {},
                 icon: Transform.rotate(
                     angle: 55,
-                    child: Icon(Icons.expand_circle_down_outlined,
+                    child: const Icon(Icons.expand_circle_down_outlined,
                         size: 18))),
             ]),
 
@@ -407,50 +352,6 @@ class AMetrics extends StatelessWidget {
   }
 }
 
-class CaptainMetrics extends StatelessWidget {
-  dynamic data;
-  CaptainMetrics({super.key, required this.data});
-
-  final double gap = 10;
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
-    final double width = size.width * 2 / 3;
-    final double height = size.height;
-
-    return SizedBox(
-        child: Card(
-            color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            elevation: 2,
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-              Row(
-                    children: [
-                      Text("Captain Points",
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold)),
-            IconButton(
-                onPressed: () {},
-                icon: Transform.rotate(
-                    angle: 55,
-                    child: Icon(Icons.expand_circle_down_outlined,
-                        size: 18))),],
-              ),
-              //if (width > 500) : //Switch to list view
-              Row(children: [
-                MetricsCard(
-                    title: "Differential Captain",
-                    data: data
-                        .data?['leagueWeeklyReport']['captain'].first['count']),
-                MetricsCard(
-                    title: "Most Captained",
-                    data: data
-                        .data?['leagueWeeklyReport']['captain'].last['count']),
-              ]),
-            ])));
-  }
-}
 
 class LeagueRank extends StatelessWidget {
   const LeagueRank({super.key});
@@ -509,8 +410,6 @@ class LeagueAverageCard extends StatelessWidget {
 }
 
 
-
-
 class MetricsCard extends StatelessWidget {
   final String title;
   dynamic data;
@@ -535,7 +434,6 @@ class MetricsCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               child: Column(
-                //mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title, style: TextStyle(color: Colors.white, fontSize: 11)),
@@ -548,13 +446,13 @@ class MetricsCard extends StatelessWidget {
                         color:
                             MaterialTheme.darkMediumContrastScheme().primary),
                   ),
-                  Align(
-                      alignment: Alignment.bottomRight,
-                      child: Icon(Icons.copyright,
-                          size: 18,
-                          fill: 0,
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .onSurface))
+                  // Align(
+                  //     alignment: Alignment.bottomRight,
+                  //     child: Icon(Icons.copyright,
+                  //         size: 18,
+                  //         fill: 0,
+                  //         color: MaterialTheme.darkMediumContrastScheme()
+                  //             .onSurface))
                 ],
               ),
             )),
@@ -652,259 +550,7 @@ class PointsMetrics extends StatelessWidget {
   }
 }
 
-class TransferTile extends StatelessWidget {
 
-  dynamic data;
-  String keys;
-
-  TransferTile({super.key, required this.data, required this.keys});
-
-  @override
-  Widget build(BuildContext context) {
-    List<dynamic> bestTransferIn =
-        data.data?['leagueWeeklyReport']['bestTransferIn'];
-    List<dynamic> worstTransferIn =
-        data.data?['leagueWeeklyReport']['worstTransferIn'];
-
-    if (keys == 'bestTransferIn') {
-      return SizedBox(
-          width: 400,
-          height: 45,
-          child: Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      width: 1.5,
-                      color: MaterialTheme.darkMediumContrastScheme().primary),
-                  borderRadius: BorderRadius.circular(8)),
-              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-              child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "${bestTransferIn.first['pointsDelta']}",
-                          style: TextStyle(
-                              color: bestTransferIn.first['pointsDelta'] > 0
-                                  ? Colors.green
-                                  : Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Column(children: [
-                          Text(
-                            "${bestTransferIn.first['playerIn']}",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface),
-                          ),
-                          //const SizedBox(width: 20,),
-                          Text(
-                            "WHU|FUL|ARS",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
-                                fontSize: 9),
-                          ),
-                        ]),
-                        // if (isOutTransfer)
-                        const Icon(
-                          Icons.arrow_circle_right_sharp,
-                          color: Colors.red,
-                        ),
-                        // if (isInTransfer)
-                        const Icon(
-                          Icons.arrow_circle_left_sharp,
-                          color: Colors.green,
-                        ),
-                        Column(children: [
-                          Text(
-                            "${bestTransferIn.first['playerOut']}",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface),
-                          ),
-                          //const SizedBox(width: 20,),
-                          Text(
-                            "WHU|FUL|ARS",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
-                                fontSize: 9),
-                          ),
-                        ]),
-                        SizedBox(
-                            // clipBehavior: Clip.hardEdge,
-                            height: 40,
-                            width: 50,
-                            child: Center(
-                              child: Text(
-                                "${bestTransferIn.first['teamName']}",
-                                style: TextStyle(
-                                  color:
-                                      MaterialTheme.darkMediumContrastScheme()
-                                          .onSurface,
-                                  fontSize: 10,
-                                ),
-                              ),
-                            ))
-                      ]))));
-    } else if (keys == "worstTransferIn") {
-      return SizedBox(
-          width: 400,
-          height: 45,
-          child: Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      width: 1.5,
-                      color: MaterialTheme.darkMediumContrastScheme().primary),
-                  borderRadius: BorderRadius.circular(8)),
-              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-              child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "${worstTransferIn.first['pointsDelta']}",
-                          style: TextStyle(
-                              color: bestTransferIn.first['pointsDelta'] < 0
-                                  ? Colors.green
-                                  : Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Column(children: [
-                          Text(
-                            "${worstTransferIn.first['playerIn']}",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface),
-                          ),
-                          //const SizedBox(width: 20,),
-                          Text(
-                            "WHU|FUL|ARS",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
-                                fontSize: 9),
-                          ),
-                        ]),
-                        // if (isOutTransfer)
-                        const Icon(
-                          Icons.arrow_circle_right_sharp,
-                          color: Colors.red,
-                        ),
-                        // if (isInTransfer)
-                        const Icon(
-                          Icons.arrow_circle_left_sharp,
-                          color: Colors.green,
-                        ),
-                        Column(children: [
-                          Text(
-                            "${worstTransferIn.first['playerOut']}",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface),
-                          ),
-                          //const SizedBox(width: 20,),
-                          Text(
-                            "WHU|FUL|ARS",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
-                                fontSize: 9),
-                          ),
-                        ]),
-                        SizedBox(
-                            // clipBehavior: Clip.hardEdge,
-                            height: 40,
-                            width: 50,
-                            child: Center(
-                              child: Text(
-                                "${worstTransferIn.first['teamName']}",
-                                style: TextStyle(
-                                    color:
-                                        MaterialTheme.darkMediumContrastScheme()
-                                            .onSurface,
-                                    fontSize: 10),
-                              ),
-                            ))
-                      ]))));
-    } else {
-      return SizedBox(
-          width: 500,
-          height: 45,
-          child: Card(
-              shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                      width: 1.5,
-                      color: MaterialTheme.darkMediumContrastScheme().primary),
-                  borderRadius: BorderRadius.circular(8)),
-              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-              child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "${worstTransferIn.first['pointsDelta']}",
-                          style: TextStyle(
-                              color: bestTransferIn.first['pointsDelta'] < 0
-                                  ? Colors.green
-                                  : Colors.red,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        Column(children: [
-                          Text(
-                            "${worstTransferIn.first['playerIn']}",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface),
-                          ),
-                          Text(
-                            "WHU|FUL|ARS",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
-                                fontSize: 9),
-                          ),
-                        ]),
-                        const Icon(
-                          Icons.arrow_circle_right_sharp,
-                          color: Colors.red,
-                        ),
-                        const Icon(
-                          Icons.arrow_circle_left_sharp,
-                          color: Colors.green,
-                        ),
-                        Column(children: [
-                          Text(
-                            "${worstTransferIn.first['playerOut']}",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface),
-                          ),
-                          //const SizedBox(width: 20,),
-                          Text(
-                            "WHU|FUL|ARS",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
-                                fontSize: 9),
-                          ),
-                        ]),
-                        Text(
-                          "${worstTransferIn.first['teamName']}",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface),
-                        ),
-                      ]))));
-    }
-    //League Average and visualizing this
-    //Bench Act
-  }
-}
 
 Map<String, dynamic> loadFile(String jsonPath) {
   String jsonString =
