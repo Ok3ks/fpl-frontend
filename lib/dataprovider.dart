@@ -33,7 +33,36 @@ Future<dynamic> pullStats(double leagueId, double gameweek) async {
   }
 }
 
-// final leagueStatsProvider = FutureProvider<dynamic>((ref) async {
-//   dynamic result = await pullStats();
-//   return result;
-// });
+Future<dynamic> pullPlayerStats(double playerId, double gameweek) async {
+  try {
+    QueryResult results = await client.value.query(QueryOptions(
+        document: gql(AllQueries.getPlayerStats), //
+        fetchPolicy: null,
+        cacheRereadPolicy: null,
+        variables: {
+          "id": playerId, //4,
+          "gameweek": gameweek, //3
+        }));
+
+    // Log.logger.i("Pulling Events Exception: ${results.exception}");
+    // print(results.exception);
+    // print(results.data?['captain']);
+    // for (var data in results.data?['captain']) {
+    // print(data);
+    // Log.logger.i(data);
+    return results;
+    // }
+  } catch (e) {
+    print(e);
+    return false;
+    // Log.logger.e("Error during synchronization: $e");
+  }
+}
+
+final leagueProvider = StateProvider<double?>((ref) {
+  return null;
+});
+
+final gameweekProvider = StateProvider<double>((ref) {
+  return 1;
+});

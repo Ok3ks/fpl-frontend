@@ -5,7 +5,7 @@ import 'package:fpl/themes.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:fpl/leaguepage/leagueview.dart';
-import 'package:fpl/individualpage/playerview.dart';
+import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/navigation_services.dart';
 
@@ -27,14 +27,14 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-        path: '/documents',
+        path: '/GameView',
         builder: (BuildContext context, GoRouterState state) {
           return const GameView();
         }),
     GoRoute(
-        path: '/documents',
+        path: '/participant',
         builder: (BuildContext context, GoRouterState state) {
-          return const PlayerView();
+          return const ParticipantView();
         }),
   ],
   routerNeglect: true,

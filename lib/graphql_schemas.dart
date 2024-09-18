@@ -87,5 +87,50 @@ class AllQueries {
         points
       }
     }
-}""";
+  }""";
+
+  static String getPlayerStats = """
+  
+  query players(\$id: Int!, \$gameweek:Int!) {
+  
+    player (id: \$id, gameweek:\$gameweek) {
+      
+      playerId
+      info {
+        team
+        half
+        position
+        playerName
+        playerId
+      }
+      gameweekScore {
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+    }
+  }""";
 }
