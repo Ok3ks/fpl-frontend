@@ -28,6 +28,7 @@ class TransferMetrics extends StatelessWidget {
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 12)),
+              if (data.data?['leagueWeeklyReport']['bestTransferIn'] != null)
               Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: List.generate(2, (index) {
@@ -58,7 +59,6 @@ TransferTile({super.key, required this.data, required this.keys});
     //TODO: Find an elegant way
     List<double> playerIds = List.from([double.tryParse(bestTransferIn.first['playerIn']) ?? 0, double.tryParse(bestTransferIn.first['playerOut']) ?? 0,
                     double.tryParse(worstTransferIn.first['playerIn']) ?? 0, double.tryParse(worstTransferIn.first['playerOut']) ?? 0]);
-
     return FutureBuilder(
         future: pullPlayersStats(playerIds, gameweek),
         builder: (context, snapshot) {
