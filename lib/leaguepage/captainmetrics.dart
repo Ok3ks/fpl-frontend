@@ -5,16 +5,18 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 
 class CaptainMetrics extends StatelessWidget {
+
   dynamic data;
+
   CaptainMetrics({super.key, required this.data});
 
   final double gap = 10;
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
-    final double width = size.width * 2 / 3;
-    final double height = size.height;
 
+    // final Size size = MediaQuery.sizeOf(context);
+    // final double width = size.width * 2 / 3;
+    // final double height = size.height;
     return SizedBox(
         child: Card(
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
@@ -39,11 +41,11 @@ class CaptainMetrics extends StatelessWidget {
                     CaptainMetricsCard(
                         title: "Most Captained",
                         data: data
-                            .data?['leagueWeeklyReport']['captain'].first),
+                            ?.data?['leagueWeeklyReport']['captain'].first),
                     CaptainMetricsCard(
                         title: "Differential Captain",
                         data: data
-                            .data?['leagueWeeklyReport']['captain'].last),
+                            ?.data?['leagueWeeklyReport']['captain'].last),
                   ]),
                 ])));
   }
@@ -51,8 +53,10 @@ class CaptainMetrics extends StatelessWidget {
 
 
 class CaptainMetricsCard extends ConsumerWidget {
+
   final String title;
   dynamic data;
+
   CaptainMetricsCard({super.key, required this.title, required this.data});
 
   @override
@@ -67,11 +71,10 @@ class CaptainMetricsCard extends ConsumerWidget {
           height: 100,
           child:
           FutureBuilder(
-            future: pullPlayerStats(data['player'], gameweek),
+            future: pullPlayerStats(data?['player'], gameweek),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done) {
                 var obj = snapshot.data;
-                // print(obj.data?['player']['info']['playerName']);
                 return Card(
                   // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
                     shape: RoundedRectangleBorder(
@@ -94,9 +97,11 @@ class CaptainMetricsCard extends ConsumerWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  "${obj
-                                      .data['player']['gameweekScore']['totalPoints'] *
-                                      2}",
+                                  "${
+                                      (obj?.data?['player']['gameweekScore']['totalPoints'] != null)
+                                      ?
+                                  obj.data['player']['gameweekScore']['totalPoints'] * 2
+                                      : null}",
                                   style: TextStyle(
                                       fontSize: 25,
                                       fontWeight: FontWeight.bold,
@@ -109,22 +114,17 @@ class CaptainMetricsCard extends ConsumerWidget {
                                 Align(
                                     alignment: Alignment.bottomRight,
                                     child: Text(
-                                        data['count'].toString(),
+                                        data?['count'].toString() ?? "null",
                                         style: const TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold,
                                             color:
                                             Colors.white)))
-                                // Icon(Icons.copyright,
-                                //     size: 18,
-                                //     fill: 0,
-                                //     color: MaterialTheme.darkMediumContrastScheme()
-                                //         .onSurface)
                               ]),
                           // SizedBox(height: 7.5),
                           Text(
                             // "",
-                            "${obj.data['player']['info']['playerName']}",
+                            "${obj?.data?['player']['info']['playerName']}",
                             style: TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
@@ -135,14 +135,6 @@ class CaptainMetricsCard extends ConsumerWidget {
                           ),
                           Text(title, style: const TextStyle(
                               color: Colors.grey, fontSize: 11)),
-                          // "${data['count'].toString()}",
-                          // Align(
-                          //     alignment: Alignment.bottomRight,
-                          //     child: Icon(Icons.copyright,
-                          //         size: 18,
-                          //         fill: 0,
-                          //         color: MaterialTheme.darkMediumContrastScheme()
-                          //             .onSurface))
                         ],
                       ),
                     ));

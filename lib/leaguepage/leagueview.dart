@@ -220,10 +220,11 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
       children: [
         Text("$leagueId",  style: const TextStyle(
         color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)), //TODO: Add leagueName,
-      FutureBuilder(
+        FutureBuilder(
         future: pullStats(leagueId, gameweek),
         builder: (context, snapshot) {
           var obj = snapshot.data;
+          print(snapshot.connectionState);
           if (snapshot.hasData) {
             return LeagueStats(data: obj);
           } else if(snapshot.connectionState == ConnectionState.waiting) {
@@ -231,7 +232,6 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
           } else {
             return const Text("No Data");
           }
-
         })]);}
     return const Text("Provide Information about this league", style: TextStyle(fontSize: 15),);
   }
@@ -251,12 +251,28 @@ class LeagueStats extends StatelessWidget {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (data.data?['leagueWeeklyReport']['leagueAverage'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
               PerformanceMetrics(data: data),
+                  if (data.data?['leagueWeeklyReport']['bestTransferIn'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
               CaptainMetrics(data: data),
-              if (data.data?['leagueWeeklyReport']['bestTransferIn'].length >=1)
-                TransferMetrics(data: data),
+                  if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+                  TransferMetrics(data: data),
+                  if (data.data?['leagueWeeklyReport']['mostBenched'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
                 BenchMetrics(data:data),
-            ])));
+
+        if (data.data?['leagueWeeklyReport']['mostBenched'].length == null)
+          // SizedBox(
+          // // width: 150,
+          // height: 60,
+    Center(
+    child:Container(
+      color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+      child: Text("Server is currently unavailable, check back later", style: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w200,
+        color:
+        MaterialTheme.darkMediumContrastScheme().primary)),)
+    )])),);
   }
 }
 
