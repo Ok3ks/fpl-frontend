@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
+import 'package:fpl/utils.dart';
 
 class BenchMetrics extends StatelessWidget {
   
@@ -31,11 +32,9 @@ class BenchMetrics extends StatelessWidget {
             shadowColor:
                 MaterialTheme.darkMediumContrastScheme().secondaryContainer,
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            child: Column(children: [
-              Row(children: [ MostPointsOnBench(data:data)]),
-              Row(children: [JammyPointsCard(data:data), PlayMeInstead(data:data)]),]
-            // Text("Bench Points")
-            ))]));
+            child:
+              Row(children: [ MostPointsOnBench(data:data), JammyPointsCard(data:data), PlayMeInstead(data:data)]),)]
+            ));
   }
     else {
       return Column(
@@ -51,7 +50,7 @@ class BenchMetrics extends StatelessWidget {
               shadowColor:
               MaterialTheme.darkMediumContrastScheme().secondaryContainer,
               color: MaterialTheme.darkMediumContrastScheme().onSurface,
-              child: Column(
+              child: Row(
                   children: [
                     MostPointsOnBench(data:data),
                     // JammyPointsCard(data: data),
@@ -221,24 +220,22 @@ class MostPointsOnBench extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     final Size size = MediaQuery.sizeOf(context);
     final gameweek = ref.watch(gameweekProvider);
     dynamic highestBenched = data?.data?['leagueWeeklyReport']['mostBenched'];
 
     String? highestBenchedPlayer = highestBenched?['player'].first;
     double? highestBenchedPlayerPoints = highestBenched?['points'].first;
-    double? highestBenchedPlayerCount = highestBenched?['count'].first;
 
-    // if (highestBenchedPlayer != null) {
       return FutureBuilder(
           future: pullPlayerStats(
               double.tryParse(highestBenchedPlayer ?? '0') ?? 0, gameweek),
           builder: (BuildContext, snapshot) {
             var obj = snapshot.data;
-            return Row(
-                children: [SizedBox(
-                  width: 200,
-                  height: 75,
+            return SizedBox(
+                  width: 180,
+                  height: 100,
                   child: Card(
                       shape: RoundedRectangleBorder(
                           side: BorderSide(
@@ -253,37 +250,42 @@ class MostPointsOnBench extends ConsumerWidget {
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 10, vertical: 10),
-                        child: Column(
+                        child:
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const SizedBox(height: 3),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-
-                                Text("${obj
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                            children: [SizedBox(
+                                  // height: 60,
+                                  width: 125,
+                                child: Text("${obj
                                     .data?['player']['info']['playerName']}",
                                     style: TextStyle(
                                         color: MaterialTheme
                                             .darkMediumContrastScheme()
-                                            .onSurface)),
-                                Text("${highestBenchedPlayerPoints ?? 0} ",
-                                    style: TextStyle(
-                                        color: MaterialTheme
-                                            .darkMediumContrastScheme()
-                                            .onSurface)),
+                                            .onSurface,
+                                    fontSize: 12))),
+                      Text("${highestBenchedPlayerPoints ?? 0} ",
+                      style: TextStyle(
+                      color: MaterialTheme
+                          .darkMediumContrastScheme()
+                          .primary,
+                    fontSize: 18,))
+                                ],),
+                                const Center(
+                                    child: Text("Highest Points Benched",
+                                        style: TextStyle(
+                                            color: Colors.grey, fontSize: 10))),
+
                               ],
                             ),
-                            const SizedBox(height: 9),
-                            const Center(
-                                child: Text("Highest Points Benched",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 10))),
-                          ],
-                        ),
+                            // const SizedBox(height: 9),
+                          // ],
+                        // ),
                       )),
-                )
-                ]);
+                );
           });
     // } else {
     //   return Text("No data");
@@ -306,7 +308,7 @@ class PlayMeInstead extends StatelessWidget {
     return Row(children: [
       SizedBox(
         width: 200,
-        height: 75,
+        // height: 75,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -320,11 +322,13 @@ class PlayMeInstead extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height:3),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      Column(crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: List.generate(teams?.length ?? 0, (index) {
-                      return playerPoints(index: index, benchData:teams);}
-                        )),
+                      return playerName(
+                      playerId: double.tryParse(teams?[index].toString() ?? "0") ?? 0); })),
+                        // playerPoints(index: index, benchData:teams);}
+                        // )),
                   SizedBox(height: 5),
                   Center(child:Text("Most Points on the Bench", style: TextStyle(
                     color: MaterialTheme.darkMediumContrastScheme()
@@ -336,16 +340,3 @@ class PlayMeInstead extends StatelessWidget {
     ]);
   }
 }
-
-class playerPoints extends StatelessWidget {
-  List<Object?>? benchData;
-  int index;
-
-  playerPoints({super.key, required this.benchData, required this.index});
-
-  @override
-  Widget build(BuildContext context) {
-    return Text("${benchData?[index]}  ",
-        style: TextStyle(
-  color: MaterialTheme.darkMediumContrastScheme()
-  .onSurface,));}}

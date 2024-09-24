@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/services.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'constants.dart';
@@ -93,3 +94,48 @@ class GameweekWidget extends ConsumerWidget {
         });
   }
 }
+
+
+class playerName extends ConsumerWidget {
+  double playerId;
+  playerName({super.key, required this.playerId});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameweek = ref.watch(gameweekProvider);
+    return FutureBuilder(
+        future: pullPlayerStats(playerId, gameweek),
+        builder: (context, snapshot) {
+          var obj = snapshot.data;
+
+          // Text(
+          // "WHU|FUL|ARS",
+          // style: TextStyle(
+          // color: MaterialTheme.darkMediumContrastScheme()
+          //     .onSurface,
+          // fontSize: 9),
+          // ),
+          //]),
+          return
+            SizedBox(
+              // width: 50,
+              height: 20,
+                child:
+                TextButton(
+                  child: Text("${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                      style: TextStyle(
+                          color: MaterialTheme.darkMediumContrastScheme()
+                              .onSurface, fontSize: 12)),
+                  onPressed: () {
+                    // return SizedBox(
+                    //   width: 55,
+                    //   child: Text("${obj.data?['player']['info']['playerName'].toString()}",
+                    //       style: TextStyle(
+                    //           color: MaterialTheme.darkMediumContrastScheme()
+                    //               .onSurface, fontSize: 7)),
+                    // );
+                  }
+                  ,));});
+  }
+}
+

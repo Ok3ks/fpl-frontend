@@ -251,9 +251,9 @@ class LeagueStats extends StatelessWidget {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (data.data?['leagueWeeklyReport']['leagueAverage'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+                  if (data.data?['leagueWeeklyReport']['leagueAverage'] != null )
               PerformanceMetrics(data: data),
-                  if (data.data?['leagueWeeklyReport']['bestTransferIn'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+                  if (data.data?['leagueWeeklyReport']['bestTransferIn'].length != null)
               CaptainMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
                   TransferMetrics(data: data),

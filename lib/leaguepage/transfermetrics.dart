@@ -16,7 +16,8 @@ class TransferMetrics extends StatelessWidget {
     final Size size = MediaQuery.sizeOf(context);
     List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
 
-    return Card(
+    return SizedBox(
+        child: Card(
         color: MaterialTheme.darkMediumContrastScheme().onSurface,
         elevation: 2,
         child: Column(
@@ -33,7 +34,7 @@ class TransferMetrics extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: List.generate(2, (index) {
                     return TransferTile(keys: transferImpactKeys[index], data: data);
-                  }))]));
+                  }))])));
   }
 }
 
@@ -88,23 +89,7 @@ TransferTile({super.key, required this.data, required this.keys});
         : Colors.red,
     fontWeight: FontWeight.bold),
     ),
-    // Column(children: [
-    Text(
-    "${obj.data['players'][0]['info']['playerName']}",
-    style: TextStyle(
-    color: MaterialTheme.darkMediumContrastScheme()
-        .onSurface),
-    ),
-    //const SizedBox(width: 20,),
-    // Text(
-    // "WHU|FUL|ARS",
-    // style: TextStyle(
-    // color: MaterialTheme.darkMediumContrastScheme()
-    //     .onSurface,
-    // fontSize: 9),
-    // ),
-    // ]),
-    // if (isOutTransfer)
+    playerName(playerId: playerIds[1]),
     const Icon(
     Icons.arrow_circle_right_sharp,
     color: Colors.red,
@@ -114,22 +99,7 @@ TransferTile({super.key, required this.data, required this.keys});
     Icons.arrow_circle_left_sharp,
     color: Colors.green,
     ),
-    // Column(children: [
-    Text(
-    "${obj.data['players'][1]['info']['playerName']}",
-    style: TextStyle(
-    color: MaterialTheme.darkMediumContrastScheme()
-        .onSurface),
-    ),
-    //const SizedBox(width: 20,),
-    // Text(
-    // "WHU|FUL|ARS",
-    // style: TextStyle(
-    // color: MaterialTheme.darkMediumContrastScheme()
-    //     .onSurface,
-    // fontSize: 9),
-    // ),
-    // ]),
+      playerName(playerId: playerIds[0],),
     SizedBox(
     // clipBehavior: Clip.hardEdge,
     height: 40,
@@ -170,48 +140,16 @@ TransferTile({super.key, required this.data, required this.keys});
         : Colors.red,
     fontWeight: FontWeight.bold),
     ),
-    //Column(children: [
-    Text(
-    "${obj.data?['players'][2]['info']['playerName']}",
-    style: TextStyle(
-    color: MaterialTheme.darkMediumContrastScheme()
-        .onSurface),
-    ),
-    //const SizedBox(width: 20,),
-    // Text(
-    // "WHU|FUL|ARS",
-    // style: TextStyle(
-    // color: MaterialTheme.darkMediumContrastScheme()
-    //     .onSurface,
-    // fontSize: 9),
-    // ),
-    //]),
-    // if (isOutTransfer)
+      playerName(playerId: playerIds[3]),
     const Icon(
     Icons.arrow_circle_right_sharp,
     color: Colors.red,
     ),
-    // if (isInTransfer)
     const Icon(
     Icons.arrow_circle_left_sharp,
     color: Colors.green,
     ),
-    //Column(children: [
-    Text(
-    "${obj.data?['players'][3]['info']['playerName']}",
-    style: TextStyle(
-    color: MaterialTheme.darkMediumContrastScheme()
-        .onSurface),
-    ),
-    //const SizedBox(width: 20,),
-    // Text(
-    // "WHU|FUL|ARS",
-    // style: TextStyle(
-    // color: MaterialTheme.darkMediumContrastScheme()
-    //     .onSurface,
-    // fontSize: 9),
-    // ),
-    //]),
+    playerName(playerId: playerIds[2]),
     SizedBox(
     // clipBehavior: Clip.hardEdge,
     height: 40,
@@ -252,21 +190,12 @@ TransferTile({super.key, required this.data, required this.keys});
     fontSize: 10,
     fontWeight: FontWeight.bold),
     ),
-    //Column(children: [
     Text(
     "${worstTransferIn.first['playerIn']}",
     style: TextStyle(
     color: MaterialTheme.darkMediumContrastScheme()
         .onSurface),
     ),
-    // Text(
-    // "WHU|FUL|ARS",
-    // style: TextStyle(
-    // color: MaterialTheme.darkMediumContrastScheme()
-    //     .onSurface,
-    // fontSize: 9),
-    // ),
-    //]),
     const Icon(
     Icons.arrow_circle_right_sharp,
     color: Colors.red,
@@ -283,14 +212,6 @@ TransferTile({super.key, required this.data, required this.keys});
         .onSurface),
     ),
     const SizedBox(width: 20,),
-    // Text(
-    // "WHU|FUL|ARS",
-    // style: TextStyle(
-    // color: MaterialTheme.darkMediumContrastScheme()
-    //     .onSurface,
-    // fontSize: 9),
-    // ),
-    //]),
     Text(
     "${worstTransferIn.first['teamName']}",
     style: TextStyle(
@@ -299,8 +220,7 @@ TransferTile({super.key, required this.data, required this.keys});
     ),
     ]))));
     }
-    //League Average and visualizing this
-    //Bench Act
-
   });
 }}
+
+
