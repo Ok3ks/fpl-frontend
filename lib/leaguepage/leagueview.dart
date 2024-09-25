@@ -209,6 +209,8 @@ class LeagueStatsView extends ConsumerStatefulWidget {
 
 class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 
+  String? leagueName;
+
   @override
   Widget build(BuildContext context) {
 
@@ -217,9 +219,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 
     if (leagueId != null) {
     return Column(
-      children: [
-        Text("$leagueId",  style: const TextStyle(
-        color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)), //TODO: Add leagueName,
+      children: [ //TODO: Add leagueName,
         FutureBuilder(
         future: pullStats(leagueId, gameweek),
         builder: (context, snapshot) {
@@ -244,9 +244,13 @@ class LeagueStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+   String? leagueName = data.data?['leagueWeeklyReport']['leagueName'];
     return SingleChildScrollView(
-          child:Container(
+          child:Column(
+            children: [
+              Text("League Name : $leagueName ",  style: const TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)),
+          Container(
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -272,7 +276,7 @@ class LeagueStats extends StatelessWidget {
         fontWeight: FontWeight.w200,
         color:
         MaterialTheme.darkMediumContrastScheme().primary)),)
-    )])),);
+    )])),]));
   }
 }
 
