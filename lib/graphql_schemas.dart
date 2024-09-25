@@ -86,6 +86,7 @@ class AllQueries {
         count
         points
       }
+      leagueName
     }
   }""";
 
