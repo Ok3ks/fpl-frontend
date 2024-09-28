@@ -96,7 +96,11 @@ class CaptainMetricsCard extends ConsumerWidget {
                           Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
+                                Row(
+                                  textBaseline: TextBaseline.ideographic
+                                  ,
+                                  children:
+                                [Text(
                                   "${
                                       (obj?.data?['player']['gameweekScore']['totalPoints'] != null)
                                       ?
@@ -110,6 +114,10 @@ class CaptainMetricsCard extends ConsumerWidget {
                                           .darkMediumContrastScheme()
                                           .primary),
                                 ),
+                                Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme
+                                          .darkMediumContrastScheme()
+                                          .primary),)
+                                ]),
                                 const SizedBox(width: 6),
                                 Align(
                                     alignment: Alignment.bottomRight,

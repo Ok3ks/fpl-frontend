@@ -256,10 +256,10 @@ class MostPointsOnBench extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [SizedBox(
                                   // height: 60,
-                                  width: 125,
+                                  width: 120,
                                 child: Text("${obj
                                     .data?['player']['info']['playerName']}",
                                     style: TextStyle(
@@ -267,13 +267,16 @@ class MostPointsOnBench extends ConsumerWidget {
                                             .darkMediumContrastScheme()
                                             .onSurface,
                                     fontSize: 12))),
-                      Text("${highestBenchedPlayerPoints ?? 0} ",
+                      SizedBox(
+                                  // height: 60,
+                                  width: 30,
+                                  child: Center(child: Text("${highestBenchedPlayerPoints ?? 0} ",
                       style: TextStyle(
                       color: MaterialTheme
                           .darkMediumContrastScheme()
                           .primary,
                     fontSize: 18,))
-                                ],),
+                        ))],),
                                 const Center(
                                     child: Text("Highest Points Benched",
                                         style: TextStyle(

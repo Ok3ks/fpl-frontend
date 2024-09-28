@@ -117,10 +117,13 @@ class playerName extends ConsumerWidget {
           // ),
           //]),
           return
-            SizedBox(
-              // width: 50,
+                      SizedBox(
+              //width: 60,
               height: 20,
                 child:
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
                 TextButton(
                   child: Text("${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
                       style: TextStyle(
@@ -135,7 +138,12 @@ class playerName extends ConsumerWidget {
                     //               .onSurface, fontSize: 7)),
                     // );
                   }
-                  ,));});
+                  ,), 
+                  Text("${obj.data?['player']['gameweekScore']['totalPoints']}pts",
+                      style: TextStyle(
+                          color: MaterialTheme.darkMediumContrastScheme()
+                              .onSurface, fontSize: 12)),
+                  ]));});
   }
 }
 
