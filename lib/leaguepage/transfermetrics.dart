@@ -58,16 +58,26 @@ TransferTile({super.key, required this.data, required this.keys});
     // List<double> playerIds = bestTransferIn.map((e) => double.tryParse(e['playerIn']) ?? 0).toList();
 
     //TODO: Find an elegant way
-    List<double> playerIds = List.from([double.tryParse(bestTransferIn.first['playerIn']) ?? 0, double.tryParse(bestTransferIn.first['playerOut']) ?? 0,
-                    double.tryParse(worstTransferIn.first['playerIn']) ?? 0, double.tryParse(worstTransferIn.first['playerOut']) ?? 0]);
+    List<double> playerIds = List.from([double.tryParse(bestTransferIn[0]['playerIn']) ?? 0, double.tryParse(bestTransferIn[0]['playerOut']) ?? 0,
+                    double.tryParse(worstTransferIn[0]['playerIn']) ?? 0, double.tryParse(worstTransferIn[0]['playerOut']) ?? 0]);
+    
+    List<String> teamName = List.from([bestTransferIn[0]['teamName'],
+                  worstTransferIn[0]['teamName'],]);
+
+    List<double> delta = List.from([bestTransferIn[0]['pointsDelta'],
+                  worstTransferIn[0]['pointsDelta'],]);
+
     return FutureBuilder(
         future: pullPlayersStats(playerIds, gameweek),
         builder: (context, snapshot) {
         var obj = snapshot.data;
 
+    // print(bestTransferIn);
+    // print(worstTransferIn);
+
     if (keys == 'bestTransferIn') {
     return SizedBox(
-    width: 400,
+    width: 600,
     height: 45,
     child: Card(
     shape: RoundedRectangleBorder(
@@ -81,13 +91,14 @@ TransferTile({super.key, required this.data, required this.keys});
     child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-    Text(
-    "${bestTransferIn.first['pointsDelta']}",
+      Text(
+    "${teamName[0]}",
     style: TextStyle(
-    color: bestTransferIn.first['pointsDelta'] > 0
-    ? Colors.green
-        : Colors.red,
-    fontWeight: FontWeight.bold),
+    color:
+    MaterialTheme.darkMediumContrastScheme()
+        .onSurface,
+    fontSize: 10,
+    ),
     ),
     playerName(playerId: playerIds[1]),
     const Icon(
@@ -106,19 +117,18 @@ TransferTile({super.key, required this.data, required this.keys});
     width: 50,
     child: Center(
     child: Text(
-    "${bestTransferIn.first['teamName']}",
+    "${delta[0]}pts",
     style: TextStyle(
-    color:
-    MaterialTheme.darkMediumContrastScheme()
-        .onSurface,
-    fontSize: 10,
-    ),
+    color: bestTransferIn.last['pointsDelta'] > 0
+    ? Colors.green
+        : Colors.red,
+    fontWeight: FontWeight.bold),
     ),
     ))
     ]))));
     } else if (keys == "worstTransferIn") {
     return SizedBox(
-    width: 400,
+    width: 600,
     height: 45,
     child: Card(
     shape: RoundedRectangleBorder(
@@ -132,15 +142,17 @@ TransferTile({super.key, required this.data, required this.keys});
     child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
+
+    //There are Bigs here as regards accessing arrays. Wonder why dart works this way
+
+
     Text(
-    "${worstTransferIn.first['pointsDelta']}",
+    "${teamName[1]}",
     style: TextStyle(
-    color: bestTransferIn.first['pointsDelta'] < 0
-    ? Colors.green
-        : Colors.red,
-    fontWeight: FontWeight.bold),
+    color: MaterialTheme.darkMediumContrastScheme()
+        .onSurface, fontSize: 10 ),
     ),
-      playerName(playerId: playerIds[3]),
+    playerName(playerId: playerIds[3]),
     const Icon(
     Icons.arrow_circle_right_sharp,
     color: Colors.red,
@@ -156,15 +168,15 @@ TransferTile({super.key, required this.data, required this.keys});
     width: 50,
     child: Center(
     child: Text(
-    "${worstTransferIn.first['teamName']}",
+    "${delta[1]}pts",
     style: TextStyle(
-    color:
-    MaterialTheme.darkMediumContrastScheme()
-        .onSurface,
-    fontSize: 10),
+    color: worstTransferIn[0]['pointsDelta'] < 0
+    ? Colors.red
+        : Colors.green,
+    fontWeight: FontWeight.bold),
     ),
-    ))
-    ]))));
+
+    ))]))));
     } else {
     return SizedBox(
     width: 500,
@@ -182,13 +194,10 @@ TransferTile({super.key, required this.data, required this.keys});
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
     Text(
-    "${worstTransferIn.first['pointsDelta']}",
+    "${teamName[0]}",
     style: TextStyle(
-    color: bestTransferIn.first['pointsDelta'] < 0
-    ? Colors.green
-        : Colors.red,
-    fontSize: 10,
-    fontWeight: FontWeight.bold),
+    color: MaterialTheme.darkMediumContrastScheme()
+        .onSurface),
     ),
     Text(
     "${worstTransferIn.first['playerIn']}",
@@ -206,18 +215,24 @@ TransferTile({super.key, required this.data, required this.keys});
     ),
     //Column(children: [
     Text(
-    "${worstTransferIn.first['playerOut']}",
+    "${teamName[0]}",
     style: TextStyle(
     color: MaterialTheme.darkMediumContrastScheme()
         .onSurface),
     ),
     const SizedBox(width: 20,),
+
     Text(
-    "${worstTransferIn.first['teamName']}",
+    "${delta[0]}",
     style: TextStyle(
-    color: MaterialTheme.darkMediumContrastScheme()
-        .onSurface),
+    color: worstTransferIn.first['pointsDelta'] < 0
+    ? Colors.green
+        : Colors.red,
+    fontSize: 10,
+    fontWeight: FontWeight.bold),
     ),
+
+    
     ]))));
     }
   });

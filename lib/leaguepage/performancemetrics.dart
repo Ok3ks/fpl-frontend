@@ -87,14 +87,18 @@ class MetricsCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                  children: [Text(
                     "${data?['score'].toString()}",
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color:
                         MaterialTheme.darkMediumContrastScheme().primary),
-                  ),
+              ),
+              Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
+              ]),
                   // const SizedBox(height: 7.5),
                   Text("${data?['teamName'].toString()}",
                       style: TextStyle(
@@ -145,6 +149,9 @@ class LeagueAverageCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                   Text("${data?['leagueAverage'].ceilToDouble().toString()}",
                     style: TextStyle(
                         fontSize: 32,
@@ -152,6 +159,9 @@ class LeagueAverageCard extends StatelessWidget {
                         color:
                         MaterialTheme.darkMediumContrastScheme().primary),
                   ),
+              Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
+
+                  ]),
                   // const SizedBox(height: 7.5),
                   Text(title, style: const TextStyle(color: Colors.grey, fontSize: 11)),
                   // Align(
