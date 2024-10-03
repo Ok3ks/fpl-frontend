@@ -48,7 +48,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                 mainAxisAlignment: MainAxisAlignment.start,
             children: [
               SizedBox(
-                width: 150,
+                width: 250,
                 height: 50,
                 child: Card(
                   shape: RoundedRectangleBorder(
@@ -63,11 +63,11 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                     keyboardType: TextInputType.number,
                     controller: leagueIdController,
                     autocorrect:false,
-                    inputFormatters: <TextInputFormatter>[
-                      FilteringTextInputFormatter.digitsOnly
-                    ],
-                    maxLength: 12,
-                    maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                    // inputFormatters: <TextInputFormatter>[
+                    //   FilteringTextInputFormatter.digitsOnly
+                    // ],
+                    // maxLength: 12,
+                    // maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     style: TextStyle(fontSize: 10, color: Colors.white),
                     cursorColor:
                         MaterialTheme.darkMediumContrastScheme().primary,
@@ -95,13 +95,16 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                     cursorHeight: 20,
                   ),
                 )),
+            //TODO : Change this to paste icon
             IconButton(
               icon: Icon(Icons.keyboard_return,
                   color: MaterialTheme.darkMediumContrastScheme().primary),
               onPressed: () async {
                 if (leagueIdController.text.length > 1) {
-                ref.read(leagueProvider.notifier)
-                    .state = double.tryParse(leagueIdController.text);
+                  String? leagueId = parseLeagueCodeFromUrl(leagueIdController.text);
+                  ref.read(leagueProvider.notifier)
+                      .state = double.tryParse(leagueId ?? "0");
+
                 // if (leagueIdController.text.length > 1) { //TODO More data validation for league code, Also be able to parse link
                 //   setState(() {});
                 }
@@ -130,7 +133,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                              mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                  width: 150,
+                                  width: 250,
                                   height: 50,
                                   child: Card(
                                     shape: RoundedRectangleBorder(
@@ -142,13 +145,13 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                                     color:
                                     MaterialTheme.darkMediumContrastScheme().primaryContainer,
                                     child: TextField(
-                                      keyboardType: TextInputType.number,
+                                      //keyboardType: TextInputType.number,
                                       controller: leagueIdController,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      maxLength: 12,
-                                      maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                                      // inputFormatters: <TextInputFormatter>[
+                                      //   FilteringTextInputFormatter.digitsOnly
+                                      // ],
+                                      // maxLength: 12,
+                                      // maxLengthEnforcement: MaxLengthEnforcement.enforced,
                                       style: TextStyle(fontSize: 10, color: Colors.white),
                                       cursorColor:
                                       MaterialTheme.darkMediumContrastScheme().primary,
@@ -181,8 +184,9 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                                 icon: Icon(Icons.keyboard_return,
                                     color: MaterialTheme.darkMediumContrastScheme().primary),
                                 onPressed: () async {
+                                  String? leagueId = parseLeagueCodeFromUrl(leagueIdController.text);
                                   ref.read(leagueProvider.notifier)
-                                      .state = double.tryParse(leagueIdController.text);
+                                      .state = double.tryParse(leagueId ?? "0");
                                   if (leagueIdController.text.length > 1) { //TODO More data validation for league code, Also be able to parse link
                                     setState(() {});
                                   }
@@ -245,8 +249,7 @@ class LeagueStats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    String? leagueName = data.data?['leagueWeeklyReport']['leagueName'];
-    return SingleChildScrollView(
-          child:Column(
+    return Column(
             children: [
               Text("League Name : $leagueName ",  style: const TextStyle(
               color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)),
@@ -256,13 +259,13 @@ class LeagueStats extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (data.data?['leagueWeeklyReport']['leagueAverage'] != null )
-              PerformanceMetrics(data: data),
+                    PerformanceMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['bestTransferIn'].length != null)
-              CaptainMetrics(data: data),
+                    CaptainMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
-                  TransferMetrics(data: data),
+                    TransferMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['mostBenched'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
-                BenchMetrics(data:data),
+                    BenchMetrics(data:data),
 
         if (data.data?['leagueWeeklyReport']['mostBenched'].length == null)
           // SizedBox(
@@ -276,7 +279,7 @@ class LeagueStats extends StatelessWidget {
         fontWeight: FontWeight.w200,
         color:
         MaterialTheme.darkMediumContrastScheme().primary)),)
-    )])),]));
+    )])),]);
   }
 }
 

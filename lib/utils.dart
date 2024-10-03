@@ -147,3 +147,20 @@ class playerName extends ConsumerWidget {
   }
 }
 
+
+
+String? parseLeagueCodeFromUrl(String url) {
+  try {
+    final uri = Uri.parse(url); // Parse the URL to handle it more reliably
+    final RegExp regExp = RegExp(r'leagues/(\d+)/standings');
+    final match = regExp.firstMatch(uri.path);
+
+    if (match != null && match.groupCount >= 1) {
+      return match.group(1); // group(1) will contain the league code
+    }
+    return null; // Return null if no league code is found
+  } on FormatException {
+    // Handle invalid URL
+    return null;
+  }
+}
