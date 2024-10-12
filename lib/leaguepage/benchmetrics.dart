@@ -220,8 +220,8 @@ class HighestPointsBenched extends ConsumerWidget {
     String? highestBenchedPlayer = highestBenched?['player'].first;
 
             return SizedBox(
-                  width: 100,
-                  height: 100,
+                  // width: 100,
+                  // height: 100,
                   child: Card(
                       shape: RoundedRectangleBorder(
                           side: BorderSide(
@@ -238,17 +238,17 @@ class HighestPointsBenched extends ConsumerWidget {
                             horizontal: 10, vertical: 3),
                         child:
                         Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                                playerName(playerId: double.tryParse(highestBenchedPlayer ?? '0') ?? 0),
-                                const SizedBox(
-                                    // width: 106,
-                                    child: Text("Highest Points Benched",
-                                        overflow: TextOverflow.clip,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 10))),
+                            const SizedBox(
+                              // width: 106,
+                                child: Text("Highest Points Benched",
+                                    overflow: TextOverflow.clip,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 10))),playerName(playerId: double.tryParse(highestBenchedPlayer ?? '0') ?? 0),
+
                               ],
                             ),
                           // ],
