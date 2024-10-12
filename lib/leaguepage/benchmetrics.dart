@@ -33,7 +33,13 @@ class BenchMetrics extends StatelessWidget {
                 MaterialTheme.darkMediumContrastScheme().secondaryContainer,
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
             child:
-              Row(children: [ MostPointsOnBench(data:data), JammyPointsCard(data:data), PlayMeInstead(data:data)]),)]
+              Row(
+                  children: [
+                    HighestPointsBenched(data:data),
+                    PlayMeInstead(data:data),
+                    if (data.data?['leagueWeeklyReport']['jammyPoints'][0]['subIn'] != null)
+                    JammyPointsCard(data:data),
+                  ]),)]
             ));
   }
     else {
@@ -50,11 +56,16 @@ class BenchMetrics extends StatelessWidget {
               shadowColor:
               MaterialTheme.darkMediumContrastScheme().secondaryContainer,
               color: MaterialTheme.darkMediumContrastScheme().onSurface,
-              child: Row(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    MostPointsOnBench(data:data),
-                    // JammyPointsCard(data: data),
-                    PlayMeInstead(data:data)]),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [HighestPointsBenched(data:data), PlayMeInstead(data: data)]),
+                    // JammyPointsCard(data: data),PlayMeInstead(data:data),]
+                    if (data.data?['leagueWeeklyReport']['jammyPoints'][0]['subIn'] != null)
+                    JammyPointsCard(data:data)]),
                 // Text("Bench Points")
               )]);
     }
@@ -143,20 +154,12 @@ class JammyPointsCard extends ConsumerWidget {
     var obj = data.data?['leagueWeeklyReport']['jammyPoints'];
     final gameweek = ref.watch(gameweekProvider);
     // print(obj);
-    // List<dynamic> playersSubIn = obj[0]['subIn'] as List<String>;
-    // print(obj[0]['subIn'][0]);
-    // List<double> playersSubOut = obj['subOut'];
-    // print(obj);
-    // print(data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['teamName']); //players points instead of ID
-
-    // return FutureBuilder(
-    //     future: pullPlayersStats(playersSubIn, gameweek),
-    //     builder: (BuildContext, snapshot) {
-    //       var obj = snapshot.data;
+    List<Object?>? playersSubIn = obj[0]['subIn'];
+    List<Object?>? playersSubOut = obj[0]['subOut'];
           return Row(children: [
         SizedBox(
           width: 200,
-          height: 75,
+          // height: 200,
           child: Card(
               shape: RoundedRectangleBorder(
                   side: BorderSide(
@@ -170,40 +173,29 @@ class JammyPointsCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height:3),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-
-                        Row(
-                            children: [Text("${obj.data['players'][0]['info']['playerName']}",
-                                style: TextStyle(
-                                    color: MaterialTheme.darkMediumContrastScheme()
-                                        .onSurface)),
-
-                              Icon(Icons.swipe_up_alt_sharp, color:Colors.green[400], size: 12),
-                              Icon(Icons.swipe_down_alt_sharp, color:Colors.red[400], size: 12),
-                              Icon(Icons.drag_handle_sharp, color:Colors.yellow[400], size: 12),
-                            ]),
-                        Text("B",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface)),
-                        Text("C",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface)),
-                        Text("D",
-                            style: TextStyle(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface)),
-                      ],
-                    ),
-                    const SizedBox(height: 9),
                     Center(
-                        child: Text("${obj['teamName']}",
+                        child: Text("Jammy Points ",
                             style: TextStyle(
                                 color: MaterialTheme.darkMediumContrastScheme()
                                     .onSurface, fontSize: 10))),
+                    const SizedBox(height:3),
+                    Column(
+                    children: List.generate(playersSubIn?.length ?? 0, (index) {
+                      return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Icon(Icons.swipe_down_alt_sharp, color:Colors.red[400], size: 12),
+                        playerName(playerId: double.tryParse(playersSubOut?[index].toString() ?? "0")  ?? 0),
+                        Icon(Icons.swipe_up_alt_sharp, color:Colors.green[400], size: 12),
+                        playerName(playerId: double.tryParse(playersSubIn?[index].toString() ?? "0")  ?? 0),
+                      ]);})),
+                    const SizedBox(height: 9),
+                    Center(
+                        child: Text("${obj[0]['teamName']}",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primary, fontSize: 10))),
+
                   ],
                 ),
               )),
@@ -213,10 +205,10 @@ class JammyPointsCard extends ConsumerWidget {
   }
 }
 
-class MostPointsOnBench extends ConsumerWidget {
+class HighestPointsBenched extends ConsumerWidget {
 
   dynamic data;
-  MostPointsOnBench({super.key, required this.data});
+  HighestPointsBenched({super.key, required this.data});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -226,15 +218,9 @@ class MostPointsOnBench extends ConsumerWidget {
     dynamic highestBenched = data?.data?['leagueWeeklyReport']['mostBenched'];
 
     String? highestBenchedPlayer = highestBenched?['player'].first;
-    double? highestBenchedPlayerPoints = highestBenched?['points'].first;
 
-      return FutureBuilder(
-          future: pullPlayerStats(
-              double.tryParse(highestBenchedPlayer ?? '0') ?? 0, gameweek),
-          builder: (BuildContext, snapshot) {
-            var obj = snapshot.data;
             return SizedBox(
-                  width: 180,
+                  width: 100,
                   height: 100,
                   child: Card(
                       shape: RoundedRectangleBorder(
@@ -249,47 +235,27 @@ class MostPointsOnBench extends ConsumerWidget {
                           .primaryContainer,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 10),
+                            horizontal: 10, vertical: 3),
                         child:
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [SizedBox(
-                                  // height: 60,
-                                  width: 120,
-                                child: Text("${obj
-                                    .data?['player']['info']['playerName']}",
-                                    style: TextStyle(
-                                        color: MaterialTheme
-                                            .darkMediumContrastScheme()
-                                            .onSurface,
-                                    fontSize: 12))),
-                      SizedBox(
-                                  // height: 60,
-                                  width: 30,
-                                  child: Center(child: Text("${highestBenchedPlayerPoints ?? 0} ",
-                      style: TextStyle(
-                      color: MaterialTheme
-                          .darkMediumContrastScheme()
-                          .primary,
-                    fontSize: 18,))
-                        ))],),
-                                const Center(
+                                playerName(playerId: double.tryParse(highestBenchedPlayer ?? '0') ?? 0),
+                                const SizedBox(
+                                    // width: 106,
                                     child: Text("Highest Points Benched",
+                                        overflow: TextOverflow.clip,
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: Colors.grey, fontSize: 10))),
-
                               ],
                             ),
-                            // const SizedBox(height: 9),
                           // ],
                         // ),
                       )),
                 );
-          });
+          // });
     // } else {
     //   return Text("No data");
     // }
@@ -308,10 +274,9 @@ class PlayMeInstead extends StatelessWidget {
     List<Object?>? teams = data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['players'];
     String? teamName = data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['teamName'];
 
-    return Row(children: [
-      SizedBox(
-        width: 200,
-        // height: 75,
+    return SizedBox(
+        // width: 270,
+        // height: 100,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -320,12 +285,15 @@ class PlayMeInstead extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18)),
             color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height:3),
-                      Column(crossAxisAlignment: CrossAxisAlignment.start,
+                  Center(child:Text("Most Points on the Bench", style: TextStyle(
+                      color: MaterialTheme.darkMediumContrastScheme()
+                          .onSurface, fontSize: 10))),
+                      Row(crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: List.generate(teams?.length ?? 0, (index) {
                       return playerName(
@@ -333,13 +301,16 @@ class PlayMeInstead extends StatelessWidget {
                         // playerPoints(index: index, benchData:teams);}
                         // )),
                   SizedBox(height: 5),
-                  Center(child:Text("Most Points on the Bench", style: TextStyle(
-                    color: MaterialTheme.darkMediumContrastScheme()
-                        .onSurface, fontSize: 10))
-                  )],
+                  Center(
+                      child: Text("${teamName}",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .primary, fontSize: 10))),
+
+          ],
               ),
             )),
-      ),
-    ]);
+      );
+    // ]);
   }
 }

@@ -10,6 +10,7 @@ import 'captainmetrics.dart';
 import 'dart:convert';
 import 'transfermetrics.dart';
 import 'performancemetrics.dart';
+import 'package:fpl/constants.dart';
 
 
 class LeagueView extends ConsumerStatefulWidget {
@@ -264,13 +265,10 @@ class LeagueStats extends StatelessWidget {
                     CaptainMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
                     TransferMetrics(data: data),
-                  if (data.data?['leagueWeeklyReport']['mostBenched'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+                  if (data.data?['leagueWeeklyReport']['mostBenched'].length != null)
                     BenchMetrics(data:data),
 
         if (data.data?['leagueWeeklyReport']['mostBenched'].length == null)
-          // SizedBox(
-          // // width: 150,
-          // height: 60,
     Center(
     child:Container(
       color: MaterialTheme.darkMediumContrastScheme().primaryContainer,

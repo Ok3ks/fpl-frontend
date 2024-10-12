@@ -9,6 +9,16 @@ class CaptainMetrics extends StatelessWidget {
   dynamic data;
 
   CaptainMetrics({super.key, required this.data});
+  final yourScrollController =
+  ScrollController(
+    onAttach:(position) {
+
+    } ,
+    onDetach:(position) {
+
+    },
+  );
+
 
   final double gap = 10;
   @override
@@ -37,27 +47,29 @@ class CaptainMetrics extends StatelessWidget {
                                   size: 18))),],
                   ),
                   //if (width > 500) : //Switch to list view
-                  Row(children: [
-                    CaptainMetricsCard(
-                        title: "Most Captained",
+            Scrollbar(
+                thickness: 2,
+                trackVisibility: true,
+                controller: yourScrollController,
+                radius: const Radius.circular(3),
+                  child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      children: List.generate(data?.data?['leagueWeeklyReport']['captain'].length, (index) {
+                    return CaptainMetricsCard(
                         data: data
-                            ?.data?['leagueWeeklyReport']['captain'].first),
-                    CaptainMetricsCard(
-                        title: "Differential Captain",
-                        data: data
-                            ?.data?['leagueWeeklyReport']['captain'].last),
-                  ]),
-                ])));
+                            ?.data?['leagueWeeklyReport']['captain'][index]);}
+                  ),)))])));
   }
 }
 
 
 class CaptainMetricsCard extends ConsumerWidget {
 
-  final String title;
+  // final String title;
   dynamic data;
 
-  CaptainMetricsCard({super.key, required this.title, required this.data});
+  CaptainMetricsCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -108,26 +120,17 @@ class CaptainMetricsCard extends ConsumerWidget {
                                       : null}",
                                   style: TextStyle(
                                       fontSize: 25,
-                                      fontWeight: FontWeight.bold,
+                                      // fontWeight: FontWeight.bold,
                                       color:
                                       MaterialTheme
                                           .darkMediumContrastScheme()
                                           .primary),
                                 ),
-                                Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme
-                                          .darkMediumContrastScheme()
-                                          .primary),)
+                                // Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme
+                                //           .darkMediumContrastScheme()
+                                //           .primary),)
                                 ]),
-                                const SizedBox(width: 6),
-                                Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Text(
-                                        data?['count'].toString() ?? "null",
-                                        style: const TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                            color:
-                                            Colors.white)))
+                                // const SizedBox(width: 6),
                               ]),
                           // SizedBox(height: 7.5),
                           Text(
@@ -135,14 +138,29 @@ class CaptainMetricsCard extends ConsumerWidget {
                             "${obj?.data?['player']['info']['playerName']}",
                             style: TextStyle(
                                 fontSize: 10,
-                                fontWeight: FontWeight.bold,
+                                // fontWeight: FontWeight.bold,
                                 color:
                                 MaterialTheme
                                     .darkMediumContrastScheme()
-                                    .primary),
+                                    .onSurface),
                           ),
-                          Text(title, style: const TextStyle(
-                              color: Colors.grey, fontSize: 11)),
+                          // Row(
+                          //   children:
+                          // [
+                            Text("Captained by ${data?['count'].toString() ?? "null"}", style:  TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme().primary,
+                                fontSize: 11)),
+                          // Align(
+                          //     alignment: Alignment.bottomRight,
+                          //     child: Text(
+                          //         data?['count'].toString() ?? "null",
+                          //         style: TextStyle(
+                          //             fontSize: 10,
+                          //             // fontWeight: FontWeight.bold,
+                          //             color:
+                          //             MaterialTheme
+                          //                 .darkMediumContrastScheme()
+                          //                 .primary)))])
                         ],
                       ),
                     ));
