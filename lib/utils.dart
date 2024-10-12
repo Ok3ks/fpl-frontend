@@ -95,10 +95,11 @@ class GameweekWidget extends ConsumerWidget {
   }
 }
 
-
 class playerName extends ConsumerWidget {
   double playerId;
-  playerName({super.key, required this.playerId});
+  bool? notTransfer;
+
+  playerName({super.key, this.notTransfer, required this.playerId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -107,42 +108,29 @@ class playerName extends ConsumerWidget {
         future: pullPlayerStats(playerId, gameweek),
         builder: (context, snapshot) {
           var obj = snapshot.data;
-
-          // Text(
-          // "WHU|FUL|ARS",
-          // style: TextStyle(
-          // color: MaterialTheme.darkMediumContrastScheme()
-          //     .onSurface,
-          // fontSize: 9),
-          // ),
-          //]),
-          return
-                      SizedBox(
+          return SizedBox(
               //width: 60,
-              height: 20,
+              height: 50,
                 child:
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-                TextButton(
+                SizedBox(
+                  // width: 75,
+                child: TextButton(
                   child: Text("${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color: MaterialTheme.darkMediumContrastScheme()
                               .onSurface, fontSize: 12)),
                   onPressed: () {
-                    // return SizedBox(
-                    //   width: 55,
-                    //   child: Text("${obj.data?['player']['info']['playerName'].toString()}",
-                    //       style: TextStyle(
-                    //           color: MaterialTheme.darkMediumContrastScheme()
-                    //               .onSurface, fontSize: 7)),
-                    // );
                   }
-                  ,), 
-                  Text("${obj.data?['player']['gameweekScore']['totalPoints']}pts",
+                  ,)),
+                  if (notTransfer ?? true)
+                  Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
                       style: TextStyle(
                           color: MaterialTheme.darkMediumContrastScheme()
-                              .onSurface, fontSize: 12)),
+                              .primary, fontSize: 12)),
                   ]));});
   }
 }

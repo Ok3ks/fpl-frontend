@@ -100,8 +100,8 @@ TransferTile({super.key, required this.data, required this.keys});
     fontSize: 10,
     ),
     ),
-    playerName(playerId: playerIds[1]),
-    const Icon(
+      playerName(playerId: playerIds[1], notTransfer: false,),
+      const Icon(
     Icons.arrow_circle_right_sharp,
     color: Colors.red,
     ),
@@ -110,8 +110,8 @@ TransferTile({super.key, required this.data, required this.keys});
     Icons.arrow_circle_left_sharp,
     color: Colors.green,
     ),
-      playerName(playerId: playerIds[0],),
-    SizedBox(
+      playerName(playerId: playerIds[0], notTransfer: false,),
+      SizedBox(
     // clipBehavior: Clip.hardEdge,
     height: 40,
     width: 50,
@@ -152,8 +152,8 @@ TransferTile({super.key, required this.data, required this.keys});
     color: MaterialTheme.darkMediumContrastScheme()
         .onSurface, fontSize: 10 ),
     ),
-    playerName(playerId: playerIds[3]),
-    const Icon(
+      playerName(playerId: playerIds[2], notTransfer: false,),
+      const Icon(
     Icons.arrow_circle_right_sharp,
     color: Colors.red,
     ),
@@ -161,8 +161,8 @@ TransferTile({super.key, required this.data, required this.keys});
     Icons.arrow_circle_left_sharp,
     color: Colors.green,
     ),
-    playerName(playerId: playerIds[2]),
-    SizedBox(
+      playerName(playerId: playerIds[3], notTransfer: false,),
+      SizedBox(
     // clipBehavior: Clip.hardEdge,
     height: 40,
     width: 50,

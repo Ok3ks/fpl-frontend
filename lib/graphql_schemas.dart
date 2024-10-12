@@ -4,7 +4,7 @@ import "constants.dart";
 import "package:flutter/material.dart";
 
 final HttpLink _httpLink = HttpLink(
-  Constants.devUrl,
+  Constants.prodUrl,
   // defaultHeaders: {
   //   'AuthorizationSource': 'API',
   // },
