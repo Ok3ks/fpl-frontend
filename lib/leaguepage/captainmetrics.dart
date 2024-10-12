@@ -79,8 +79,8 @@ class CaptainMetricsCard extends ConsumerWidget {
 
     return Row(children: [
       SizedBox(
-          width: 150,
-          height: 100,
+          width: 100,
+          // height: 100,
           child:
           FutureBuilder(
             future: pullPlayerStats(data?['player'], gameweek),
@@ -105,14 +105,20 @@ class CaptainMetricsCard extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  textBaseline: TextBaseline.ideographic
-                                  ,
-                                  children:
-                                [Text(
+                          Text(
+                            // "",
+                            "${obj?.data?['player']['info']['playerName'].toString().split(" ").last}",
+                            style: TextStyle(
+                                fontSize: 10,
+                                // fontWeight: FontWeight.bold,
+                                color:
+                                MaterialTheme
+                                    .darkMediumContrastScheme()
+                                    .onSurface
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                                    Text(
                                   "${
                                       (obj?.data?['player']['gameweekScore']['totalPoints'] != null)
                                       ?
@@ -126,44 +132,26 @@ class CaptainMetricsCard extends ConsumerWidget {
                                           .darkMediumContrastScheme()
                                           .primary),
                                 ),
-                                // Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme
-                                //           .darkMediumContrastScheme()
-                                //           .primary),)
-                                ]),
-                                // const SizedBox(width: 6),
-                              ]),
-                          // SizedBox(height: 7.5),
-                          Text(
-                            // "",
-                            "${obj?.data?['player']['info']['playerName']}",
-                            style: TextStyle(
-                                fontSize: 10,
-                                // fontWeight: FontWeight.bold,
-                                color:
-                                MaterialTheme
-                                    .darkMediumContrastScheme()
-                                    .onSurface),
-                          ),
-                          // Row(
-                          //   children:
-                          // [
-                            Text("Captained by ${data?['count'].toString() ?? "null"}", style:  TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme().primary,
-                                fontSize: 11)),
-                          // Align(
-                          //     alignment: Alignment.bottomRight,
-                          //     child: Text(
-                          //         data?['count'].toString() ?? "null",
-                          //         style: TextStyle(
-                          //             fontSize: 10,
-                          //             // fontWeight: FontWeight.bold,
-                          //             color:
-                          //             MaterialTheme
-                          //                 .darkMediumContrastScheme()
-                          //                 .primary)))])
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children:
+                          [
+                          //   const Text("C", style:  TextStyle(
+                          //     color: Colors.white,
+                          //     fontSize: 11,
+                          //   fontWeight: FontWeight.bold,
+                          // )),
+                            const SizedBox(width: 4),
+                            Text("${data?['count'].toString() ?? "null"}", style:  const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 11,
+                            )),
+                            SizedBox(width:2),
+                            const Icon(Icons.people, size: 11, color: Colors.grey,),
                         ],
                       ),
-                    ));
+                    ])));
 
               }
               else {

@@ -259,12 +259,12 @@ class LeagueStats extends StatelessWidget {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+                    TransferMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['leagueAverage'] != null )
                     PerformanceMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['bestTransferIn'].length != null)
                     CaptainMetrics(data: data),
-                  if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
-                    TransferMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['mostBenched'].length != null)
                     BenchMetrics(data:data),
 
@@ -410,13 +410,6 @@ class MetricsCard extends StatelessWidget {
                         color:
                             MaterialTheme.darkMediumContrastScheme().primary),
                   ),
-                  // Align(
-                  //     alignment: Alignment.bottomRight,
-                  //     child: Icon(Icons.copyright,
-                  //         size: 18,
-                  //         fill: 0,
-                  //         color: MaterialTheme.darkMediumContrastScheme()
-                  //             .onSurface))
                 ],
               ),
             )),
