@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/themes.dart';
 //import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,10 @@ import 'package:fpl/navigation_services.dart';
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure plugin services are initialized
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
   runApp(const FplApp());
 }
 
@@ -48,8 +52,9 @@ class FplApp extends StatelessWidget {
     const fplTheme = FplTheme();
     return MaterialApp.router(
       routerConfig: router,
-      title: 'FPL',
+      title: 'League Analysis',
       theme: fplTheme.toThemeData(),
     );
+
   }
 }

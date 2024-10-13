@@ -418,36 +418,6 @@ class MetricsCard extends StatelessWidget {
   }
 }
 
-class TransferMetrics extends StatelessWidget {
-  // final String title;
-  dynamic data;
-  TransferMetrics({super.key, required this.data});
-
-  @override
-  Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
-    List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
-
-    return Card(
-        color: MaterialTheme.darkMediumContrastScheme().onSurface,
-        elevation: 2,
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-        const Text("Transfer Impact",
-        style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 12)),
-     Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: List.generate(2, (index) {
-      return TransferTile(keys: transferImpactKeys[index], data: data);
-    }))]));
-  }
-}
-
 class PointsMetrics extends StatelessWidget {
   final String title;
   const PointsMetrics({super.key, required this.title});
