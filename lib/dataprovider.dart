@@ -83,5 +83,5 @@ final leagueProvider = StateProvider<double?>((ref) {
 });
 
 final gameweekProvider = StateProvider<double>((ref) {
-  return 1;
+  return 7; //Should start from current gameweek
 });

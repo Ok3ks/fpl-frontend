@@ -34,93 +34,19 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     print("height: $height");
 
     if (orientation == Orientation.landscape) {
-    return Row(children: [
-      SizedBox(
-          width: (width / 3) - 30,
-          height: height,
-          child: Center(
-          child:Card(
-              child:
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 250,
-                height: 50,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                          width: 1.5,
-                          color:
-                              MaterialTheme.darkMediumContrastScheme().primary),
-                      borderRadius: BorderRadius.circular(12)),
-                  color:
-                      MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                  child: TextField(
-                    keyboardType: TextInputType.number,
-                    controller: leagueIdController,
-                    autocorrect:false,
-                    // inputFormatters: <TextInputFormatter>[
-                    //   FilteringTextInputFormatter.digitsOnly
-                    // ],
-                    // maxLength: 12,
-                    // maxLengthEnforcement: MaxLengthEnforcement.enforced,
-                    style: TextStyle(fontSize: 10, color: Colors.white),
-                    cursorColor:
-                        MaterialTheme.darkMediumContrastScheme().primary,
-                    // textInputAction: TextInputAction.done,
-                    decoration: InputDecoration(
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primaryContainer)),
-                        disabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primaryContainer)),
-                        enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primaryContainer)),
-                        border: UnderlineInputBorder(
-                            borderSide: BorderSide(
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primaryContainer)),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                        fillColor: Colors.white,
-                        iconColor: Colors.white),
-                    cursorHeight: 20,
-                  ),
-                )),
-            //TODO : Change this to paste icon
-            IconButton(
-              icon: Icon(Icons.keyboard_return,
-                  color: MaterialTheme.darkMediumContrastScheme().primary),
-              onPressed: () async {
-                if (leagueIdController.text.length > 1) {
-                  String? leagueId = parseLeagueCodeFromUrl(leagueIdController.text);
-                  ref.read(leagueProvider.notifier)
-                      .state = double.tryParse(leagueId ?? "0");
-
-                // if (leagueIdController.text.length > 1) { //TODO More data validation for league code, Also be able to parse link
-                //   setState(() {});
-                }
-              },
-            )
-            ]),
-                  GameweekWidget()]
-          )),
-    )),
-        LeagueStatsView()
-    ]);}
+    return  Center(
+        child: Text("Adjust your device into a portrait orientation",
+        style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 30
+        )));}
     //Left becomes top
     else {
       return
-        SingleChildScrollView(child: Column(
+        Container(
+            color: MaterialTheme.darkMediumContrastScheme().onSurface,
+        child: SingleChildScrollView(child: Column(
           children: [
         SizedBox(
             width: width,
@@ -199,7 +125,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                   )),
             ),
         LeagueStatsView()
-      ]));}
+      ])));}
     }
   }
 
@@ -238,7 +164,28 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
             return const Text("No Data");
           }
         })]);}
-    return const Text("Provide Information about this league", style: TextStyle(fontSize: 15),);
+    return LandingPage();
+
+  }
+}
+
+class LandingPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return  const Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+          Icon(Icons.warning, color: Colors.yellow,),
+          Text("This webpage is under construction, best served in portrait orientation", style: TextStyle(fontSize: 15, color: Colors.black),),]),
+          SizedBox(height: 10),
+          Text("Provide Information about this league.",  style: TextStyle(fontSize: 15, color: Colors.black),),
+          SizedBox(height: 10),
+          Text("Copy league link from official fantasy premier league page. ",  style: TextStyle(fontSize: 15, color: Colors.black),),
+          SizedBox(height: 10),
+          Text("Example - https://fantasy.premierleague.com/leagues/538731/standings/c", style: TextStyle(fontSize: 15, color: Colors.black),),
+        ]);
   }
 }
 
@@ -251,33 +198,44 @@ class LeagueStats extends StatelessWidget {
   Widget build(BuildContext context) {
    String? leagueName = data.data?['leagueWeeklyReport']['leagueName'];
     return Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text("League Name : $leagueName ",  style: const TextStyle(
               color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)),
-          Container(
-            color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          // Container(
+          //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
+          //   child:
+            Column(
+                // crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
-                    TransferMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['leagueAverage'] != null )
                     PerformanceMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['bestTransferIn'].length != null)
                     CaptainMetrics(data: data),
                   if (data.data?['leagueWeeklyReport']['mostBenched'].length != null)
                     BenchMetrics(data:data),
+                  if (data.data?['leagueWeeklyReport']['captain'].length != null && data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+                    TransferMetrics(data: data),
 
         if (data.data?['leagueWeeklyReport']['mostBenched'].length == null)
     Center(
     child:Container(
-      color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-      child: Text("Server is currently unavailable, check back later", style: TextStyle(
+      // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+      color: Colors.white,
+      child:
+
+      Column(
+        children: [
+          const Text("Input is invalid", style: TextStyle(
         fontSize: 15,
         fontWeight: FontWeight.w200,
         color:
-        MaterialTheme.darkMediumContrastScheme().primary)),)
-    )])),]);
+        Colors.red)),
+        LandingPage(),
+        ])
+    ))])
+    // ),
+    ]);
   }
 }
 

@@ -24,29 +24,21 @@ class CaptainMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // final Size size = MediaQuery.sizeOf(context);
-    // final double width = size.width * 2 / 3;
-    // final double height = size.height;
     return SizedBox(
-        child: Card(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+
+          children: [
+          SizedBox(height: 3,),
+            Align(
+              alignment: Alignment.bottomLeft,
+            child:Text("Captain Points",
+                style:  TextStyle(
+                    color: Colors.black, fontSize: 11))),
+            Card(
             color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            elevation: 2,
+            elevation: 5,
             child:
-            Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Text("Captain Points",
-                          style:  TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold)),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Transform.rotate(
-                              angle: 55,
-                              child: const Icon(Icons.expand_circle_down_outlined,
-                                  size: 18))),],
-                  ),
-                  //if (width > 500) : //Switch to list view
             Scrollbar(
                 thickness: 2,
                 trackVisibility: true,
@@ -55,11 +47,14 @@ class CaptainMetrics extends StatelessWidget {
                   child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(data?.data?['leagueWeeklyReport']['captain'].length, (index) {
                     return CaptainMetricsCard(
                         data: data
                             ?.data?['leagueWeeklyReport']['captain'][index]);}
-                  ),)))])));
+                  ),))))]));
+     // ],
+        // ),);
   }
 }
 
@@ -133,15 +128,10 @@ class CaptainMetricsCard extends ConsumerWidget {
                                           .primary),
                                 ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            // crossAxisAlignment: CrossAxisAlignment.center,
                             children:
                           [
-                          //   const Text("C", style:  TextStyle(
-                          //     color: Colors.white,
-                          //     fontSize: 11,
-                          //   fontWeight: FontWeight.bold,
-                          // )),
                             const SizedBox(width: 4),
                             Text("${data?['count'].toString() ?? "null"}", style:  const TextStyle(
                                 color: Colors.grey,

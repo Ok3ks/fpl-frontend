@@ -11,40 +11,32 @@ class PerformanceMetrics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.sizeOf(context);
-    final double width = size.width * 2 / 3;
 
-      return SizedBox(
-          child: Card(
-              shadowColor:
-              MaterialTheme
-                  .darkMediumContrastScheme()
-                  .secondaryContainer,
-              elevation: 2,
-              color: MaterialTheme
-                  .darkMediumContrastScheme()
-                  .onSurface,
-              //elevation: 0,
-              child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Align(
+          alignment: Alignment.bottomLeft,
+                child: const Text("Performance",
+                    style: TextStyle(
+                        fontSize:11,
+                        color: Colors.black,
+                        ))),
+          // Card(
+          //     shadowColor:
+          //     MaterialTheme
+          //         .darkMediumContrastScheme()
+          //         .secondaryContainer,
+          //     elevation: 2,
+          //     color: MaterialTheme
+          //         .darkMediumContrastScheme()
+          //         .onSurface,
+          //     //elevation: 0,
+          //     child:
+              Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Performance",
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                      IconButton(
-                          onPressed: () {},
-                          icon: Transform.rotate(
-                              angle: 55,
-                              child: const Icon(
-                                  Icons.expand_circle_down_outlined,
-                                  size: 18))),
-                    ]),
-
-                //if (width > 500) : //Switch to list view
-                SizedBox(height: 20),
-                Row(children: [
                   MetricsCard(
                       title: "Exceptional ",
                       data: data.data?['leagueWeeklyReport']['exceptional']),
@@ -56,8 +48,10 @@ class PerformanceMetrics extends StatelessWidget {
                     MetricsCard(
                         title: "Abysmal ",
                         data: data.data?['leagueWeeklyReport']['abysmal']),
-                ]),
-              ])));
+                ])
+     // ),
+    ]);
+    // );
   }
 }
 
@@ -72,8 +66,8 @@ class MetricsCard extends StatelessWidget {
 
     return Row(children: [
       SizedBox(
-        width: 150,
-        height: 100,
+        width: 100,
+        // height: 100,
         child: Card(
           // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
             shape: RoundedRectangleBorder(
@@ -135,8 +129,7 @@ class LeagueAverageCard extends StatelessWidget {
 
     return Row(children: [
       SizedBox(
-        width: 150,
-        height: 100,
+        width: 125,
         child: Card(
           // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
             shape: RoundedRectangleBorder(
