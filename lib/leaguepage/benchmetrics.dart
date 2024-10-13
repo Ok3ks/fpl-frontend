@@ -138,7 +138,9 @@ class HighestPointsBenched extends ConsumerWidget {
 
     String? highestBenchedPlayer = highestBenched?['player'].first;
 
-            return SizedBox(
+            return Column(
+              children: [
+                SizedBox(
                   // width: 100,
                   // height: 100,
                   child: Card(
@@ -173,7 +175,7 @@ class HighestPointsBenched extends ConsumerWidget {
                           // ],
                         // ),
                       )),
-                );
+                )]);
           // });
     // } else {
     //   return Text("No data");
@@ -193,7 +195,9 @@ class PlayMeInstead extends StatelessWidget {
     List<Object?>? teams = data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['players'];
     String? teamName = data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['teamName'];
 
-    return SizedBox(
+    return Column(
+      children: [
+      SizedBox(
         // width: 270,
         // height: 100,
         child: Card(
@@ -229,7 +233,7 @@ class PlayMeInstead extends StatelessWidget {
           ],
               ),
             )),
-      );
+      )]);
     // ]);
   }
 }
