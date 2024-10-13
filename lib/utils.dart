@@ -109,7 +109,7 @@ class playerName extends ConsumerWidget {
         builder: (context, snapshot) {
           var obj = snapshot.data;
           return SizedBox(
-              //width: 60,
+              // width: 60,
               height: 50,
                 child:
           Column(
@@ -122,7 +122,7 @@ class playerName extends ConsumerWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: MaterialTheme.darkMediumContrastScheme()
-                              .onSurface, fontSize: 12)),
+                              .onSurface, fontSize: 10)),
                   onPressed: () {
                   }
                   ,)),

@@ -17,10 +17,12 @@ class TransferMetrics extends StatelessWidget {
     // List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
 
     return SizedBox(
-        child: Card(
-        color: MaterialTheme.darkMediumContrastScheme().onSurface,
-        elevation: 2,
-        child: Column(
+        child:
+        // Card(
+        // color: MaterialTheme.darkMediumContrastScheme().onSurface,
+        // elevation: 2,
+        // child:
+        Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -41,7 +43,8 @@ class TransferMetrics extends StatelessWidget {
                     children: List.generate(2, (index) {
                       return TransferTile(data: data.data?['leagueWeeklyReport']['worstTransferIn'], index:index);
                     }))
-            ])));
+            ]));
+    // );
   }
 }
 
@@ -65,14 +68,16 @@ TransferTile({super.key, required this.data, required this.index});
     return SizedBox(
     width: 600,
     height: 45,
-    child: Card(
+    child:
+    Card(
     shape: RoundedRectangleBorder(
     side: BorderSide(
     width: 1.5,
     color: MaterialTheme.darkMediumContrastScheme().primary),
     borderRadius: BorderRadius.circular(8)),
     color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-    child: Container(
+    child:
+    Container(
     padding: const EdgeInsets.symmetric(horizontal: 10),
     child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
