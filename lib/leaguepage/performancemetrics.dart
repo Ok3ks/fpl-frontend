@@ -11,18 +11,18 @@ class PerformanceMetrics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-      return Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                const Align(
-          alignment: Alignment.bottomLeft,
-                child: const Text("Performance",
-                    style: TextStyle(
-                        fontSize:11,
-                        color: Colors.black,
-                        ))),
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const Align(
+              alignment: Alignment.bottomLeft,
+              child: const Text("Performance",
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Colors.black,
+                    decoration: TextDecoration.none,
+                  ))),
           // Card(
           //     shadowColor:
           //     MaterialTheme
@@ -34,23 +34,21 @@ class PerformanceMetrics extends StatelessWidget {
           //         .onSurface,
           //     //elevation: 0,
           //     child:
-              Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                  MetricsCard(
-                      title: "Exceptional ",
-                      data: data.data?['leagueWeeklyReport']['exceptional']),
-                  LeagueAverageCard(
-                      title: "League Average",
-                      data: data.data?['leagueWeeklyReport']),
-                  if ((data.data != null) && (data.data?['leagueWeeklyReport']['abysmal']['score'] !=
-                      null))
-                    MetricsCard(
-                        title: "Abysmal ",
-                        data: data.data?['leagueWeeklyReport']['abysmal']),
-                ])
-     // ),
-    ]);
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            MetricsCard(
+                title: "Exceptional ",
+                data: data.data?['leagueWeeklyReport']['exceptional']),
+            LeagueAverageCard(
+                title: "League Average",
+                data: data.data?['leagueWeeklyReport']),
+            if ((data.data != null) &&
+                (data.data?['leagueWeeklyReport']['abysmal']['score'] != null))
+              MetricsCard(
+                  title: "Abysmal ",
+                  data: data.data?['leagueWeeklyReport']['abysmal']),
+          ])
+          // ),
+        ]);
     // );
   }
 }
@@ -69,7 +67,7 @@ class MetricsCard extends StatelessWidget {
         width: 100,
         // height: 100,
         child: Card(
-          // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
+            // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
             shape: RoundedRectangleBorder(
                 side: BorderSide(
                     width: 1.5,
@@ -81,27 +79,28 @@ class MetricsCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(title, style: const TextStyle(color: Colors.grey, fontSize: 11)),
+                  Text(title,
+                      style: const TextStyle(color: Colors.grey, fontSize: 11)),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   // children: [
-                    Text(
+                  Text(
                     "${data?['score'].toString()}",
                     style: TextStyle(
                         fontSize: 25,
                         // fontWeight: FontWeight.bold,
                         color:
-                        MaterialTheme.darkMediumContrastScheme().primary),
-              ),
-              // Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
-              // ]),
+                            MaterialTheme.darkMediumContrastScheme().primary),
+                  ),
+                  // Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
+                  // ]),
                   // const SizedBox(height: 7.5),
                   Text("${data?['teamName'].toString()}",
                       style: TextStyle(
                           fontSize: 10,
                           // fontWeight: FontWeight.bold,
-                          color: MaterialTheme.darkMediumContrastScheme().primary
-                      )),
+                          color: MaterialTheme.darkMediumContrastScheme()
+                              .primary)),
                   // Align(
                   //     alignment: Alignment.bottomRight,
                   //     child: Icon(Icons.copyright,
@@ -118,7 +117,6 @@ class MetricsCard extends StatelessWidget {
 }
 
 class LeagueAverageCard extends StatelessWidget {
-
   final String title;
   dynamic data;
   LeagueAverageCard({super.key, required this.title, required this.data});
@@ -131,7 +129,7 @@ class LeagueAverageCard extends StatelessWidget {
       SizedBox(
         width: 125,
         child: Card(
-          // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
+            // shadowColor: MaterialTheme.darkMediumContrastScheme().primary,
             shape: RoundedRectangleBorder(
                 side: BorderSide(
                     width: 1.5,
@@ -143,18 +141,20 @@ class LeagueAverageCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(title, style: const TextStyle(color: Colors.grey, fontSize: 11)),
+                  Text(title,
+                      style: const TextStyle(color: Colors.grey, fontSize: 11)),
                   // Row(
                   //   mainAxisAlignment: MainAxisAlignment.center,
                   //   children: [
-                  Text("${data?['leagueAverage'].ceilToDouble().toString()}",
+                  Text(
+                    "${data?['leagueAverage'].ceilToDouble().toString()}",
                     style: TextStyle(
                         fontSize: 25,
                         // fontWeight: FontWeight.bold,
                         color:
-                        MaterialTheme.darkMediumContrastScheme().primary),
+                            MaterialTheme.darkMediumContrastScheme().primary),
                   ),
-              // Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
+                  // Text("pts", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
 
                   // ]),
                   // const SizedBox(height: 7.5),

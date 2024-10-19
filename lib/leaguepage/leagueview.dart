@@ -278,6 +278,7 @@ class LandingPage extends StatelessWidget {
                       SizedBox(height: 5,),
                       Image.asset("assets/images/useApp - Step 2.png"),
                       Image.asset("assets/images/useApp - Step 3.png"),
+                      SizedBox(height: 5,),
                       const Text(
                         " 3] Return to this page and past the copied link in the rectangular box",
                         style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
@@ -285,6 +286,7 @@ class LandingPage extends StatelessWidget {
                         textWidthBasis: TextWidthBasis.longestLine,),
                       SizedBox(height: 5,),
                       Image.asset("assets/images/useApp - Step 4.png"),
+                      SizedBox(height: 5,),
                       Align(
                           alignment: Alignment.center,
                           child:Text(
@@ -325,9 +327,13 @@ class LeagueStats extends StatelessWidget {
   Widget build(BuildContext context) {
     String? leagueName = data.data?['leagueWeeklyReport']['leagueName'];
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Text("League Name : $leagueName ",
+      Text("$leagueName ",
           style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 12)),
+              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 20,
+              decoration: TextDecoration.none,
+          )
+      ),
+
       // Container(
       //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
       //   child:

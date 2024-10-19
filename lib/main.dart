@@ -13,10 +13,10 @@ import 'package:fpl/navigation_services.dart';
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure plugin services are initialized
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   runApp(const FplApp());
 }
 
@@ -26,8 +26,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return
-          ProviderScope(child: LeagueView());
+        return ProviderScope(child: LeagueView());
       },
     ),
     GoRoute(
@@ -55,6 +54,5 @@ class FplApp extends StatelessWidget {
       title: 'League Analysis',
       theme: fplTheme.toThemeData(),
     );
-
   }
 }
