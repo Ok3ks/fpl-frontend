@@ -5,7 +5,6 @@ import "package:fpl/graphql_schemas.dart";
 import "dart:js_interop";
 
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
-
   print(leagueId);
   try {
     QueryResult results = await client.value.query(QueryOptions(
@@ -59,7 +58,8 @@ Future<dynamic> pullPlayerStats(double? playerId, double? gameweek) async {
   }
 }
 
-Future<dynamic> pullPlayersStats(List<double?> playerIds, double? gameweek) async {
+Future<dynamic> pullPlayersStats(
+    List<double?> playerIds, double? gameweek) async {
   try {
     QueryResult results = await client.value.query(QueryOptions(
         document: gql(AllQueries.getPlayersStats), //
