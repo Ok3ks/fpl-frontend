@@ -251,7 +251,7 @@ class LandingPage extends StatelessWidget {
                   collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
                   childrenPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
                   maintainState: true,
-                  title: Text('How can i find my FPL League URL'),
+                  title: Text('How can i find my FPL league URL'),
                   children: [
                     Column(
                       // mainAxisAlignment: MainAxisAlignment.start,
