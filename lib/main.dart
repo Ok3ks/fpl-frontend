@@ -30,12 +30,17 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-        path: '/GameView',
+        path: '/gameview',
         builder: (BuildContext context, GoRouterState state) {
           return const GameView();
         }),
     GoRoute(
-        path: '/participant',
+        path: '/leagueview',
+        builder: (BuildContext context, GoRouterState state) {
+          return ProviderScope(child: LeagueView());
+        }),
+    GoRoute(
+        path: '/participantview',
         builder: (BuildContext context, GoRouterState state) {
           return const ParticipantView();
         }),
