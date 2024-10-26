@@ -10,6 +10,8 @@ import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/navigation_services.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure plugin services are initialized
@@ -17,6 +19,18 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  await Firebase.initializeApp(
+    options: FirebaseOptions(
+        apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
+        authDomain: "dontsuckatfpl.app",
+        projectId: "fpl-frontend",
+        storageBucket: "fpl-frontend.appspot.com",
+        messagingSenderId: "249818130331",
+        appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
+        measurementId: "G-RCXFD9EQ9E"
+        )
+  );
+
   runApp(const FplApp());
 }
 

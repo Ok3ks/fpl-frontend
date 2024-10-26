@@ -48,9 +48,6 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     //Left becomes top
     else {
       return
-        // Container(
-        //   // color: MaterialTheme.darkMediumContrastScheme().onSurface,
-        //   child:
           SingleChildScrollView(
               child: Column(children: [
         Stack(
@@ -84,13 +81,6 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                                 borderRadius: BorderRadius.circular(12)),
                                 color: Color.fromRGBO(100, 100, 100, 0),
                             child: TextField(
-                              //keyboardType: TextInputType.number,
-                              controller: leagueIdController,
-                              // inputFormatters: <TextInputFormatter>[
-                              //   FilteringTextInputFormatter.digitsOnly
-                              // ],
-                              // maxLength: 12,
-                              // maxLengthEnforcement: MaxLengthEnforcement.enforced,
                               style:
                                   TextStyle(fontSize: 10, color: Colors.white),
                               cursorColor:
@@ -98,6 +88,8 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                                       .primary,
                               // textInputAction: TextInputAction.done,
                               decoration: InputDecoration(
+                                  hintText: 'Provide your FPL league URL',
+                                  hintStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                           color: MaterialTheme
@@ -235,14 +227,14 @@ class LandingPage extends StatelessWidget {
                 iconColor: MaterialTheme.darkMediumContrastScheme().primary,
                 children: [
                    ExpansionTile(
-                    leading: Icon(Icons.sports_soccer),
+                    leading: const Icon(Icons.sports_soccer),
                      iconColor: MaterialTheme.darkMediumContrastScheme().primary,
                     collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
-                    title: Text('What is this?'),
+                    title: const Text('What is this?'),
                      childrenPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
 
                   children: [
-                    Text(
+                    const Text(
                         "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                       style: TextStyle(fontSize: 10),
                       textAlign: TextAlign.justify,
@@ -255,7 +247,7 @@ class LandingPage extends StatelessWidget {
                   collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
                   childrenPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
                   maintainState: true,
-                  title: Text('How can i find my league code/url'),
+                  title: const Text('How can i find my FPL League URL'),
                   children: [
                     Column(
                       // mainAxisAlignment: MainAxisAlignment.start,
@@ -284,9 +276,9 @@ class LandingPage extends StatelessWidget {
                         style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left,
                         textWidthBasis: TextWidthBasis.longestLine,),
-                      SizedBox(height: 5,),
+                      const SizedBox(height: 5,),
                       Image.asset("assets/images/useApp - Step 4.png"),
-                      SizedBox(height: 5,),
+                      const SizedBox(height: 5,),
                       Align(
                           alignment: Alignment.center,
                           child:Text(
@@ -306,13 +298,6 @@ class LandingPage extends StatelessWidget {
               children: []),
             ]
           ),
-      // SizedBox(height: 10),
-      // Text("Provide Information about this league.",  style: TextStyle(fontSize: 15, color: Colors.black),),
-      // SizedBox(height: 10),
-      // Text("Copy league Url from official fantasy premier league page. ",  style: TextStyle(fontSize: 15, color: Colors.black),),
-      // SizedBox(height: 10),
-      // Text("Example - https://fantasy.premierleague.com/leagues/538731/standings/c", style: TextStyle(fontSize: 15, color: Colors.black),),
-          // ]);
             ],
           ),
     ]));
