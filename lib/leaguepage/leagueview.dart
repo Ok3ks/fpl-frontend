@@ -84,13 +84,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                                 borderRadius: BorderRadius.circular(12)),
                                 color: Color.fromRGBO(100, 100, 100, 0),
                             child: TextField(
-                              //keyboardType: TextInputType.number,
                               controller: leagueIdController,
-                              // inputFormatters: <TextInputFormatter>[
-                              //   FilteringTextInputFormatter.digitsOnly
-                              // ],
-                              // maxLength: 12,
-                              // maxLengthEnforcement: MaxLengthEnforcement.enforced,
                               style:
                                   TextStyle(fontSize: 10, color: Colors.white),
                               cursorColor:
@@ -98,6 +92,8 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                                       .primary,
                               // textInputAction: TextInputAction.done,
                               decoration: InputDecoration(
+                                  hintText: "Provide your FPL League URL",
+                                  hintStyle: const TextStyle(color: Color.fromRGBO(255, 255, 255, 80), fontStyle: FontStyle.italic, fontWeight: FontWeight.w100),
                                   focusedBorder: UnderlineInputBorder(
                                       borderSide: BorderSide(
                                           color: MaterialTheme
@@ -255,7 +251,7 @@ class LandingPage extends StatelessWidget {
                   collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
                   childrenPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
                   maintainState: true,
-                  title: Text('How can i find my league code/url'),
+                  title: Text('How can i find my FPL League URL'),
                   children: [
                     Column(
                       // mainAxisAlignment: MainAxisAlignment.start,
