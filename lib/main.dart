@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,18 +20,18 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-        apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
-        authDomain: "dontsuckatfpl.app",
-        projectId: "fpl-frontend",
-        storageBucket: "fpl-frontend.appspot.com",
-        messagingSenderId: "249818130331",
-        appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
-        measurementId: "G-RCXFD9EQ9E"
-        )
-  );
 
+  await Firebase.initializeApp(
+      options: const FirebaseOptions(
+          apiKey: "<API_KEY>",
+          authDomain: "<AUTH_DOMAIN>",
+          projectId: "<PROJECT_ID>",
+          storageBucket: "<STORAGE-BUCKET>",
+          messagingSenderId: "<MESSENGER>",
+          appId: "<APP_ID>",
+          measurementId: "<MEASUREMENT_ID>"));
+
+  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(const FplApp());
 }
 
