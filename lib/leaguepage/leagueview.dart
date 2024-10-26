@@ -5,12 +5,13 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'benchmetrics.dart';
-import 'captainmetrics.dart';
+import 'package:fpl/leaguepage/benchmetrics.dart';
+import 'package:fpl/leaguepage/captainmetrics.dart';
+import 'package:fpl/leaguepage/transfermetrics.dart';
+import 'package:fpl/leaguepage/performancemetrics.dart';
+
 import 'dart:convert';
-import 'transfermetrics.dart';
-import 'performancemetrics.dart';
-import 'package:fpl/constants.dart';
+import 'package:fpl/auth.dart';
 
 class LeagueView extends ConsumerStatefulWidget {
   LeagueView({
@@ -33,7 +34,6 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     final double width = size.width;
     final double height = size.height;
 
-
     print("width: $width");
     print("height: $height");
 
@@ -47,110 +47,105 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     }
     //Left becomes top
     else {
-      return
-          SingleChildScrollView(
-              child: Column(children: [
-        Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
+      return SingleChildScrollView(
+          child: Column(children: [
+        Stack(alignment: AlignmentDirectional.center, children: [
           Image.asset("assets/images/pexels-mike-1171084.webp"),
-            SizedBox(
+          SizedBox(
               width: width,
               //height: (height/3) - 30,
               // child: Card(
-                  child: Column(
-
-                      children: [
-                        const SizedBox(height: 20),
-                        LandingPageTitle(),
-                        const SizedBox(height: 20),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child:
-                              Card(
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                    width: 1.5,
-                                    color:
-                                        MaterialTheme.darkMediumContrastScheme()
-                                            .primary),
-                                borderRadius: BorderRadius.circular(12)),
-                                color: Color.fromRGBO(100, 100, 100, 0),
-                            child: TextField(
-                              style:
-                                  TextStyle(fontSize: 10, color: Colors.white),
-                              cursorColor:
-                                  MaterialTheme.darkMediumContrastScheme()
-                                      .primary,
-                              // textInputAction: TextInputAction.done,
-                              decoration: InputDecoration(
-                                  hintText: 'Provide your FPL league URL',
-                                  hintStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.w100, fontStyle: FontStyle.italic),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MaterialTheme
-                                                  .darkMediumContrastScheme()
+              child: Column(children: [
+                const SizedBox(height: 20),
+                accountWidget(),
+                LandingPageTitle(),
+                const SizedBox(height: 20),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                width: 1.5,
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primary),
+                            borderRadius: BorderRadius.circular(12)),
+                        color: Color.fromRGBO(100, 100, 100, 0),
+                        child: TextField(
+                          style: TextStyle(fontSize: 10, color: Colors.white),
+                          cursorColor:
+                              MaterialTheme.darkMediumContrastScheme().primary,
+                          // textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                              hintText: 'Provide your FPL league URL',
+                              hintStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w100,
+                                  fontStyle: FontStyle.italic),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: MaterialTheme
+                                              .darkMediumContrastScheme()
+                                          .primaryContainer)),
+                              disabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          MaterialTheme.darkMediumContrastScheme()
                                               .primaryContainer)),
-                                  disabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MaterialTheme
-                                                  .darkMediumContrastScheme()
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          MaterialTheme.darkMediumContrastScheme()
                                               .primaryContainer)),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MaterialTheme
-                                                  .darkMediumContrastScheme()
+                              border: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          MaterialTheme.darkMediumContrastScheme()
                                               .primaryContainer)),
-                                  border: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              MaterialTheme.darkMediumContrastScheme()
-                                                  .primaryContainer)),
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  fillColor: Colors.white,
-                                  iconColor: Colors.white),
-                              cursorHeight: 20,
-                              autocorrect: false,
-                            ),
-                          )),
-            // ),
-                      IconButton(
-                        icon: Icon(Icons.keyboard_return,
-                            color: MaterialTheme.darkMediumContrastScheme()
-                                .primary),
-                        onPressed: () async {
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              fillColor: Colors.white,
+                              iconColor: Colors.white),
+                          cursorHeight: 20,
+                          autocorrect: false,
+                        ),
+                      )),
+                  // ),
+                  IconButton(
+                    icon: Icon(Icons.keyboard_return,
+                        color:
+                            MaterialTheme.darkMediumContrastScheme().primary),
+                    onPressed: () async {
+                      widget.leagueId =
+                          parseLeagueCodeFromUrl(leagueIdController.text);
+                      ref.read(leagueProvider.notifier).state =
+                          double.tryParse(widget.leagueId ?? "0");
+                      if (leagueIdController.text.length > 1) {
+                        //TODO More data validation for league code, Also be able to parse link
+                        setState(() {
                           widget.leagueId =
                               parseLeagueCodeFromUrl(leagueIdController.text);
-                          ref.read(leagueProvider.notifier).state =
-                              double.tryParse(widget.leagueId ?? "0");
-                          if (leagueIdController.text.length > 1) {
-                            //TODO More data validation for league code, Also be able to parse link
-                            setState(() {
-                              widget.leagueId = parseLeagueCodeFromUrl(leagueIdController.text);
-                            });
-                          }
-                        },
-                      )
-                    ]),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // crossAxisAlignment: CrossAxisAlignment.cen,
-                    children: [
-                      if (widget.leagueId != null)
-                      leagueIDWidget(),
-                      GameweekWidget()],),
-                  ])
-            // )
-          ),
-          ]),
+                        });
+                      }
+                    },
+                  )
+                ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.cen,
+                  children: [
+                    if (widget.leagueId != null) leagueIDWidget(),
+                    GameweekWidget()
+                  ],
+                ),
+              ])
+              // )
+              ),
+        ]),
         LeagueStatsView()
       ]));
-    // );
+      // );
     }
   }
 }
@@ -197,10 +192,13 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 class LandingPageTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Text("MINI  LEAGUE  REPORT",
-                style: TextStyle(color: Colors.white , fontSize: 12,
-                  decoration: TextDecoration.none,
-                ),
+    return const Text(
+      "MINI  LEAGUE  REPORT",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+        decoration: TextDecoration.none,
+      ),
     );
   }
 }
@@ -209,98 +207,132 @@ class LandingPage extends StatelessWidget {
   ExpansionTileController expansionTileController = ExpansionTileController();
   @override
   Widget build(BuildContext context) {
-    return  Material(
+    return Material(
         child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           Column(
             children: [
               ExpansionTile(
-                title: Text('Frequently Asked Questions'),
-                initiallyExpanded: true,
-                backgroundColor: Colors.white,
-                collapsedBackgroundColor: Colors.white,
-                controller: expansionTileController,
-                childrenPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-                maintainState: true,
-                iconColor: MaterialTheme.darkMediumContrastScheme().primary,
-                children: [
-                   ExpansionTile(
-                    leading: const Icon(Icons.sports_soccer),
-                     iconColor: MaterialTheme.darkMediumContrastScheme().primary,
-                    collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
-                    title: const Text('What is this?'),
-                     childrenPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 30),
-
-                  children: [
-                    const Text(
-                        "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
-                      style: TextStyle(fontSize: 10),
-                      textAlign: TextAlign.justify,
-                      textWidthBasis: TextWidthBasis.longestLine,
-                    )
-                      ],),
-              ExpansionTile(
-                  leading: Icon(Icons.sports_soccer),
-                  iconColor: MaterialTheme.darkMediumContrastScheme().primary,
-                  collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
-                  childrenPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+                  title: Text('Frequently Asked Questions'),
+                  initiallyExpanded: true,
+                  backgroundColor: Colors.white,
+                  collapsedBackgroundColor: Colors.white,
+                  controller: expansionTileController,
+                  childrenPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                   maintainState: true,
-                  title: const Text('How can i find my FPL League URL'),
+                  iconColor: MaterialTheme.darkMediumContrastScheme().primary,
                   children: [
-                    Column(
-                      // mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        " 1] From the official Fantasy Premier league page, navigate to classic league of interest.",
-                        style: TextStyle(fontSize: 10,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,
-                        textWidthBasis: TextWidthBasis.longestLine,),
-                      SizedBox(height: 5,),
-                      Image.asset("assets/images/useApp - Step 1.png"),
-                      SizedBox(height: 5,),
-                      const Text(
-                        " 2]  Copy the https link in the URL bar of your browser after you must have clicked on the league of interest.",
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,
-                        textWidthBasis: TextWidthBasis.longestLine,),
-                      SizedBox(height: 5,),
-                      Image.asset("assets/images/useApp - Step 2.png"),
-                      Image.asset("assets/images/useApp - Step 3.png"),
-                      SizedBox(height: 5,),
-                      const Text(
-                        " 3] Return to this page and past the copied link in the rectangular box",
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,
-                        textWidthBasis: TextWidthBasis.longestLine,),
-                      const SizedBox(height: 5,),
-                      Image.asset("assets/images/useApp - Step 4.png"),
-                      const SizedBox(height: 5,),
-                      Align(
-                          alignment: Alignment.center,
-                          child:Text(
-                        "Now you have a mini league report to view.",
-                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.center,
-                        textWidthBasis: TextWidthBasis.longestLine,))
-
-                    ]
-    ),
+                    ExpansionTile(
+                      leading: const Icon(Icons.sports_soccer),
+                      iconColor:
+                          MaterialTheme.darkMediumContrastScheme().primary,
+                      collapsedIconColor:
+                          MaterialTheme.darkMediumContrastScheme().primary,
+                      title: const Text('What is this?'),
+                      childrenPadding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 30),
+                      children: [
+                        const Text(
+                          "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
+                          style: TextStyle(fontSize: 10),
+                          textAlign: TextAlign.justify,
+                          textWidthBasis: TextWidthBasis.longestLine,
+                        )
+                      ],
+                    ),
+                    ExpansionTile(
+                        leading: Icon(Icons.sports_soccer),
+                        iconColor:
+                            MaterialTheme.darkMediumContrastScheme().primary,
+                        collapsedIconColor:
+                            MaterialTheme.darkMediumContrastScheme().primary,
+                        childrenPadding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 30),
+                        maintainState: true,
+                        title: const Text('How can i find my FPL League URL'),
+                        children: [
+                          Column(
+                              // mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  " 1] From the official Fantasy Premier league page, navigate to classic league of interest.",
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                  textWidthBasis: TextWidthBasis.longestLine,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Image.asset(
+                                    "assets/images/useApp - Step 1.png"),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  " 2]  Copy the https link in the URL bar of your browser after you must have clicked on the league of interest.",
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                  textWidthBasis: TextWidthBasis.longestLine,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Image.asset(
+                                    "assets/images/useApp - Step 2.png"),
+                                Image.asset(
+                                    "assets/images/useApp - Step 3.png"),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                const Text(
+                                  " 3] Return to this page and past the copied link in the rectangular box",
+                                  style: TextStyle(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.left,
+                                  textWidthBasis: TextWidthBasis.longestLine,
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Image.asset(
+                                    "assets/images/useApp - Step 4.png"),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      "Now you have a mini league report to view.",
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
+                                      textAlign: TextAlign.center,
+                                      textWidthBasis:
+                                          TextWidthBasis.longestLine,
+                                    ))
+                              ]),
                         ]),
-          ExpansionTile(
-              leading: Icon(Icons.sports_soccer),
-              iconColor: MaterialTheme.darkMediumContrastScheme().primary,
-              collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
-              title: Text('What should we expect in the future?'),
-              children: []),
-            ]
-          ),
+                    ExpansionTile(
+                        leading: Icon(Icons.sports_soccer),
+                        iconColor:
+                            MaterialTheme.darkMediumContrastScheme().primary,
+                        collapsedIconColor:
+                            MaterialTheme.darkMediumContrastScheme().primary,
+                        title: Text('What should we expect in the future?'),
+                        children: []),
+                  ]),
             ],
           ),
-    ]));
+        ]));
   }
 }
 
@@ -314,10 +346,11 @@ class LeagueStats extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Text("$leagueName ",
           style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 20,
-              decoration: TextDecoration.none,
-          )
-      ),
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+            decoration: TextDecoration.none,
+          )),
 
       // Container(
       //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
