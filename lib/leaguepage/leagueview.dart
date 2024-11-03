@@ -334,9 +334,9 @@ class LeagueStats extends StatelessWidget {
           )
       ),
 
-      // Container(
-      //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
-      //   child:
+      Container(
+        color: MaterialTheme.darkMediumContrastScheme().onSurface,
+        child:
       Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -364,7 +364,7 @@ class LeagueStats extends StatelessWidget {
                         LandingPage(),
                       ])))
           ])
-      // ),
+      ),
     ]);
   }
 }
