@@ -9,6 +9,7 @@ import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/navigation_services.dart';
+import 'package:fpl/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding
@@ -26,7 +27,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return ProviderScope(child: LeagueView());
+        return ProviderScope(child: Home());
       },
     ),
     GoRoute(
