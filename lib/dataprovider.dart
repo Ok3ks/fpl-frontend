@@ -42,13 +42,24 @@ Future<dynamic> pullPlayerStats(double? playerId, double? gameweek) async {
           "id": playerId, //4,
           "gameweek": gameweek, //3
         }));
+    return results;
+    // }
+  } catch (e) {
+    print(e);
+    return false;
+    // Log.logger.e("Error during synchronization: $e");
+  }
+}
 
-    // Log.logger.i("Pulling Events Exception: ${results.exception}");
-    // print(results.exception);
-    // print(results.data?['captain']);
-    // for (var data in results.data?['captain']) {
-    // print(data);
-    // Log.logger.i(data);
+Future<dynamic> pullParticipantStats(double? participantId) async {
+  try {
+    QueryResult results = await client.value.query(QueryOptions(
+        document: gql(AllQueries.getParticipantStats), //
+        fetchPolicy: null,
+        cacheRereadPolicy: null,
+        variables: {
+          "entryId": participantId, //4,
+        }));
     return results;
     // }
   } catch (e) {
@@ -84,4 +95,8 @@ final leagueProvider = StateProvider<double?>((ref) {
 
 final gameweekProvider = StateProvider<double>((ref) {
   return 9; //Should start from current gameweek
+});
+
+final participantIdProvider = StateProvider<double?>((ref) {
+  return null; //Should start from current gameweek
 });
