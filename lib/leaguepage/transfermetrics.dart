@@ -28,10 +28,10 @@ class TransferMetrics extends StatelessWidget {
                 children: [
           const Text("Transfer Impact",
               style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                  decoration: TextDecoration.none,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+                decoration: TextDecoration.none,
               )),
           if (data.data?['leagueWeeklyReport']['bestTransferIn'] != null)
             Column(
