@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
 
 import '../themes.dart';
@@ -31,7 +32,7 @@ class Home extends StatelessWidget {
           ),
           body: TabBarView(
             children: [
-              Icon(Icons.person),
+              ProviderScope(child: ParticipantView()),
               ProviderScope(child: LeagueView()),
               Icon(Icons.sports_soccer),
             ],
