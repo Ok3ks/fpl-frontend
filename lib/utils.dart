@@ -112,30 +112,28 @@ class leagueIDWidget extends ConsumerWidget {
     final currleague = ref.watch(leagueProvider);
 
     //TODO:Limit based on current gameweek
-          return SizedBox(
-              height: 30,
-              width: 180,
-              child: Card(
-                  color: Color.fromRGBO(100, 100, 100, 0),
-                  shape: RoundedRectangleBorder(
-                      side: BorderSide(
-                          width: 0,
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .primaryContainer),
-                      borderRadius: BorderRadius.circular(4)),
-                  child: SizedBox(
-                          // width: 80,
-                          // height: 50,
-                              child: Center(
-                                child: Text("League Id : ${currleague.toString()}",
-                                    style: TextStyle(
-                                        color: MaterialTheme
-                                            .darkMediumContrastScheme()
-                                            .onSurface,
-                                        fontSize: 15)),
-                              )),
-                        ),
-                      );
+    return SizedBox(
+      height: 30,
+      width: 180,
+      child: Card(
+        color: Color.fromRGBO(100, 100, 100, 0),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                width: 0,
+                color:
+                    MaterialTheme.darkMediumContrastScheme().primaryContainer),
+            borderRadius: BorderRadius.circular(4)),
+        child: SizedBox(
+            // width: 80,
+            // height: 50,
+            child: Center(
+          child: Text("League Id : ${currleague.toString()}",
+              style: TextStyle(
+                  color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                  fontSize: 15)),
+        )),
+      ),
+    );
   }
 }
 
@@ -157,25 +155,23 @@ class playerName extends ConsumerWidget {
               // height: 50,
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                SizedBox(
-                    // width: 75,
-                    child: TextButton(
-                  child: Text(
-                      "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .onSurface,
-                          fontSize: 10)),
-                  onPressed: () {},
-                )),
-                if (notTransfer ?? true)
-                  Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
-                      style: TextStyle(
-                          color:
-                              MaterialTheme.darkMediumContrastScheme().primary,
-                          fontSize: 12)),
-              ]));
+            SizedBox(
+                // width: 75,
+                child: TextButton(
+              child: Text(
+                  "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                      fontSize: 10)),
+              onPressed: () {},
+            )),
+            if (notTransfer ?? true)
+              Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
+                  style: TextStyle(
+                      color: MaterialTheme.darkMediumContrastScheme().primary,
+                      fontSize: 12)),
+          ]));
         });
   }
 }

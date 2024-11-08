@@ -25,11 +25,10 @@ class BenchMetrics extends StatelessWidget {
               alignment: Alignment.bottomLeft,
               child: Text("Bench Effect",
                   style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
                     decoration: TextDecoration.none,
-
                   ))),
           // Card(
           //   shadowColor:
