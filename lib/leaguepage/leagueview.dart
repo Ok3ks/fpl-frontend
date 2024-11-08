@@ -5,12 +5,13 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'benchmetrics.dart';
-import 'captainmetrics.dart';
+import 'package:fpl/leaguepage/benchmetrics.dart';
+import 'package:fpl/leaguepage/captainmetrics.dart';
+import 'package:fpl/leaguepage/transfermetrics.dart';
+import 'package:fpl/leaguepage/performancemetrics.dart';
+
 import 'dart:convert';
-import 'transfermetrics.dart';
-import 'performancemetrics.dart';
-import 'package:fpl/constants.dart';
+import 'package:fpl/auth.dart';
 
 class LeagueView extends ConsumerStatefulWidget {
   LeagueView({
@@ -33,7 +34,6 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     final double width = size.width;
     final double height = size.height;
 
-
     print("width: $width");
     print("height: $height");
 
@@ -47,114 +47,104 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     }
     //Left becomes top
     else {
-      return
-        // Container(
-        //   // color: MaterialTheme.darkMediumContrastScheme().onSurface,
-        //   child:
-          SingleChildScrollView(
-              child: Column(children: [
-        Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
+      return SingleChildScrollView(
+          child: Column(children: [
+        Stack(alignment: AlignmentDirectional.center, children: [
           Image.asset("assets/images/pexels-mike-1171084.webp"),
-            SizedBox(
+          SizedBox(
               width: width,
               //height: (height/3) - 30,
               // child: Card(
-                  child: Column(
-
-                      children: [
-                        const SizedBox(height: 20),
-                        LandingPageTitle(),
-                        const SizedBox(height: 20),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                      SizedBox(
-                          width: 250,
-                          height: 50,
-                          child:
-                              Card(
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                    width: 1.5,
-                                    color:
-                                        MaterialTheme.darkMediumContrastScheme()
-                                            .primary),
-                                borderRadius: BorderRadius.circular(12)),
-                                color: Color.fromRGBO(100, 100, 100, 0),
-                            child: TextField(
-                              controller: leagueIdController,
-                              style:
-                                  TextStyle(fontSize: 10, color: Colors.white),
-                              cursorColor:
-                                  MaterialTheme.darkMediumContrastScheme()
-                                      .primary,
-                              // textInputAction: TextInputAction.done,
-                              decoration: InputDecoration(
-                                  hintText: "Provide your FPL League URL",
-                                  hintStyle: const TextStyle(color: Color.fromRGBO(255, 255, 255, 80), fontStyle: FontStyle.italic, fontWeight: FontWeight.w100),
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MaterialTheme
-                                                  .darkMediumContrastScheme()
+              child: Column(children: [
+                const SizedBox(height: 20),
+                LandingPageTitle(),
+                const SizedBox(height: 20),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  SizedBox(
+                      width: 250,
+                      height: 50,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                                width: 1.5,
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primary),
+                            borderRadius: BorderRadius.circular(12)),
+                        color: Color.fromRGBO(100, 100, 100, 0),
+                        child: TextField(
+                          style: TextStyle(fontSize: 10, color: Colors.white),
+                          cursorColor:
+                              MaterialTheme.darkMediumContrastScheme().primary,
+                          // textInputAction: TextInputAction.done,
+                          decoration: InputDecoration(
+                              hintText: 'Provide your FPL league URL',
+                              hintStyle: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w100,
+                                  fontStyle: FontStyle.italic),
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: MaterialTheme
+                                              .darkMediumContrastScheme()
+                                          .primaryContainer)),
+                              disabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          MaterialTheme.darkMediumContrastScheme()
                                               .primaryContainer)),
-                                  disabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MaterialTheme
-                                                  .darkMediumContrastScheme()
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          MaterialTheme.darkMediumContrastScheme()
                                               .primaryContainer)),
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: MaterialTheme
-                                                  .darkMediumContrastScheme()
+                              border: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          MaterialTheme.darkMediumContrastScheme()
                                               .primaryContainer)),
-                                  border: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color:
-                                              MaterialTheme.darkMediumContrastScheme()
-                                                  .primaryContainer)),
-                                  contentPadding:
-                                      const EdgeInsets.symmetric(horizontal: 8),
-                                  fillColor: Colors.white,
-                                  iconColor: Colors.white),
-                              cursorHeight: 20,
-                              autocorrect: false,
-                            ),
-                          )),
-            // ),
-                      IconButton(
-                        icon: Icon(Icons.keyboard_return,
-                            color: MaterialTheme.darkMediumContrastScheme()
-                                .primary),
-                        onPressed: () async {
+                              contentPadding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              fillColor: Colors.white,
+                              iconColor: Colors.white),
+                          cursorHeight: 20,
+                          autocorrect: false,
+                        ),
+                      )),
+                  // ),
+                  IconButton(
+                    icon: Icon(Icons.keyboard_return,
+                        color:
+                            MaterialTheme.darkMediumContrastScheme().primary),
+                    onPressed: () async {
+                      widget.leagueId =
+                          parseLeagueCodeFromUrl(leagueIdController.text);
+                      ref.read(leagueProvider.notifier).state =
+                          double.tryParse(widget.leagueId ?? "0");
+                      if (leagueIdController.text.length > 1) {
+                        //TODO More data validation for league code, Also be able to parse link
+                        setState(() {
                           widget.leagueId =
                               parseLeagueCodeFromUrl(leagueIdController.text);
-                          ref.read(leagueProvider.notifier).state =
-                              double.tryParse(widget.leagueId ?? "0");
-                          if (leagueIdController.text.length > 1) {
-                            //TODO More data validation for league code, Also be able to parse link
-                            setState(() {
-                              widget.leagueId = parseLeagueCodeFromUrl(leagueIdController.text);
-                            });
-                          }
-                        },
-                      )
-                    ]),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      // crossAxisAlignment: CrossAxisAlignment.cen,
-                    children: [
-                      if (widget.leagueId != null)
-                      leagueIDWidget(),
-                      GameweekWidget()],),
-                  ])
-            // )
-          ),
-          ]),
+                        });
+                      }
+                    },
+                  )
+                ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.cen,
+                  children: [
+                    if (widget.leagueId != null) leagueIDWidget(),
+                    GameweekWidget()
+                  ],
+                ),
+              ])
+              // )
+              ),
+        ]),
         LeagueStatsView()
       ]));
-    // );
+      // );
     }
   }
 }
@@ -201,10 +191,13 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 class LandingPageTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Text("MINI  LEAGUE  REPORT",
-                style: TextStyle(color: Colors.white , fontSize: 12,
-                  decoration: TextDecoration.none,
-                ),
+    return const Text(
+      "MINI  LEAGUE  REPORT",
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+        decoration: TextDecoration.none,
+      ),
     );
   }
 }
@@ -213,11 +206,11 @@ class LandingPage extends StatelessWidget {
   ExpansionTileController expansionTileController = ExpansionTileController();
   @override
   Widget build(BuildContext context) {
-    return  Material(
+    return Material(
         child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
           Column(
             children: [
               ExpansionTile(
@@ -294,24 +287,18 @@ class LandingPage extends StatelessWidget {
                     ]
     ),
                         ]),
-          ExpansionTile(
-              leading: Icon(Icons.sports_soccer),
-              iconColor: MaterialTheme.darkMediumContrastScheme().primary,
-              collapsedIconColor:  MaterialTheme.darkMediumContrastScheme().primary,
-              title: Text('What should we expect in the future?'),
-              children: []),
-            ]
-          ),
-      // SizedBox(height: 10),
-      // Text("Provide Information about this league.",  style: TextStyle(fontSize: 15, color: Colors.black),),
-      // SizedBox(height: 10),
-      // Text("Copy league Url from official fantasy premier league page. ",  style: TextStyle(fontSize: 15, color: Colors.black),),
-      // SizedBox(height: 10),
-      // Text("Example - https://fantasy.premierleague.com/leagues/538731/standings/c", style: TextStyle(fontSize: 15, color: Colors.black),),
-          // ]);
+                    ExpansionTile(
+                        leading: Icon(Icons.sports_soccer),
+                        iconColor:
+                            MaterialTheme.darkMediumContrastScheme().primary,
+                        collapsedIconColor:
+                            MaterialTheme.darkMediumContrastScheme().primary,
+                        title: Text('What should we expect in the future?'),
+                        children: []),
+                  ]),
             ],
           ),
-    ]));
+        ]));
   }
 }
 
@@ -325,10 +312,11 @@ class LeagueStats extends StatelessWidget {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Text("$leagueName ",
           style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 20,
-              decoration: TextDecoration.none,
-          )
-      ),
+            color: Colors.black,
+            fontWeight: FontWeight.w400,
+            fontSize: 20,
+            decoration: TextDecoration.none,
+          )),
 
       // Container(
       //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
