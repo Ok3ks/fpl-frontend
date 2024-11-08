@@ -379,3 +379,14 @@ class LandingPageTitle extends StatelessWidget {
     );
   }
 }
+
+class LandingPageTitle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return const Text("PARTICIPANT REPORT",
+      style: TextStyle(color: Colors.white , fontSize: 12,
+        decoration: TextDecoration.none,
+      ),
+    );
+  }
+}
