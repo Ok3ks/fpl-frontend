@@ -44,6 +44,7 @@ dependencies:
   path_provider: ^2.1.4
   firebase_core: ^3.6.0
   firebase_auth: ^5.3.1
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +75,7 @@ flutter:
      - assets/images/useApp - Step 2.png
      - assets/images/useApp - Step 3.png
      - assets/images/useApp - Step 4.png
+     - .env
 #     - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

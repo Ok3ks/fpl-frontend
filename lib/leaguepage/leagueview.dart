@@ -57,7 +57,6 @@ class LeagueViewState extends ConsumerState<LeagueView> {
               // child: Card(
               child: Column(children: [
                 const SizedBox(height: 20),
-                accountWidget(),
                 LandingPageTitle(),
                 const SizedBox(height: 20),
                 Row(mainAxisAlignment: MainAxisAlignment.center, children: [
