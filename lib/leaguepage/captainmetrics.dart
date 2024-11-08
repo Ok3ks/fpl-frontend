@@ -18,10 +18,10 @@ class CaptainMetrics extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      SizedBox(
+      const SizedBox(
         height: 3,
       ),
-      Align(
+      const Align(
           alignment: Alignment.bottomLeft,
           child: Text("Captain Points",
               style: TextStyle(
