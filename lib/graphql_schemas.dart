@@ -135,6 +135,26 @@ class AllQueries {
     }
   }""";
 
+  static String getParticipantStats = """
+  query participantReport(\$entryId: Int!) {
+    participantReport(entryId: \$entryId) {
+      gw
+      entryId
+      totalPoints
+      players
+      bench
+      captain
+      viceCaptain
+      captainPoints
+      viceCaptainPoints
+      rank
+      activeChip
+      eventTransfersCost
+      pointsOnBench
+  }
+}
+  """;
+
   static String getPlayersStats = """
   
   query players(\$ids: [Int!]!, \$gameweek:Int!) {

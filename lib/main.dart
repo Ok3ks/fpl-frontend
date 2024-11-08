@@ -43,7 +43,7 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/participantview',
         builder: (BuildContext context, GoRouterState state) {
-          return const ParticipantView();
+          return ProviderScope(child:ParticipantView());
         }),
   ],
   routerNeglect: true,
