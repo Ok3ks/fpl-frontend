@@ -318,9 +318,9 @@ class LeagueStats extends StatelessWidget {
             decoration: TextDecoration.none,
           )),
 
-      // Container(
-      //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
-      //   child:
+      Container(
+        color: MaterialTheme.darkMediumContrastScheme().onSurface,
+        child:
       Column(
           // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -348,7 +348,7 @@ class LeagueStats extends StatelessWidget {
                         LandingPage(),
                       ])))
           ])
-      // ),
+      ),
     ]);
   }
 }
