@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../dataprovider.dart';
 import '../themes.dart';
@@ -168,9 +169,7 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
             builder: (context, snapshot) {
               var obj = snapshot.data;
               if (snapshot.hasData) {
-                print(obj);
-                return obj;
-              //   return ParticipantStats(data: obj);
+                return ParticipantStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return const CircularProgressIndicator();
               } else {
@@ -180,6 +179,25 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
       ]);
     }
     return LandingPage();
+  }
+}
+
+class ParticipantStats extends StatelessWidget{
+
+  QueryResult data;
+  ParticipantStats({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    String? captain = data.data?['participantReport']['captain'][0].toString();
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Text("$captain",
+        style: const TextStyle(
+          color: Colors.black,
+          fontWeight: FontWeight.w400,
+          fontSize: 20,
+          decoration: TextDecoration.none,
+        ))]);
   }
 }
 
