@@ -19,6 +19,10 @@ import 'package:get_storage/get_storage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
+import 'dataprovider.dart';
+import 'package:fpl/logging.dart';
+
+
 void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure plugin services are initialized
@@ -26,6 +30,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  dynamic res = await pullGameViewStats(true, true, false);
+  print(res);
 
   await GetStorage.init();
 
