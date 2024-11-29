@@ -14,6 +14,10 @@ import 'package:fpl/home/home.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
+import 'dataprovider.dart';
+import 'package:fpl/logging.dart';
+
+
 void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding
@@ -22,6 +26,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  dynamic res = await pullGameViewStats(true, true, false);
+  print(res);
 
   await Firebase.initializeApp(
       options:  FirebaseOptions(
