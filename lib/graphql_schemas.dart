@@ -155,6 +155,19 @@ class AllQueries {
 }
   """;
 
+  static String getGameViewReport = """
+  query GameViewReport(\$useGameweek: Boolean!, \$usePosition: Boolean!, \$useTeam: Boolean!) {
+    gameViewReport(useGameweek: \$useGameweek, usePosition: \$usePosition, useTeam: \$useTeam) {
+        gameweek
+        position
+        team
+        goalsScored
+        totalPoints
+        assists
+    }
+  }
+  """;
+
   static String getPlayersStats = """
   
   query players(\$ids: [Int!]!, \$gameweek:Int!) {

@@ -322,7 +322,6 @@ class LeagueStats extends StatelessWidget {
         color: MaterialTheme.darkMediumContrastScheme().onSurface,
         child:
       Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (data.data?['leagueWeeklyReport']['leagueAverage'] != null)
               PerformanceMetrics(data: data),

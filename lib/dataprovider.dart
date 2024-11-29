@@ -15,13 +15,14 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
           "leagueId": leagueId, //538731,
           "gameweek": gameweek, //3
         }));
-
     // Log.logger.i("Pulling Events Exception: ${results.exception}");
     // print(results.exception);
     // print(results.data?['captain']);
     // for (var data in results.data?['captain']) {
     // print(data);
     // Log.logger.i(data);
+
+    // print(results.data);
 
     return results;
     // }
@@ -66,6 +67,29 @@ Future<dynamic> pullParticipantStats(double? participantId) async {
     print(e);
     return false;
     // Log.logger.e("Error during synchronization: $e");
+  }
+}
+
+Future<dynamic> pullGameViewStats(
+    bool useGameweek,
+    bool usePosition,
+    bool useTeam,
+    ) async {
+  try {
+    QueryResult results = await client.value.query(QueryOptions(
+        document: gql(AllQueries.getGameViewReport), //
+        fetchPolicy: null,
+        cacheRereadPolicy: null,
+        variables: {
+          "useGameweek": useGameweek,
+          "usePosition": usePosition,
+          "useTeam": useTeam,
+        }));
+    print("${results.data}");
+    return results;
+  } catch (e) {
+    Log.logger.e("Error during synchronization: $e");
+    return false;
   }
 }
 

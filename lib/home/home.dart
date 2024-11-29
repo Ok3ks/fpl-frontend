@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/dataprovider.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
 
@@ -25,7 +26,12 @@ class Home extends StatelessWidget {
               tabs: [
                 Tab(text: "individual view", icon: Icon(Icons.person)),
                 Tab(text: "league view", icon: Icon(Icons.leaderboard)),
-                Tab(text: "game view", icon: Icon(Icons.sports_soccer))
+                Tab(text: "game view", icon: Icon(Icons.sports_soccer,
+                    // onPressed: () async {
+                    //     pullGameweekStats(true, true, false)
+                    // },
+                )
+                )
               ],
             ),
             // title: const Text('Tabs Demo'),
