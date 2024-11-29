@@ -21,17 +21,20 @@ class Home extends StatelessWidget {
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color.fromRGBO(80, 100, 80, 0),// MaterialTheme.darkMediumContrastScheme().onSurface,
+            backgroundColor: Color.fromRGBO(80, 100, 80,
+                0), // MaterialTheme.darkMediumContrastScheme().onSurface,
             bottom: const TabBar(
               tabs: [
                 Tab(text: "individual view", icon: Icon(Icons.person)),
                 Tab(text: "league view", icon: Icon(Icons.leaderboard)),
-                Tab(text: "game view", icon: Icon(Icons.sports_soccer,
-                    // onPressed: () async {
-                    //     pullGameweekStats(true, true, false)
-                    // },
-                )
-                )
+                Tab(
+                    text: "game view",
+                    icon: Icon(
+                      Icons.sports_soccer,
+                      // onPressed: () async {
+                      //     pullGameweekStats(true, true, false)
+                      // },
+                    ))
               ],
             ),
             // title: const Text('Tabs Demo'),

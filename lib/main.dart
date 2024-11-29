@@ -17,7 +17,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'dataprovider.dart';
 import 'package:fpl/logging.dart';
 
-
 void main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding
@@ -30,16 +29,14 @@ void main() async {
   print(res);
 
   await Firebase.initializeApp(
-      options:  FirebaseOptions(
-          apiKey:dotenv.env['apiKey'] ?? '<API_KEY>',
+      options: FirebaseOptions(
+          apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
           authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
           projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
           storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
           messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
           appId: dotenv.env['appId'] ?? "<APP_ID>",
-          measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"
-
-      ));
+          measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
   // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(const FplApp());
@@ -67,7 +64,7 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/participantview',
         builder: (BuildContext context, GoRouterState state) {
-          return ProviderScope(child:ParticipantView());
+          return ProviderScope(child: ParticipantView());
         }),
   ],
   routerNeglect: true,
