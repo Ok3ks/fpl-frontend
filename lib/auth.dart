@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-
 Future<UserCredential> signInWithGoogle() async {
 // Create a new provider
   GoogleAuthProvider googleProvider = GoogleAuthProvider();
@@ -15,13 +14,12 @@ Future<UserCredential> signInWithGoogle() async {
 }
 
 class accountWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return IconButton(
-            onPressed: () async {
-              await signInWithGoogle();
-            },
-            icon: Icon(Icons.account_circle_sharp, color: Colors.black));
+        onPressed: () async {
+          await signInWithGoogle();
+        },
+        icon: Icon(Icons.account_circle_sharp, color: Colors.black));
   }
 }
