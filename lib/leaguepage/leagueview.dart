@@ -25,17 +25,15 @@ class LeagueView extends ConsumerStatefulWidget {
 }
 
 class LeagueViewState extends ConsumerState<LeagueView> {
+  TextEditingController leagueIdController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController leagueIdController = TextEditingController();
 
     Orientation orientation = MediaQuery.of(context).orientation;
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width;
     final double height = size.height;
-
-    print("width: $width");
-    print("height: $height");
 
     if (orientation == Orientation.landscape) {
       return Center(
@@ -72,9 +70,11 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                             borderRadius: BorderRadius.circular(12)),
                         color: Color.fromRGBO(100, 100, 100, 0),
                         child: TextField(
+
                           style: TextStyle(fontSize: 10, color: Colors.white),
                           cursorColor:
                               MaterialTheme.darkMediumContrastScheme().primary,
+                          controller: leagueIdController,
                           // textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                               hintText: 'Provide your FPL league URL',
