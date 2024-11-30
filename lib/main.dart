@@ -25,8 +25,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  dynamic res = await pullGameViewStats(true, true, false);
-  print(res);
+  // dynamic res = await pullGameViewStats(true, true, false);
+  // print(res);
 
   await Firebase.initializeApp(
       options: FirebaseOptions(
