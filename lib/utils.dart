@@ -235,11 +235,8 @@ class playerName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (gameweek == null) {
-    double gameweek = ref.watch(gameweekProvider);
-    }
     return FutureBuilder(
-        future: pullPlayerStats(playerId, gameweek),
+        future: pullPlayerStats(playerId, gameweek ?? ref.watch(gameweekProvider)),
         builder: (context, snapshot) {
           var obj = snapshot.data;
           if (snapshot.hasData) {
