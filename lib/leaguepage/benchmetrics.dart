@@ -73,8 +73,6 @@ class JammyPointsCard extends ConsumerWidget {
     List<Object?>? playersSubOut = obj[0]['subOut'];
     return Row(children: [
       SizedBox(
-        // width: 200,
-        // height: 200,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -169,8 +167,9 @@ class HighestPointsBenched extends ConsumerWidget {
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                   playerName(
                       playerId:
-                          double.tryParse(highestBenchedPlayer ?? '0') ?? 0),
-                ],
+                          double.tryParse(highestBenchedPlayer ?? '0') ?? 0,
+                      // notTransfer: false,
+                  )],
               ),
               // ],
               // ),
