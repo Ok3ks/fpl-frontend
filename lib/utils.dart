@@ -147,18 +147,15 @@ class playerName extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (gameweek == null) {
-    double gameweek = ref.watch(gameweekProvider);
-    }
     return FutureBuilder(
-        future: pullPlayerStats(playerId, gameweek),
+        future: pullPlayerStats(playerId, gameweek ?? ref.watch(gameweekProvider)),
         builder: (context, snapshot) {
           var obj = snapshot.data;
           if (isRow ?? false) {
           return
             SizedBox(
               child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
             SizedBox(
                 child: TextButton(
               child: Text(
@@ -179,7 +176,7 @@ class playerName extends ConsumerWidget {
             return
               SizedBox(
                   child:
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
                     SizedBox(
                         child: TextButton(
                           child: Text(
