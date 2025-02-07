@@ -4,7 +4,8 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
-import 'package:fpl/individualpage//utils.dart';
+import 'package:fpl/individualpage/utils.dart';
+
 
 class ParticipantView extends ConsumerStatefulWidget {
   ParticipantView({
@@ -128,6 +129,13 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
                     },
                   )
                 ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.cen,
+                  children: [
+                    if (widget.participantId != null) participantIDWidget(),
+                  ],
+                ),
               ])
               // )
               ),

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 
 class captainViceCaptainName extends ConsumerWidget {
@@ -52,5 +53,38 @@ String? parseParticipantIdFromUrl(String url) {
   } on FormatException {
     // Handle invalid URL
     return null;
+  }
+}
+
+class participantIDWidget extends ConsumerWidget {
+  participantIDWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currParticipant = ref.watch(participantIdProvider);
+
+    //TODO:Limit based on current gameweek
+    return SizedBox(
+      height: 30,
+      width: 180,
+      child: Card(
+        color: Color.fromRGBO(100, 100, 100, 0),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                width: 0,
+                color:
+                MaterialTheme.darkMediumContrastScheme().primaryContainer),
+            borderRadius: BorderRadius.circular(4)),
+        child: SizedBox(
+          // width: 80,
+          // height: 50,
+            child: Center(
+              child: Text("Participant ID : ${currParticipant.toString()}",
+                  style: TextStyle(
+                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                      fontSize: 15)),
+            )),
+      ),
+    );
   }
 }
