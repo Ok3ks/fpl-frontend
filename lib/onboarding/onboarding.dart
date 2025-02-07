@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Onboarding());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class Onboarding extends StatelessWidget {
+  const Onboarding({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -243,7 +243,8 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       }
     } else {
       setState(() {
-        currentStep = min(currentStep + 1, steps.length - 1);
+        currentStep =
+            min(currentStep + 1, steps.length - 1);
       });
     }
   }
