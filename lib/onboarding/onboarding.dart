@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/gamepage/gameview.dart';
+import 'package:fpl/dataprovider.dart';
 import 'dart:math';
+
+import 'package:go_router/go_router.dart';
+
+import '../individualpage/utils.dart';
 
 void main() {
   runApp(const Onboarding());
@@ -21,14 +28,14 @@ class Onboarding extends StatelessWidget {
   }
 }
 
-class OnboardingFlow extends StatefulWidget {
+class OnboardingFlow extends ConsumerStatefulWidget {
   const OnboardingFlow({super.key});
 
   @override
   _OnboardingFlowState createState() => _OnboardingFlowState();
 }
 
-class _OnboardingFlowState extends State<OnboardingFlow> {
+class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   int currentStep = 0;
   final _formKey = GlobalKey<FormState>();
   
@@ -164,7 +171,12 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
               }
               return null;
             },
-            onSaved: (value) => fplurl = value,
+            onSaved: (value) {
+              fplurl = value;
+              setState(() {
+                ref.read(participantIdProvider.notifier).state =  double.tryParse(parseParticipantIdFromUrl(fplurl!) ?? "0");
+              });
+            }
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
@@ -236,6 +248,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
           onPressed: () {
             // Navigate to dashboard
             debugPrint('Navigating to dashboard');
+            context.go("/participantview");
           },
           child: const Text('Go to Dashboard'),
         ),

@@ -31,6 +31,9 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
     print("width: $width");
     print("height: $height");
 
+    final participantId = ref.watch(participantIdProvider);
+    participantIdController.text = participantId.toString();
+
     if (orientation == Orientation.landscape) {
       return const Center(
           child: const Text("Adjust your device into a portrait orientation",
@@ -51,8 +54,6 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
           Image.asset("assets/images/pexels-mike-1171084.webp"),
           SizedBox(
               width: width,
-              //height: (height/3) - 30,
-              // child: Card(
               child: Column(children: [
                 const SizedBox(height: 20),
                 LandingPageTitle(),
