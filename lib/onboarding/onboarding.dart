@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -48,7 +49,7 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
     },
     {
       'title': 'Get Started',
-      'description': 'You're all set to begin your journey to FPL mastery'
+      'description': "You're all set to begin your journey to FPL mastery",
     }
   ];
 
@@ -242,14 +243,14 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
       }
     } else {
       setState(() {
-        currentStep = math.min(currentStep + 1, steps.length - 1);
+        currentStep = min(currentStep + 1, steps.length - 1);
       });
     }
   }
 
   void _handleBack() {
     setState(() {
-      currentStep = math.max(currentStep - 1, 0);
+      currentStep = max(currentStep - 1, 0);
     });
   }
 

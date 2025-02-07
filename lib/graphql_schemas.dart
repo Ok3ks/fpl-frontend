@@ -59,12 +59,14 @@ class AllQueries {
         in
       }
       bestTransferIn{
+        entryId
         teamName
         playerIn
         playerOut
         pointsDelta
       }
       worstTransferIn{
+        entryId
         teamName
         playerIn
         playerOut

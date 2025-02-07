@@ -84,14 +84,7 @@ class TransferTile extends ConsumerWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${data[index]['teamName']}",
-                        style: TextStyle(
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .onSurface,
-                          fontSize: 10,
-                        ),
-                      ),
+                      ParticipantName(participantName: data[index]['teamName'], participantId: data[index]['entryId']),
                       playerName(
                         playerId: playerIds[1],
                         notTransfer: false,
@@ -123,5 +116,30 @@ class TransferTile extends ConsumerWidget {
                             ),
                           ))
                     ]))));
+  }
+}
+
+class ParticipantName extends StatelessWidget {
+
+  String participantName;
+  double participantId;
+
+  ParticipantName(
+      {super.key, required this.participantName, required this.participantId});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: Text("{$participantName}",
+        style: TextStyle(color: MaterialTheme
+            .darkMediumContrastScheme()
+            .onSurface, fontSize: 10,),),
+      onPressed: () async {
+        print(participantId);
+        // await pullParticipantStats(participantId);
+        // route.go('participant view', /id/)
+        // localhistory.cache('web page')
+      },
+    );
   }
 }
