@@ -151,7 +151,8 @@ class playerName extends ConsumerWidget {
         future: pullPlayerStats(playerId, gameweek ?? ref.watch(gameweekProvider)),
         builder: (context, snapshot) {
           var obj = snapshot.data;
-          if (isRow ?? false) {
+          if (snapshot.hasData) {
+          if (isRow ?? false ) {
           return
             SizedBox(
               child:
@@ -193,6 +194,9 @@ class playerName extends ConsumerWidget {
                               color: MaterialTheme.darkMediumContrastScheme().primary,
                               fontSize: 12)),
                   ]));
+          }}
+          else {
+            return Text("No Data"); //To-do
           }
         });
   }
@@ -214,18 +218,3 @@ String? parseLeagueCodeFromUrl(String url) {
   }
 }
 
-String? parseParticipantIdFromUrl(String url) {
-  try {
-    final uri = Uri.parse(url); // Parse the URL to handle it more reliably
-    final RegExp regExp = RegExp(r'entry/(\d+)/event/(\d+)');
-    final match = regExp.firstMatch(uri.path);
-
-    if (match != null && match.groupCount >= 1) {
-      return match.group(1); // group(1) will contain the participant code
-    }
-    return null; // Return null if no league code is found
-  } on FormatException {
-    // Handle invalid URL
-    return null;
-  }
-}
