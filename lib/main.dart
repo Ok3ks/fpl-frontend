@@ -66,6 +66,11 @@ final GoRouter router = GoRouter(
         builder: (BuildContext context, GoRouterState state) {
           return ProviderScope(child: ParticipantView());
         }),
+    GoRoute(
+    path: '/landing',
+    builder: (BuildContext context, GoRouterState state) {
+      return const MyApp();
+    }),
   ],
   routerNeglect: true,
 );
