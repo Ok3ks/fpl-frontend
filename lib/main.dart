@@ -49,7 +49,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return ProviderScope(child: Home());
+        return ProviderScope(child: Onboarding());
       },
     ),
     GoRoute(
@@ -67,11 +67,11 @@ final GoRouter router = GoRouter(
         builder: (BuildContext context, GoRouterState state) {
           return ProviderScope(child: ParticipantView());
         }),
-    GoRoute(
-    path: '/landing',
-    builder: (BuildContext context, GoRouterState state) {
-      return ProviderScope(child: Onboarding());
-    }),
+    // GoRoute(
+    // path: '/landing',
+    // builder: (BuildContext context, GoRouterState state) {
+    //   return ProviderScope(child: Onboarding());
+    // }),
   ],
   routerNeglect: true,
 );
