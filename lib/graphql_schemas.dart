@@ -135,7 +135,7 @@ class AllQueries {
     }
   }""";
 
-  static String getParticipantStats = """
+static String getParticipantStats = """
   query participantReport(\$entryId: Int!) {
     participantReport(entryId: \$entryId) {
       gw
@@ -143,11 +143,51 @@ class AllQueries {
       totalPoints
       players
       bench
-      captain
-      viceCaptain
+      captain {
+        playerId
+        info {
+          playerName
+          position
+        }
+        gameweekScore {
+          playerId
+          goalsScored
+          assists
+          cleanSheets
+          bonus
+        }
+      }
+      viceCaptain {
+        playerId
+        info {
+          playerName
+          position
+        }
+        gameweekScore {
+          playerId
+          goalsScored
+          assists
+          cleanSheets
+          bonus
+        }
+      }
+      highestScoringPlayer {
+        playerId
+        info {
+          playerName
+          position
+        }
+        gameweekScore {
+          playerId
+          goalsScored
+          assists
+          cleanSheets
+          bonus
+        }
+      }
       captainPoints
       viceCaptainPoints
-      rank
+      highestScoringPlayerPoints
       activeChip
       eventTransfersCost
       pointsOnBench
