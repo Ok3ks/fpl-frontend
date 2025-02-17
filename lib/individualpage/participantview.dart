@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
-import '../dataprovider.dart';
-import '../themes.dart';
-import '../utils.dart';
+import 'package:fpl/dataprovider.dart';
+import 'package:fpl/themes.dart';
+import 'package:fpl/individualpage/utils.dart';
+
 
 class ParticipantView extends ConsumerStatefulWidget {
   ParticipantView({
@@ -30,6 +31,9 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
     print("width: $width");
     print("height: $height");
 
+    final participantId = ref.watch(participantIdProvider);
+    participantIdController.text = participantId.toString();
+
     if (orientation == Orientation.landscape) {
       return const Center(
           child: const Text("Adjust your device into a portrait orientation",
@@ -50,8 +54,6 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
           Image.asset("assets/images/pexels-mike-1171084.webp"),
           SizedBox(
               width: width,
-              //height: (height/3) - 30,
-              // child: Card(
               child: Column(children: [
                 const SizedBox(height: 20),
                 LandingPageTitle(),
@@ -128,6 +130,13 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
                     },
                   )
                 ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  // crossAxisAlignment: CrossAxisAlignment.cen,
+                  children: [
+                    if (widget.participantId != null) participantIDWidget(),
+                  ],
+                ),
               ])
               // )
               ),
@@ -182,16 +191,80 @@ class ParticipantStats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String? captain = data.data?['participantReport']['captain'][0].toString();
-    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Text("$captain",
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-            decoration: TextDecoration.none,
-          ))
-    ]);
+    List<Object?> gameweek = data.data?['participantReport']['gw'];
+    List<Object?> totalPoints = data.data?['participantReport']['totalPoints'];
+    dynamic captain = data.data?['participantReport']['captain'];
+    dynamic viceCaptain = data.data?['participantReport']['viceCaptain'];
+    List<Object?> captainPoints = data.data?['participantReport']['captainPoints'];
+    List<Object?> viceCaptainPoints = data.data?['participantReport']['viceCaptainPoints'];
+    List<Object?> activeChip = data.data?['participantReport']['activeChip'];
+    dynamic highestScoringPlayer = data.data?['participantReport']['highestScoringPlayer'];
+    List<Object?> highestScoringPlayerPoints = data.data?['participantReport']['highestScoringPlayerPoints'];
+    List<List<Object?>> interest = [gameweek, totalPoints, captainPoints, viceCaptainPoints, highestScoringPlayer];
+
+    return DataTable(
+        columns: const [
+          DataColumn(label: Text("GW")),
+          DataColumn(label: Text("Points")),
+          DataColumn(label: Text("Captain")),
+          DataColumn(label: Text("Vice")),
+          // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
+          DataColumn(label: Text("Highest Scoring Player")),
+          //league average
+          ],
+        rows: List.generate( gameweek.length, (rowIndex) {
+          var vcPoint = double.tryParse(viceCaptainPoints[rowIndex].toString()) ?? 0;
+          var capPoint = double.tryParse(captainPoints[rowIndex].toString()) ?? 0;
+          var hpPoints = double.tryParse(highestScoringPlayerPoints[rowIndex].toString()) ?? 0;
+          return DataRow(
+              color:  WidgetStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
+                if (vcPoint * 2 > capPoint ) {
+                  return MaterialTheme.darkMediumContrastScheme().error.withOpacity(1.0);
+                }
+                return MaterialTheme.darkMediumContrastScheme().onSurface.withOpacity(1.0);// Use the default value.
+              }),
+              cells: List.generate(interest.length, (cellIndex) {
+            if (interest[cellIndex] == captainPoints) {
+              return DataCell(
+                    captainViceCaptainName(
+                        playerName: captain[rowIndex]['info']['playerName'],
+                        playerPoint: capPoint,
+                 ));
+            }
+            if (interest[cellIndex] == viceCaptainPoints) {
+              return DataCell(
+                  captainViceCaptainName(
+                      playerName: viceCaptain[rowIndex]['info']['playerName'],
+                      playerPoint: vcPoint
+              ));
+                }
+            if (interest[cellIndex] == highestScoringPlayer) {
+              return DataCell(
+                  captainViceCaptainName(
+                    playerName: highestScoringPlayer[rowIndex]['info']['playerName'],
+                    playerPoint: hpPoints,
+                  ));
+            }
+            if (interest[cellIndex] == totalPoints)  {
+              return DataCell(
+              Row(
+                children: [
+                  Text(interest[cellIndex][rowIndex].toString()),
+                  if (activeChip[rowIndex] != null)
+                    Text(activeChip[rowIndex].toString(),
+                    style: const TextStyle(fontSize: 10, fontStyle: FontStyle.italic),
+                    ),
+                ]
+              )
+              );
+            }
+            else {
+              return DataCell(
+                Text("${interest[cellIndex][rowIndex].toString()}"),
+              );
+            }
+          }));
+        }));
   }
 }
 
