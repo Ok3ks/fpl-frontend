@@ -166,10 +166,10 @@ class HighestPointsBenched extends ConsumerWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                   playerName(
-                      playerId:
-                          double.tryParse(highestBenchedPlayer ?? '0') ?? 0,
-                      // notTransfer: false,
-                  )],
+                    playerId: double.tryParse(highestBenchedPlayer ?? '0') ?? 0,
+                    // notTransfer: false,
+                  )
+                ],
               ),
               // ],
               // ),
