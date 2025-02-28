@@ -11,7 +11,7 @@ import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/navigation_services.dart';
-import 'package:fpl/home/home.dart';
+import 'package:fpl/home/login.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -72,6 +72,11 @@ final GoRouter router = GoRouter(
     // builder: (BuildContext context, GoRouterState state) {
     //   return ProviderScope(child: Onboarding());
     // }),
+    GoRoute(
+        path: '/login',
+        builder: (BuildContext context, GoRouterState state) {
+          return ProviderScope(child: LoginView());
+        }),
   ],
   routerNeglect: true,
 );
