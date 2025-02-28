@@ -6,7 +6,6 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/individualpage/utils.dart';
 
-
 class ParticipantView extends ConsumerStatefulWidget {
   ParticipantView({
     super.key,
