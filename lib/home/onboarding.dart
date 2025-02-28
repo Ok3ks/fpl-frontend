@@ -5,7 +5,7 @@ import 'package:fpl/dataprovider.dart';
 import 'dart:math';
 
 import 'package:go_router/go_router.dart';
-import 'package:fpl/types/types.dart';
+import 'package:fpl/types.dart';
 
 import '../individualpage/utils.dart';
 
