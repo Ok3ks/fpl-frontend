@@ -23,3 +23,15 @@ class accountWidget extends StatelessWidget {
         icon: Icon(Icons.account_circle_sharp, color: Colors.black));
   }
 }
+
+class verificationWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final user = FirebaseAuth.instance.currentUser;
+    return IconButton(
+        onPressed: () async {
+          await user?.sendEmailVerification();
+        },
+        icon: Icon(Icons.verified_user, color: Colors.black));
+  }
+}
