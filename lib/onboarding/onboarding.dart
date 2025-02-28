@@ -270,18 +270,37 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     }
   }
 
-  void _handleNext() {
+  void _handleNext() async {
     if (currentStep == 1) {
       if (_formKey.currentState?.validate() ?? false) {
         _formKey.currentState?.save();
-        setState(() {
-          currentStep++;
-        });
+
+        if (favoriteTeam != null &&
+            username != null &&
+            email != null &&
+            fplUrl != null &&
+            yearsPlaying != null) {
+          var currentUser = await User(
+                  favoriteTeam: favoriteTeam!,
+                  username: username!,
+                  email: email!,
+                  fplUrl: fplUrl!,
+                  yearsPlayingFpl: yearsPlaying!)
+              .registerUser();
+
+          if (currentUser != null) {
+            ref.read(currentUserProvider.notifier).state = User(
+              email: currentUser.user?.email ?? "default@gmail.com",
+            );
+            setState(() {
+              currentStep++;
+            });
+          }
+        }
       }
     } else {
       setState(() {
-        currentStep =
-            min(currentStep + 1, steps.length - 1);
+        currentStep = min(currentStep + 1, steps.length - 1);
       });
     }
   }
@@ -327,7 +346,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                       ),
                       child: Center(
                         child: stepIndex < currentStep
-                            ? const Icon(Icons.check, color: Colors.white, size: 16)
+                            ? const Icon(Icons.check,
+                                color: Colors.white, size: 16)
                             : Text(
                                 '${stepIndex + 1}',
                                 style: TextStyle(

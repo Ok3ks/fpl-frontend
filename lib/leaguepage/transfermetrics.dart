@@ -84,7 +84,9 @@ class TransferTile extends ConsumerWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ParticipantName(participantName: data[index]['teamName'], participantId: data[index]['entryId']),
+                      ParticipantName(
+                          participantName: data[index]['teamName'],
+                          participantId: data[index]['entryId']),
                       playerName(
                         playerId: playerIds[1],
                         notTransfer: false,
@@ -120,7 +122,6 @@ class TransferTile extends ConsumerWidget {
 }
 
 class ParticipantName extends StatelessWidget {
-
   String participantName;
   double participantId;
 
@@ -130,10 +131,13 @@ class ParticipantName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      child: Text("{$participantName}",
-        style: TextStyle(color: MaterialTheme
-            .darkMediumContrastScheme()
-            .onSurface, fontSize: 10,),),
+      child: Text(
+        "{$participantName}",
+        style: TextStyle(
+          color: MaterialTheme.darkMediumContrastScheme().onSurface,
+          fontSize: 10,
+        ),
+      ),
       onPressed: () async {
         print(participantId);
         // await pullParticipantStats(participantId);

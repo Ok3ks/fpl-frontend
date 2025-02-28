@@ -143,59 +143,67 @@ class playerName extends ConsumerWidget {
   bool? isRow;
   double? gameweek;
 
-  playerName({super.key, this.notTransfer, this.gameweek,  required this.playerId});
+  playerName(
+      {super.key, this.notTransfer, this.gameweek, required this.playerId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(
-        future: pullPlayerStats(playerId, gameweek ?? ref.watch(gameweekProvider)),
+        future:
+            pullPlayerStats(playerId, gameweek ?? ref.watch(gameweekProvider)),
         builder: (context, snapshot) {
           var obj = snapshot.data;
           if (snapshot.hasData) {
-          if (isRow ?? false ) {
-          return
-            SizedBox(
-              child:
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            SizedBox(
-                child: TextButton(
-              child: Text(
-                  "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
-                      fontSize: 10)),
-              onPressed: () {},
-            )),
-            if (notTransfer ?? true)
-              Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().primary,
-                      fontSize: 12)),
-          ]));}
-          else {
-            return
-              SizedBox(
-                  child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            if (isRow ?? false) {
+              return SizedBox(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                     SizedBox(
                         child: TextButton(
-                          child: Text(
-                              "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: MaterialTheme.darkMediumContrastScheme().onSurface,
-                                  fontSize: 10)),
-                          onPressed: () {},
-                        )),
-                    if (notTransfer ?? true)
-                      Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
+                      child: Text(
+                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme().primary,
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10)),
+                      onPressed: () {},
+                    )),
+                    if (notTransfer ?? true)
+                      Text(
+                          "${obj.data?['player']['gameweekScore']['totalPoints']}",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .primary,
                               fontSize: 12)),
                   ]));
-          }}
-          else {
+            } else {
+              return SizedBox(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                    SizedBox(
+                        child: TextButton(
+                      child: Text(
+                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10)),
+                      onPressed: () {},
+                    )),
+                    if (notTransfer ?? true)
+                      Text(
+                          "${obj.data?['player']['gameweekScore']['totalPoints']}",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .primary,
+                              fontSize: 12)),
+                  ]));
+            }
+          } else {
             return Text("No Data"); //To-do
           }
         });
@@ -217,4 +225,3 @@ String? parseLeagueCodeFromUrl(String url) {
     return null;
   }
 }
-

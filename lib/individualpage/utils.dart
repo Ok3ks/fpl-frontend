@@ -10,35 +10,32 @@ class captainViceCaptainName extends ConsumerWidget {
   String playerName;
   double playerPoint;
 
-  captainViceCaptainName({
-    super.key,
-    required this.playerName,
-    required this.playerPoint
-  });
+  captainViceCaptainName(
+      {super.key, required this.playerName, required this.playerPoint});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-      return SizedBox(
-          child: Row(mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                TextButton(
-                      child: Text(
-                              playerName.split(" ").last,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: MaterialTheme.darkMediumContrastScheme().onTertiaryContainer,
-                                  fontSize: 10)),
-                          onPressed: () {},
-                        ),
-             TextButton(
-              child:Text("${playerPoint}",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme().primary,
-                              fontSize: 12)),
-    onPressed: () {},),
+    return SizedBox(
+        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      TextButton(
+        child: Text(playerName.split(" ").last,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: MaterialTheme.darkMediumContrastScheme()
+                    .onTertiaryContainer,
+                fontSize: 10)),
+        onPressed: () {},
+      ),
+      TextButton(
+        child: Text("${playerPoint}",
+            style: TextStyle(
+                color: MaterialTheme.darkMediumContrastScheme().primary,
+                fontSize: 12)),
+        onPressed: () {},
+      ),
     ]));
-          }
   }
+}
 
 String? parseParticipantIdFromUrl(String url) {
   try {
@@ -73,17 +70,17 @@ class participantIDWidget extends ConsumerWidget {
             side: BorderSide(
                 width: 0,
                 color:
-                MaterialTheme.darkMediumContrastScheme().primaryContainer),
+                    MaterialTheme.darkMediumContrastScheme().primaryContainer),
             borderRadius: BorderRadius.circular(4)),
         child: SizedBox(
-          // width: 80,
-          // height: 50,
+            // width: 80,
+            // height: 50,
             child: Center(
-              child: Text("Participant ID : ${currParticipant.toString()}",
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
-                      fontSize: 15)),
-            )),
+          child: Text("Participant ID : ${currParticipant.toString()}",
+              style: TextStyle(
+                  color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                  fontSize: 15)),
+        )),
       ),
     );
   }
