@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/logging.dart';
 import "package:fpl/graphql_schemas.dart";
-import "package:fpl/types/types.dart";
+import "package:fpl/types.dart";
 import "dart:js_interop";
 
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
