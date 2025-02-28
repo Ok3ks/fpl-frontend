@@ -4,7 +4,7 @@ import "constants.dart";
 import "package:flutter/material.dart";
 
 final HttpLink _httpLink = HttpLink(
-  Constants.prodUrl,
+  Constants.devUrl,
   // defaultHeaders: {
   //   'AuthorizationSource': 'API',
   // },
@@ -59,12 +59,14 @@ class AllQueries {
         in
       }
       bestTransferIn{
+        entryId
         teamName
         playerIn
         playerOut
         pointsDelta
       }
       worstTransferIn{
+        entryId
         teamName
         playerIn
         playerOut

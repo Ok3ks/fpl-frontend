@@ -140,23 +140,24 @@ class leagueIDWidget extends ConsumerWidget {
 class playerName extends ConsumerWidget {
   double playerId;
   bool? notTransfer;
+  bool? isRow;
+  double? gameweek;
 
-  playerName({super.key, this.notTransfer, required this.playerId});
+  playerName({super.key, this.notTransfer, this.gameweek,  required this.playerId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final gameweek = ref.watch(gameweekProvider);
     return FutureBuilder(
-        future: pullPlayerStats(playerId, gameweek),
+        future: pullPlayerStats(playerId, gameweek ?? ref.watch(gameweekProvider)),
         builder: (context, snapshot) {
           var obj = snapshot.data;
-          return SizedBox(
-              // width: 60,
-              // height: 50,
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+          if (snapshot.hasData) {
+          if (isRow ?? false ) {
+          return
             SizedBox(
-                // width: 75,
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            SizedBox(
                 child: TextButton(
               child: Text(
                   "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
@@ -171,7 +172,32 @@ class playerName extends ConsumerWidget {
                   style: TextStyle(
                       color: MaterialTheme.darkMediumContrastScheme().primary,
                       fontSize: 12)),
-          ]));
+          ]));}
+          else {
+            return
+              SizedBox(
+                  child:
+                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    SizedBox(
+                        child: TextButton(
+                          child: Text(
+                              "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                                  fontSize: 10)),
+                          onPressed: () {},
+                        )),
+                    if (notTransfer ?? true)
+                      Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme().primary,
+                              fontSize: 12)),
+                  ]));
+          }}
+          else {
+            return Text("No Data"); //To-do
+          }
         });
   }
 }
@@ -192,18 +218,3 @@ String? parseLeagueCodeFromUrl(String url) {
   }
 }
 
-String? parseParticipantIdFromUrl(String url) {
-  try {
-    final uri = Uri.parse(url); // Parse the URL to handle it more reliably
-    final RegExp regExp = RegExp(r'entry/(\d+)/event/(\d+)');
-    final match = regExp.firstMatch(uri.path);
-
-    if (match != null && match.groupCount >= 1) {
-      return match.group(1); // group(1) will contain the participant code
-    }
-    return null; // Return null if no league code is found
-  } on FormatException {
-    // Handle invalid URL
-    return null;
-  }
-}
