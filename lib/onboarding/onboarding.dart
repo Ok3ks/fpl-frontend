@@ -19,7 +19,7 @@ class Onboarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'FPL Analytics Onboarding',
+      title: 'FPL League Analytics Tool',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -39,18 +39,20 @@ class OnboardingFlow extends ConsumerStatefulWidget {
 class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   int currentStep = 0;
   final _formKey = GlobalKey<FormState>();
-  
+
   // Form data
-  String? name;
+  String? username;
   String? email;
-  String? fplurl;
+  String? fplUrl;
   String? favoriteTeam;
   String? yearsPlaying;
 
   final List<Map<String, String>> steps = [
     {
-      'title': 'Welcome to FPL Analytics',
-      'description': 'Your personal assistant for dominating Fantasy Premier League'
+      'title': 'Welcome to DontSuckatFpl',
+      'description':
+          'DontSuckatFPL is a fpl analysis tool, particularly for your mini leagues.'
+              ' Find trends and patterns in your FPL Mini League'
     },
     {
       'title': 'Tell us about yourself',
@@ -95,9 +97,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 24),
-        _buildFeatureItem(Icons.analytics, 'Advanced player performance analytics'),
-        _buildFeatureItem(Icons.people, 'Team optimization suggestions'),
-        _buildFeatureItem(Icons.trending_up, 'Price change predictions'),
+        _buildFeatureItem(Icons.analytics, 'Personal Season Reflection'),
+        _buildFeatureItem(Icons.people,
+            'League Analysis, keep an eye on your mini league, all in one view'),
+        _buildFeatureItem(Icons.trending_up, 'Game View Dashboard'),
+        _buildFeatureItem(Icons.price_check_rounded, 'Price Changes'),
       ],
     );
   }
@@ -123,16 +127,16 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
         children: [
           TextFormField(
             decoration: const InputDecoration(
-              labelText: 'Name',
+              labelText: 'username',
               border: OutlineInputBorder(),
             ),
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your name';
+                return 'Please enter a username';
               }
               return null;
             },
-            onSaved: (value) => name = value,
+            onSaved: (value) => username = value,
           ),
           const SizedBox(height: 16),
           TextFormField(
