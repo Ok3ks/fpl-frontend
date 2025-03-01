@@ -48,14 +48,11 @@ class User {
   Future<UserCredential?> retrieveUser(String password) async {
     try {
       UserCredential loggedInFirebaseUser = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: email, password: password);
+          .signInWithEmailAndPassword(email: email, password: password);
       return loggedInFirebaseUser;
     } catch (e) {
       print(e);
       return null;
     }
-
-
   }
 }
