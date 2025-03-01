@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
@@ -8,7 +6,6 @@ import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:go_router/go_router.dart';
 
-import '../themes.dart';
 import '../types.dart';
 
 void main() {
@@ -61,6 +58,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       setState(() {
         _errorMessage = '';
       });
+      //TODO: Update currentUserProvider with desired State
       // ref.read(currentUserProvider.notifier).state = loggedInUser.
       print('Logged in successfully with email: $email');
       context.go('/participantview');
@@ -72,6 +70,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
     context.go('/onboarding');
   }
 
+  //TODO: Adjust Styling
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
@@ -131,6 +130,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         ),
       );
     } else {
+      //TODO: Persist Login Session
       return ParticipantView();
     }
   }
