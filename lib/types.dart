@@ -24,8 +24,7 @@ class User {
       UserCredential firebaseUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: email, password: password ?? "VRBWX6k3gZ");
-      print(email);
-      print(password);
+
       //TODO: add additional info to firebaseUser with fireStore
       print(firebaseUser);
       if (firebaseUser.user != null) {
@@ -33,7 +32,6 @@ class User {
       }
       return firebaseUser;
     } on FirebaseAuthException catch (e) {
-      print(e.code);
       if (e.code == 'weak-password') {
         error = 'The password provided is too weak';
         return null;
@@ -55,4 +53,8 @@ class User {
       return null;
     }
   }
+
+  //TODO: Add LogOut
+
+  //TODO: Add FireStore to save other user's information
 }

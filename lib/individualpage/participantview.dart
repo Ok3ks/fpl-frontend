@@ -6,6 +6,9 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/individualpage/utils.dart';
 
+//TODO: Add user avatar box to page, to indicate a user is loggedIn
+//TODO: Adjust Wording
+
 class ParticipantView extends ConsumerStatefulWidget {
   ParticipantView({
     super.key,
@@ -44,9 +47,6 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
     //Left becomes top
     else {
       return
-          // Container(
-          //   // color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          //   child:
           SingleChildScrollView(
               child: Column(children: [
         Stack(alignment: AlignmentDirectional.center, children: [
