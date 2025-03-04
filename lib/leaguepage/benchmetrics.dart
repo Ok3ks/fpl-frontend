@@ -104,14 +104,14 @@ class JammyPointsCard extends ConsumerWidget {
                           Icon(Icons.swipe_down_alt_sharp,
                               color: Colors.red[400], size: 12),
                           playerName(
-                              playerId: double.tryParse(
+                              playerId: int.parse(
                                       playersSubOut?[index].toString() ??
                                           "0") ??
                                   0),
                           Icon(Icons.swipe_up_alt_sharp,
                               color: Colors.green[400], size: 12),
                           playerName(
-                              playerId: double.tryParse(
+                              playerId: int.parse(
                                       playersSubIn?[index].toString() ?? "0") ??
                                   0),
                         ]);
@@ -169,7 +169,7 @@ class HighestPointsBenched extends ConsumerWidget {
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                   playerName(
                       playerId:
-                          double.tryParse(highestBenchedPlayer ?? '0') ?? 0),
+                          int.parse(highestBenchedPlayer ?? '0') ?? 0),
                 ],
               ),
               // ],
@@ -225,7 +225,7 @@ class PlayMeInstead extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(teams?.length ?? 0, (index) {
                         return playerName(
-                            playerId: double.tryParse(
+                            playerId: int.parse(
                                     teams?[index].toString() ?? "0") ??
                                 0);
                       })),

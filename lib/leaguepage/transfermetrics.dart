@@ -14,15 +14,10 @@ class TransferMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-    // List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
+    print(data.data?['leagueWeeklyReport']['bestTransferIn']);
 
     return SizedBox(
-        child:
-            // Card(
-            // color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            // elevation: 2,
-            // child:
-            Column(
+        child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -65,13 +60,12 @@ class TransferTile extends ConsumerWidget {
     final gameweek = ref.watch(gameweekProvider);
 
     //TODO: Find an elegant way
-    List<double> playerIds = List.from([
-      double.tryParse(data[index]['playerIn']) ?? 0,
-      double.tryParse(data[index]['playerOut']) ?? 0,
-    ]);
+    List<Object?> playerInIds = data[index]['playerIn'] ?? [];
+    List<Object?> playerOutIds = data[index]['playerOut'] ?? [];
+
     return SizedBox(
         width: 600,
-        height: 45,
+        // height: 45,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -92,10 +86,12 @@ class TransferTile extends ConsumerWidget {
                           fontSize: 10,
                         ),
                       ),
-                      playerName(
-                        playerId: playerIds[1],
-                        notTransfer: false,
-                      ),
+                      Column(
+                        children: List.generate(playerInIds.length, (i) {
+                          return playerName(
+                          playerId: int.parse(playerInIds[i].toString() ?? "0") ,
+                          notTransfer: false,
+                          );})),
                       const Icon(
                         Icons.arrow_circle_right_sharp,
                         color: Colors.red,
@@ -104,14 +100,16 @@ class TransferTile extends ConsumerWidget {
                         Icons.arrow_circle_left_sharp,
                         color: Colors.green,
                       ),
-                      playerName(
-                        playerId: playerIds[0],
-                        notTransfer: false,
-                      ),
+                      Column(
+                        children: List.generate(playerOutIds.length, (i) {
+                          return playerName(
+                            playerId: int.parse(playerOutIds[i].toString() ?? "0") ,
+                            notTransfer: false,
+                          );})),
                       SizedBox(
                           // clipBehavior: Clip.hardEdge,
-                          height: 40,
-                          width: 50,
+                          // height: 40,
+                          // width: 50,
                           child: Center(
                             child: Text(
                               "${data[index]['pointsDelta']}pts",

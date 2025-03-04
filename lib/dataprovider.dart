@@ -33,7 +33,7 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
   }
 }
 
-Future<dynamic> pullPlayerStats(double? playerId, double? gameweek) async {
+Future<dynamic> pullPlayerStats(int? playerId, double? gameweek) async {
   try {
     QueryResult results = await client.value.query(QueryOptions(
         document: gql(AllQueries.getPlayerStats), //
