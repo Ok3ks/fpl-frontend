@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/themes.dart';
 import '../utils.dart';
+import 'dart:html' as html;
 
 import '../dataprovider.dart';
 
@@ -78,13 +79,16 @@ class TransferTile extends ConsumerWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "${data[index]['teamName']}",
+                      TextButton(
+                        child: Text("${data[index]['teamName']}",
                         style: TextStyle(
                           color: MaterialTheme.darkMediumContrastScheme()
                               .onSurface,
                           fontSize: 10,
-                        ),
+                        )),
+                        onPressed: () {
+                          html.window.location.assign("https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                        },
                       ),
                       Column(
                         children: List.generate(playerInIds.length, (i) {
