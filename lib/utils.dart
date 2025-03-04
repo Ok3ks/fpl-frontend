@@ -138,7 +138,7 @@ class leagueIDWidget extends ConsumerWidget {
 }
 
 class playerName extends ConsumerWidget {
-  double playerId;
+  int playerId;
   bool? notTransfer;
 
   playerName({super.key, this.notTransfer, required this.playerId});
