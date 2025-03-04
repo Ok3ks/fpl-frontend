@@ -192,18 +192,10 @@ String? parseLeagueCodeFromUrl(String url) {
   }
 }
 
-String? parseParticipantIdFromUrl(String url) {
-  try {
-    final uri = Uri.parse(url); // Parse the URL to handle it more reliably
-    final RegExp regExp = RegExp(r'entry/(\d+)/event/(\d+)');
-    final match = regExp.firstMatch(uri.path);
-
-    if (match != null && match.groupCount >= 1) {
-      return match.group(1); // group(1) will contain the participant code
-    }
-    return null; // Return null if no league code is found
-  } on FormatException {
-    // Handle invalid URL
-    return null;
-  }
+String parseParticipantIdFromUrl(String url) {
+  final uri = Uri.parse(url); // Parse the URL to handle it more reliably
+  final RegExp regExp = RegExp(r'entry/(\d+)/event/(\d+)');
+  final match = regExp.firstMatch(uri.path);
+  return match?.group(1) ??
+      "No participant ID"; // group(1) will contain the participant code
 }
