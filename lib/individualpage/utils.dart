@@ -37,8 +37,8 @@ class captainViceCaptainName extends ConsumerWidget {
                               fontSize: 12)),
     onPressed: () {},),
     ]));
-          }
   }
+}
 
 String? parseParticipantIdFromUrl(String url) {
   try {
@@ -61,7 +61,7 @@ class participantIDWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currParticipant = ref.watch(participantIdProvider);
+    final currParticipant = ref.watch(currentUserProvider);
 
     //TODO:Limit based on current gameweek
     return SizedBox(
@@ -73,17 +73,17 @@ class participantIDWidget extends ConsumerWidget {
             side: BorderSide(
                 width: 0,
                 color:
-                MaterialTheme.darkMediumContrastScheme().primaryContainer),
+                    MaterialTheme.darkMediumContrastScheme().primaryContainer),
             borderRadius: BorderRadius.circular(4)),
         child: SizedBox(
-          // width: 80,
-          // height: 50,
+            // width: 80,
+            // height: 50,
             child: Center(
-              child: Text("Participant ID : ${currParticipant.toString()}",
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
-                      fontSize: 15)),
-            )),
+          child: Text("Participant ID : ${parseParticipantIdFromUrl(currParticipant?.fplUrl ?? "")}",
+              style: TextStyle(
+                  color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                  fontSize: 15)),
+        )),
       ),
     );
   }
