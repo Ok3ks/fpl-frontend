@@ -5,6 +5,9 @@ import 'package:fpl/logging.dart';
 import "package:fpl/graphql_schemas.dart";
 import "package:fpl/types.dart";
 import "dart:js_interop";
+import "package:cloud_firestore/cloud_firestore.dart";
+
+CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
 
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
   print(leagueId);
@@ -124,6 +127,7 @@ final gameweekProvider = StateProvider<double>((ref) {
 });
 
 final participantIdProvider = StateProvider<double?>((ref) {
+  // userDbRef.get("")
   return null; //Should start from current gameweek
 });
 

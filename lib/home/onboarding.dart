@@ -295,9 +295,13 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               .registerUser();
 
           if (currentUser != null) {
+            //update current user for remaining part of the application
             ref.read(currentUserProvider.notifier).state = User(
-              email: currentUser.user?.email ?? "default@gmail.com",
-            );
+                email: currentUser.user?.email ?? "default@gmail.com",
+                favoriteTeam: favoriteTeam,
+                fplUrl: fplUrl,
+                yearsPlayingFpl: yearsPlaying,
+                username: username);
             setState(() {
               currentStep++;
             });

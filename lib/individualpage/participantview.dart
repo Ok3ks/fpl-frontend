@@ -46,9 +46,8 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
     }
     //Left becomes top
     else {
-      return
-          SingleChildScrollView(
-              child: Column(children: [
+      return SingleChildScrollView(
+          child: Column(children: [
         Stack(alignment: AlignmentDirectional.center, children: [
           Image.asset("assets/images/pexels-mike-1171084.webp"),
           SizedBox(
