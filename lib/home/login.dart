@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/home/onboarding.dart';
 import 'package:fpl/individualpage/participantview.dart';
+import 'package:fpl/individualpage/utils.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:go_router/go_router.dart';
 
@@ -59,7 +60,14 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         _errorMessage = '';
       });
       //TODO: Update currentUserProvider with desired State
-      // ref.read(currentUserProvider.notifier).state = loggedInUser.
+      final snapshot = await userDbRef.where('email', isEqualTo: email).get();
+      final userData = snapshot.docs.first.data() as Map<String, dynamic>;
+      ref.read(currentUserProvider.notifier).state = User(
+                    email: userData['email'],
+                    favoriteTeam: userData['favoriteTeam'],
+                    fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
+                    yearsPlayingFpl: userData['yearsPlayingFpl'],
+                    username: userData['username']);
       print('Logged in successfully with email: $email');
       context.go('/participantview');
     }

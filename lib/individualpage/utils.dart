@@ -58,7 +58,7 @@ class participantIDWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currParticipant = ref.watch(participantIdProvider);
+    final currParticipant = ref.watch(currentUserProvider);
 
     //TODO:Limit based on current gameweek
     return SizedBox(
@@ -76,7 +76,7 @@ class participantIDWidget extends ConsumerWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("Participant ID : ${currParticipant.toString()}",
+          child: Text("Participant ID : ${parseParticipantIdFromUrl(currParticipant?.fplUrl ?? "")}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),
