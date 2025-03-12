@@ -33,8 +33,8 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
     print("width: $width");
     print("height: $height");
 
-    final participantId = ref.watch(participantIdProvider);
-    participantIdController.text = participantId.toString();
+    final currParticipant = ref.watch(currentUserProvider);
+    participantIdController.text = currParticipant?.fplUrl ?? "null";
 
     if (orientation == Orientation.landscape) {
       return const Center(
@@ -116,8 +116,7 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
                     onPressed: () async {
                       widget.participantId = parseParticipantIdFromUrl(
                           participantIdController.text);
-                      ref.read(participantIdProvider.notifier).state =
-                          double.tryParse(widget.participantId ?? "0");
+
                       if (participantIdController.text.length > 1) {
                         //TODO More data validation for league code, Also be able to parse link
                         setState(() {
@@ -161,12 +160,12 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
 
   @override
   Widget build(BuildContext context) {
-    final participantId = ref.watch(participantIdProvider);
+    final currParticipant = ref.watch(currentUserProvider);
 
-    if (participantId != null) {
+    if (currParticipant?.fplUrl != null) {
       return Column(children: [
         FutureBuilder(
-            future: pullParticipantStats(participantId),
+            future: pullParticipantStats(double.tryParse(currParticipant?.fplUrl ?? "")),
             builder: (context, snapshot) {
               var obj = snapshot.data;
               if (snapshot.hasData) {

@@ -177,14 +177,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                 }
                 return null;
               },
-              onSaved: (value) {
-                fplUrl = value;
-                setState(() {
-                  ref.read(participantIdProvider.notifier).state =
-                      double.tryParse(
-                          parseParticipantIdFromUrl(fplUrl!) ?? "0");
-                });
-              }),
+              ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
