@@ -33,8 +33,10 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
     print("width: $width");
     print("height: $height");
 
-    final currParticipant = ref.watch(currentUserProvider);
-    participantIdController.text = currParticipant?.fplUrl ?? "null";
+    var currParticipant = ref.watch(currentUserProvider);
+
+    participantIdController.text = currParticipant?.fplUrl ?? "Provide FPL ID";
+
 
     if (orientation == Orientation.landscape) {
       return const Center(
@@ -114,16 +116,7 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
                         color:
                             MaterialTheme.darkMediumContrastScheme().primary),
                     onPressed: () async {
-                      widget.participantId = parseParticipantIdFromUrl(
-                          participantIdController.text);
-
-                      if (participantIdController.text.length > 1) {
-                        //TODO More data validation for league code, Also be able to parse link
-                        setState(() {
-                          widget.participantId = parseParticipantIdFromUrl(
-                              participantIdController.text);
-                        });
-                      }
+                      widget.participantId = participantIdController.text;
                     },
                   )
                 ]),
@@ -192,12 +185,22 @@ class ParticipantStats extends StatelessWidget {
     List<Object?> totalPoints = data.data?['participantReport']['totalPoints'];
     dynamic captain = data.data?['participantReport']['captain'];
     dynamic viceCaptain = data.data?['participantReport']['viceCaptain'];
-    List<Object?> captainPoints = data.data?['participantReport']['captainPoints'];
-    List<Object?> viceCaptainPoints = data.data?['participantReport']['viceCaptainPoints'];
+    List<Object?> captainPoints =
+        data.data?['participantReport']['captainPoints'];
+    List<Object?> viceCaptainPoints =
+        data.data?['participantReport']['viceCaptainPoints'];
     List<Object?> activeChip = data.data?['participantReport']['activeChip'];
-    dynamic highestScoringPlayer = data.data?['participantReport']['highestScoringPlayer'];
-    List<Object?> highestScoringPlayerPoints = data.data?['participantReport']['highestScoringPlayerPoints'];
-    List<List<Object?>> interest = [gameweek, totalPoints, captainPoints, viceCaptainPoints, highestScoringPlayer];
+    dynamic highestScoringPlayer =
+        data.data?['participantReport']['highestScoringPlayer'];
+    List<Object?> highestScoringPlayerPoints =
+        data.data?['participantReport']['highestScoringPlayerPoints'];
+    List<List<Object?>> interest = [
+      gameweek,
+      totalPoints,
+      captainPoints,
+      viceCaptainPoints,
+      highestScoringPlayer
+    ];
 
     return DataTable(
         columns: const [
@@ -208,59 +211,62 @@ class ParticipantStats extends StatelessWidget {
           // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
           DataColumn(label: Text("Highest Scoring Player")),
           //league average
-          ],
-        rows: List.generate( gameweek.length, (rowIndex) {
-          var vcPoint = double.tryParse(viceCaptainPoints[rowIndex].toString()) ?? 0;
-          var capPoint = double.tryParse(captainPoints[rowIndex].toString()) ?? 0;
-          var hpPoints = double.tryParse(highestScoringPlayerPoints[rowIndex].toString()) ?? 0;
+        ],
+        rows: List.generate(gameweek.length, (rowIndex) {
+          var vcPoint =
+              double.tryParse(viceCaptainPoints[rowIndex].toString()) ?? 0;
+          var capPoint =
+              double.tryParse(captainPoints[rowIndex].toString()) ?? 0;
+          var hpPoints = double.tryParse(
+                  highestScoringPlayerPoints[rowIndex].toString()) ??
+              0;
           return DataRow(
-              color:  WidgetStateProperty.resolveWith<Color?>((Set<MaterialState> states) {
-                if (vcPoint * 2 > capPoint ) {
-                  return MaterialTheme.darkMediumContrastScheme().error.withOpacity(1.0);
+              color: WidgetStateProperty.resolveWith<Color?>(
+                  (Set<MaterialState> states) {
+                if (vcPoint * 2 > capPoint) {
+                  return MaterialTheme.darkMediumContrastScheme()
+                      .error
+                      .withOpacity(1.0);
                 }
-                return MaterialTheme.darkMediumContrastScheme().onSurface.withOpacity(1.0);// Use the default value.
+                return MaterialTheme.darkMediumContrastScheme()
+                    .onSurface
+                    .withOpacity(1.0); // Use the default value.
               }),
               cells: List.generate(interest.length, (cellIndex) {
-            if (interest[cellIndex] == captainPoints) {
-              return DataCell(
-                    captainViceCaptainName(
-                        playerName: captain[rowIndex]['info']['playerName'],
-                        playerPoint: capPoint,
-                 ));
-            }
-            if (interest[cellIndex] == viceCaptainPoints) {
-              return DataCell(
-                  captainViceCaptainName(
-                      playerName: viceCaptain[rowIndex]['info']['playerName'],
-                      playerPoint: vcPoint
-              ));
+                if (interest[cellIndex] == captainPoints) {
+                  return DataCell(captainViceCaptainName(
+                    playerName: captain[rowIndex]['info']['playerName'],
+                    playerPoint: capPoint,
+                  ));
                 }
-            if (interest[cellIndex] == highestScoringPlayer) {
-              return DataCell(
-                  captainViceCaptainName(
-                    playerName: highestScoringPlayer[rowIndex]['info']['playerName'],
+                if (interest[cellIndex] == viceCaptainPoints) {
+                  return DataCell(captainViceCaptainName(
+                      playerName: viceCaptain[rowIndex]['info']['playerName'],
+                      playerPoint: vcPoint));
+                }
+                if (interest[cellIndex] == highestScoringPlayer) {
+                  return DataCell(captainViceCaptainName(
+                    playerName: highestScoringPlayer[rowIndex]['info']
+                        ['playerName'],
                     playerPoint: hpPoints,
                   ));
-            }
-            if (interest[cellIndex] == totalPoints)  {
-              return DataCell(
-              Row(
-                children: [
-                  Text(interest[cellIndex][rowIndex].toString()),
-                  if (activeChip[rowIndex] != null)
-                    Text(activeChip[rowIndex].toString(),
-                    style: const TextStyle(fontSize: 10, fontStyle: FontStyle.italic),
-                    ),
-                ]
-              )
-              );
-            }
-            else {
-              return DataCell(
-                Text("${interest[cellIndex][rowIndex].toString()}"),
-              );
-            }
-          }));
+                }
+                if (interest[cellIndex] == totalPoints) {
+                  return DataCell(Row(children: [
+                    Text(interest[cellIndex][rowIndex].toString()),
+                    if (activeChip[rowIndex] != null)
+                      Text(
+                        activeChip[rowIndex].toString(),
+                        style: const TextStyle(
+                            fontSize: 10, fontStyle: FontStyle.italic),
+                      ),
+                  ]));
+                } else {
+                  return DataCell(
+                    Text("${interest[cellIndex][rowIndex].toString()}"),
+                  );
+                }
+              }));
         }));
   }
 }
