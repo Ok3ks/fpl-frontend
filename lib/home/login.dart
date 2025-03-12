@@ -69,7 +69,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                     yearsPlayingFpl: userData['yearsPlayingFpl'],
                     username: userData['username']);
       print('Logged in successfully with email: $email');
-      context.go('/participantview');
+      context.go('/home');
     }
   }
 
