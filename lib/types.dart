@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import "package:fpl/dataprovider.dart";
 
 class User {
-  final String email;
+  String email;
   String? username;
   String? favoriteTeam;
   String? fplUrl;

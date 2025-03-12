@@ -139,7 +139,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       );
     } else {
       //TODO: Persist Login Session
-      return ParticipantView();
+      return  Home();
     }
   }
 }
