@@ -59,7 +59,14 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         _errorMessage = '';
       });
       //TODO: Update currentUserProvider with desired State
-      // ref.read(currentUserProvider.notifier).state = loggedInUser.
+      final snapshot = await userDbRef.where('email', isEqualTo: email).get();
+      print(snapshot.docs);
+      // ref.read(currentUserProvider.notifier).state = User(
+      //               email: email,
+      //               favoriteTeam: snapshot.value
+      //               fplUrl: fplUrl,
+      //               yearsPlayingFpl: yearsPlaying,
+      //               username: username.
       print('Logged in successfully with email: $email');
       context.go('/participantview');
     }

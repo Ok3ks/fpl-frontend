@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import "package:fpl/dataprovider.dart";
 
 class User {
   final String email;
@@ -24,9 +26,16 @@ class User {
       UserCredential firebaseUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: email, password: password ?? "VRBWX6k3gZ");
-
       //TODO: add additional info to firebaseUser with fireStore
-      print(firebaseUser);
+      DocumentReference userId = await userDbRef.add({
+        "email": email,
+        "status": "onboarding",
+        "fplUrl": fplUrl,
+        "yearsPlayingFpl": yearsPlayingFpl,
+        "location": location,
+        "favoriteTeam": favoriteTeam,
+        // "username":username,
+      });
       if (firebaseUser.user != null) {
         await firebaseUser.user?.sendEmailVerification();
       }
