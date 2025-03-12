@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/home/onboarding.dart';
 import 'package:fpl/themes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +11,7 @@ import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/navigation_services.dart';
-import 'package:fpl/home/home.dart';
+import 'package:fpl/home/login.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -25,8 +26,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  dynamic res = await pullGameViewStats(true, true, false);
-  print(res);
+  // dynamic res = await pullGameViewStats(true, true, false);
+  // print(res);
 
   await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -48,7 +49,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return ProviderScope(child: Home());
+        return ProviderScope(child: LoginView());
       },
     ),
     GoRoute(
@@ -65,6 +66,16 @@ final GoRouter router = GoRouter(
         path: '/participantview',
         builder: (BuildContext context, GoRouterState state) {
           return ProviderScope(child: ParticipantView());
+        }),
+    GoRoute(
+        path: '/login',
+        builder: (BuildContext context, GoRouterState state) {
+          return ProviderScope(child: LoginView());
+        }),
+    GoRoute(
+        path: '/onboarding',
+        builder: (BuildContext context, GoRouterState state) {
+          return const ProviderScope(child: Onboarding());
         }),
   ],
   routerNeglect: true,

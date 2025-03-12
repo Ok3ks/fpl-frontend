@@ -1,8 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/logging.dart';
 import "package:fpl/graphql_schemas.dart";
+import "package:fpl/types.dart";
 import "dart:js_interop";
+import "package:cloud_firestore/cloud_firestore.dart";
+
+CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
 
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
   print(leagueId);
@@ -121,6 +126,6 @@ final gameweekProvider = StateProvider<double>((ref) {
   return 28; //Should start from current gameweek
 });
 
-final participantIdProvider = StateProvider<double?>((ref) {
-  return null; //Should start from current gameweek
+final currentUserProvider = StateProvider<User?>((ref) {
+  return null;
 });
