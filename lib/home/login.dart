@@ -60,6 +60,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       setState(() {
         _errorMessage = '';
       });
+
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
@@ -70,7 +71,8 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                     yearsPlayingFpl: userData['yearsPlayingFpl'],
                     username: userData['username']);
       print('Logged in successfully with email: $email');
-      context.go('/home');
+      print(userData['favoriteTeam']);
+      Navigator.pushNamed(context, "/home");
     }
   }
 

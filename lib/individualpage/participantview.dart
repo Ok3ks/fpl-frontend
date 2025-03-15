@@ -9,33 +9,15 @@ import 'package:fpl/individualpage/utils.dart';
 //TODO: Add user avatar box to page, to indicate a user is loggedIn
 //TODO: Adjust Wording
 
-class ParticipantView extends ConsumerStatefulWidget {
+class ParticipantView extends StatelessWidget {
+
   ParticipantView({
     super.key,
   });
-
-  String? participantId;
-
-  @override
-  ConsumerState<ParticipantView> createState() => ParticipantViewState();
-}
-
-class ParticipantViewState extends ConsumerState<ParticipantView> {
   @override
   Widget build(BuildContext context) {
-    TextEditingController participantIdController = TextEditingController();
 
     Orientation orientation = MediaQuery.of(context).orientation;
-    final Size size = MediaQuery.sizeOf(context);
-    final double width = size.width;
-    final double height = size.height;
-
-    print("width: $width");
-    print("height: $height");
-
-    var currParticipant = ref.watch(currentUserProvider);
-
-    participantIdController.text = currParticipant?.fplUrl ?? "Provide FPL ID";
 
 
     if (orientation == Orientation.landscape) {
@@ -48,91 +30,7 @@ class ParticipantViewState extends ConsumerState<ParticipantView> {
     }
     //Left becomes top
     else {
-      return SingleChildScrollView(
-          child: Column(children: [
-        Stack(alignment: AlignmentDirectional.center, children: [
-          Image.asset("assets/images/pexels-mike-1171084.webp"),
-          SizedBox(
-              width: width,
-              child: Column(children: [
-                const SizedBox(height: 20),
-                LandingPageTitle(),
-                const SizedBox(height: 20),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  SizedBox(
-                      width: 250,
-                      height: 50,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                width: 1.5,
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primary),
-                            borderRadius: BorderRadius.circular(12)),
-                        color: Color.fromRGBO(100, 100, 100, 0),
-                        child: TextField(
-                          controller: participantIdController,
-                          style: const TextStyle(
-                              fontSize: 10, color: Colors.white),
-                          cursorColor:
-                              MaterialTheme.darkMediumContrastScheme().primary,
-                          // textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                              hintText: "Provide your FPL team URL",
-                              hintStyle: const TextStyle(
-                                  color: Color.fromRGBO(255, 255, 255, 80),
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w100),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MaterialTheme.darkMediumContrastScheme()
-                                          .primaryContainer)),
-                              disabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          MaterialTheme.darkMediumContrastScheme()
-                                              .primaryContainer)),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          MaterialTheme.darkMediumContrastScheme()
-                                              .primaryContainer)),
-                              border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          MaterialTheme.darkMediumContrastScheme()
-                                              .primaryContainer)),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              fillColor: Colors.white,
-                              iconColor: Colors.white),
-                          cursorHeight: 20,
-                          autocorrect: false,
-                        ),
-                      )),
-                  // ),
-                  IconButton(
-                    icon: Icon(Icons.keyboard_return,
-                        color:
-                            MaterialTheme.darkMediumContrastScheme().primary),
-                    onPressed: () async {
-                      widget.participantId = participantIdController.text;
-                    },
-                  )
-                ]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.cen,
-                  children: [
-                    if (widget.participantId != null) participantIDWidget(),
-                  ],
-                ),
-              ])
-              // )
-              ),
-        ]),
-        ParticipantStatsView()
-      ]));
+      return ParticipantStatsView();
       // );
     }
   }
@@ -156,7 +54,25 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
     final currParticipant = ref.watch(currentUserProvider);
 
     if (currParticipant?.fplUrl != null) {
-      return Column(children: [
+      return SingleChildScrollView(
+          child:
+          Column(children: [
+        Stack(alignment: AlignmentDirectional.center, children: [
+          Image.asset("assets/images/pexels-mike-1171084.webp"),
+          SizedBox(
+              // width: width,
+              child: Column(children: [
+                const SizedBox(height: 20),
+                LandingPageTitle(),
+                const SizedBox(height: 20),
+                participantIDWidget(currParticipant: currParticipant)
+              ])
+          ),
+        ]),
+
+    SizedBox(
+    // width: width,
+    child:
         FutureBuilder(
             future: pullParticipantStats(double.tryParse(currParticipant?.fplUrl ?? "")),
             builder: (context, snapshot) {
@@ -169,7 +85,7 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
                 return const Text("No Data");
               }
             })
-      ]);
+    )]));
     }
     return LandingPage();
   }

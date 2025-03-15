@@ -126,6 +126,6 @@ final gameweekProvider = StateProvider<double>((ref) {
   return 28; //Should start from current gameweek
 });
 
-final currentUserProvider = StateProvider<User?>((ref) {
+var currentUserProvider = StateProvider<User?>((ref) {
   return null;
 });

@@ -6,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 
+import '../types.dart';
+
 class captainViceCaptainName extends ConsumerWidget {
   String playerName;
   double playerPoint;
@@ -56,12 +58,13 @@ String? parseParticipantIdFromUrl(String url) {
   }
 }
 
-class participantIDWidget extends ConsumerWidget {
-  participantIDWidget({super.key});
+class participantIDWidget extends StatelessWidget {
+  User? currParticipant;
+  participantIDWidget({super.key, required this.currParticipant});
+
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final currParticipant = ref.watch(currentUserProvider);
+  Widget build(BuildContext context) {
 
     //TODO:Limit based on current gameweek
     return SizedBox(
@@ -79,7 +82,7 @@ class participantIDWidget extends ConsumerWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("Participant ID : ${parseParticipantIdFromUrl(currParticipant?.fplUrl ?? "")}",
+          child: Text("Participant ID : ${currParticipant?.fplUrl}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),
