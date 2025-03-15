@@ -19,9 +19,9 @@ class TransferMetrics extends StatelessWidget {
 
     return SizedBox(
         child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
           const Text("Transfer Impact",
               style: TextStyle(
                 color: Colors.black,
@@ -81,21 +81,23 @@ class TransferTile extends ConsumerWidget {
                     children: [
                       TextButton(
                         child: Text("${data[index]['teamName']}",
-                        style: TextStyle(
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .onSurface,
-                          fontSize: 10,
-                        )),
+                            style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10,
+                            )),
                         onPressed: () {
-                          html.window.location.assign("https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                          html.window.location.assign(
+                              "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
                         },
                       ),
                       Column(
-                        children: List.generate(playerInIds.length, (i) {
-                          return playerName(
-                          playerId: int.parse(playerInIds[i].toString() ?? "0") ,
+                          children: List.generate(playerInIds.length, (i) {
+                        return playerName(
+                          playerId: int.parse(playerInIds[i].toString() ?? "0"),
                           notTransfer: false,
-                          );})),
+                        );
+                      })),
                       const Icon(
                         Icons.arrow_circle_right_sharp,
                         color: Colors.red,
@@ -105,25 +107,27 @@ class TransferTile extends ConsumerWidget {
                         color: Colors.green,
                       ),
                       Column(
-                        children: List.generate(playerOutIds.length, (i) {
-                          return playerName(
-                            playerId: int.parse(playerOutIds[i].toString() ?? "0") ,
-                            notTransfer: false,
-                          );})),
+                          children: List.generate(playerOutIds.length, (i) {
+                        return playerName(
+                          playerId:
+                              int.parse(playerOutIds[i].toString() ?? "0"),
+                          notTransfer: false,
+                        );
+                      })),
                       SizedBox(
                           // clipBehavior: Clip.hardEdge,
                           // height: 40,
                           // width: 50,
                           child: Center(
-                            child: Text(
-                              "${data[index]['pointsDelta']}pts",
-                              style: TextStyle(
-                                  color: data[index]['pointsDelta'] > 0
-                                      ? Colors.green
-                                      : Colors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ))
+                        child: Text(
+                          "${data[index]['pointsDelta']}pts",
+                          style: TextStyle(
+                              color: data[index]['pointsDelta'] > 0
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ))
                     ]))));
   }
 }

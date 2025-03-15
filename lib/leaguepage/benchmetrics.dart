@@ -168,8 +168,7 @@ class HighestPointsBenched extends ConsumerWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                   playerName(
-                      playerId:
-                          int.parse(highestBenchedPlayer ?? '0') ?? 0),
+                      playerId: int.parse(highestBenchedPlayer ?? '0') ?? 0),
                 ],
               ),
               // ],
@@ -225,9 +224,9 @@ class PlayMeInstead extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(teams?.length ?? 0, (index) {
                         return playerName(
-                            playerId: int.parse(
-                                    teams?[index].toString() ?? "0") ??
-                                0);
+                            playerId:
+                                int.parse(teams?[index].toString() ?? "0") ??
+                                    0);
                       })),
                   // playerPoints(index: index, benchData:teams);}
                   // )),

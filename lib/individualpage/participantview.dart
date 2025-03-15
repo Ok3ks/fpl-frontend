@@ -10,15 +10,12 @@ import 'package:fpl/individualpage/utils.dart';
 //TODO: Adjust Wording
 
 class ParticipantView extends StatelessWidget {
-
   ParticipantView({
     super.key,
   });
   @override
   Widget build(BuildContext context) {
-
     Orientation orientation = MediaQuery.of(context).orientation;
-
 
     if (orientation == Orientation.landscape) {
       return const Center(
@@ -55,37 +52,35 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
 
     if (currParticipant?.fplUrl != null) {
       return SingleChildScrollView(
-          child:
-          Column(children: [
+          child: Column(children: [
         Stack(alignment: AlignmentDirectional.center, children: [
           Image.asset("assets/images/pexels-mike-1171084.webp"),
           SizedBox(
               // width: width,
               child: Column(children: [
-                const SizedBox(height: 20),
-                LandingPageTitle(),
-                const SizedBox(height: 20),
-                participantIDWidget(currParticipant: currParticipant)
-              ])
-          ),
+            const SizedBox(height: 20),
+            LandingPageTitle(),
+            const SizedBox(height: 20),
+            participantIDWidget(currParticipant: currParticipant)
+          ])),
         ]),
-
-    SizedBox(
-    // width: width,
-    child:
-        FutureBuilder(
-            future: pullParticipantStats(double.tryParse(currParticipant?.fplUrl ?? "")),
-            builder: (context, snapshot) {
-              var obj = snapshot.data;
-              if (snapshot.hasData) {
-                return ParticipantStats(data: obj);
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else {
-                return const Text("No Data");
-              }
-            })
-    )]));
+        SizedBox(
+            // width: width,
+            child: FutureBuilder(
+                future: pullParticipantStats(
+                    double.tryParse(currParticipant?.fplUrl ?? "")),
+                builder: (context, snapshot) {
+                  var obj = snapshot.data;
+                  if (snapshot.hasData) {
+                    return ParticipantStats(data: obj);
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else {
+                    return const Text("No Data");
+                  }
+                }))
+      ]));
     }
     return LandingPage();
   }
@@ -140,36 +135,33 @@ class ParticipantStats extends StatelessWidget {
           return DataRow(
               color: WidgetStateProperty.resolveWith<Color?>(
                   (Set<MaterialState> states) {
-                    if (vcPoint * 2 > capPoint) {
-                      return MaterialTheme
-                          .lightHighContrastScheme()
-                          .surfaceContainerLowest
-                          .withOpacity(1.0);
-                    }
-                  else if (flag) {
-                      return MaterialTheme
-                          .lightHighContrastScheme()
-                          .errorContainer
-                          .withOpacity(1.0);}
-                  else {
-    return MaterialTheme
-        .lightHighContrastScheme()
-        .surfaceContainerHighest
-        .withOpacity(1.0); // Use the default value.
-    }}),
+                if (vcPoint * 2 > capPoint) {
+                  return MaterialTheme.lightHighContrastScheme()
+                      .surfaceContainerLowest
+                      .withOpacity(1.0);
+                } else if (flag) {
+                  return MaterialTheme.lightHighContrastScheme()
+                      .errorContainer
+                      .withOpacity(1.0);
+                } else {
+                  return MaterialTheme.lightHighContrastScheme()
+                      .surfaceContainerHighest
+                      .withOpacity(1.0); // Use the default value.
+                }
+              }),
               cells: List.generate(interest.length, (cellIndex) {
                 if (interest[cellIndex] == captainPoints) {
                   return DataCell(captainViceCaptainName(
                     playerName: captain[rowIndex]['info']['playerName'],
                     playerPoint: capPoint,
-                    flag:flag,
+                    flag: flag,
                   ));
                 }
                 if (interest[cellIndex] == viceCaptainPoints) {
                   return DataCell(captainViceCaptainName(
-                      playerName: viceCaptain[rowIndex]['info']['playerName'],
-                      playerPoint: vcPoint,
-                      flag:flag,
+                    playerName: viceCaptain[rowIndex]['info']['playerName'],
+                    playerPoint: vcPoint,
+                    flag: flag,
                   ));
                 }
                 if (interest[cellIndex] == highestScoringPlayer) {
@@ -177,29 +169,30 @@ class ParticipantStats extends StatelessWidget {
                     playerName: highestScoringPlayer[rowIndex]['info']
                         ['playerName'],
                     playerPoint: hpPoints,
-                    flag:flag,
-
+                    flag: flag,
                   ));
                 }
                 if (interest[cellIndex] == totalPoints) {
                   return DataCell(Row(children: [
                     Text(interest[cellIndex][rowIndex].toString(),
-                        style:  TextStyle(
+                        style: TextStyle(
                             fontSize: 10,
                             color: flag ? Colors.white : Colors.black)),
                     if (activeChip[rowIndex] != null)
                       Text(
                         activeChip[rowIndex].toString(),
-                        style:  TextStyle(
-                            fontSize: 10, fontStyle: FontStyle.italic,
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontStyle: FontStyle.italic,
                             color: flag ? Colors.white : Colors.black),
                       ),
                   ]));
                 } else {
-                  return DataCell(
-                    Text("${interest[cellIndex][rowIndex].toString()}",
-                      style:  TextStyle(
-                          fontSize: 10, color: flag ? Colors.white : Colors.black,
+                  return DataCell(Text(
+                    "${interest[cellIndex][rowIndex].toString()}",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: flag ? Colors.white : Colors.black,
                     ),
                   ));
                 }
