@@ -26,7 +26,7 @@ class User {
       UserCredential firebaseUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: email, password: password ?? "VRBWX6k3gZ");
-      //TODO: add additional info to firebaseUser with fireStore
+      //TODO: Opportunity to add more information as drawn from FPL, into Firestore
       DocumentReference userId = await userDbRef.add({
         "email": email,
         "status": "onboarding",

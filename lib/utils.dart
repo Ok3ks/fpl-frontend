@@ -137,6 +137,39 @@ class leagueIDWidget extends ConsumerWidget {
   }
 }
 
+class participantIdWidget extends ConsumerWidget {
+  participantIdWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currUser = ref.watch(currentUserProvider);
+
+    //TODO:Limit based on current gameweek
+    return SizedBox(
+      height: 30,
+      width: 180,
+      child: Card(
+        color: Color.fromRGBO(100, 100, 100, 0),
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                width: 0,
+                color:
+                MaterialTheme.darkMediumContrastScheme().primaryContainer),
+            borderRadius: BorderRadius.circular(4)),
+        child: SizedBox(
+          // width: 80,
+          // height: 50,
+            child: Center(
+              child: Text("Current User: ${currUser?.fplUrl.toString()}",
+                  style: TextStyle(
+                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                      fontSize: 15)),
+            )),
+      ),
+    );
+  }
+}
+
 class playerName extends ConsumerWidget {
   int playerId;
   bool? notTransfer;
