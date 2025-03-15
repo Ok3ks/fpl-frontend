@@ -113,6 +113,7 @@ class ParticipantStats extends StatelessWidget {
       highestScoringPlayer
     ];
 
+
     return DataTable(
         columns: const [
           DataColumn(label: Text("GW")),
@@ -132,12 +133,16 @@ class ParticipantStats extends StatelessWidget {
                   highestScoringPlayerPoints[rowIndex].toString()) ??
               0;
           bool flag = hpPoints > vcPoint * 2 && hpPoints > capPoint + 6;
+          bool miniFlag = vcPoint * 2 > capPoint;
           return DataRow(
               color: WidgetStateProperty.resolveWith<Color?>(
                   (Set<MaterialState> states) {
-                if (vcPoint * 2 > capPoint) {
+                if (miniFlag) {
                   return MaterialTheme.lightHighContrastScheme()
                       .surfaceContainerLowest
+                      .withOpacity(1.0);
+                  return MaterialTheme.lightHighContrastScheme()
+                      .surfaceContainerHighest
                       .withOpacity(1.0);
                 } else if (flag) {
                   return MaterialTheme.lightHighContrastScheme()
@@ -154,14 +159,14 @@ class ParticipantStats extends StatelessWidget {
                   return DataCell(captainViceCaptainName(
                     playerName: captain[rowIndex]['info']['playerName'],
                     playerPoint: capPoint,
-                    flag: flag,
+                    flag: flag && !miniFlag,
                   ));
                 }
                 if (interest[cellIndex] == viceCaptainPoints) {
                   return DataCell(captainViceCaptainName(
                     playerName: viceCaptain[rowIndex]['info']['playerName'],
                     playerPoint: vcPoint,
-                    flag: flag,
+                    flag: flag && !miniFlag,
                   ));
                 }
                 if (interest[cellIndex] == highestScoringPlayer) {
@@ -169,7 +174,7 @@ class ParticipantStats extends StatelessWidget {
                     playerName: highestScoringPlayer[rowIndex]['info']
                         ['playerName'],
                     playerPoint: hpPoints,
-                    flag: flag,
+                    flag: flag && !miniFlag,
                   ));
                 }
                 if (interest[cellIndex] == totalPoints) {
@@ -177,14 +182,14 @@ class ParticipantStats extends StatelessWidget {
                     Text(interest[cellIndex][rowIndex].toString(),
                         style: TextStyle(
                             fontSize: 10,
-                            color: flag ? Colors.white : Colors.black)),
+                            color: flag && !miniFlag ? Colors.white : Colors.black)),
                     if (activeChip[rowIndex] != null)
                       Text(
                         activeChip[rowIndex].toString(),
                         style: TextStyle(
                             fontSize: 10,
                             fontStyle: FontStyle.italic,
-                            color: flag ? Colors.white : Colors.black),
+                            color: flag && !miniFlag ? Colors.white : Colors.black),
                       ),
                   ]));
                 } else {
@@ -192,7 +197,7 @@ class ParticipantStats extends StatelessWidget {
                     "${interest[cellIndex][rowIndex].toString()}",
                     style: TextStyle(
                       fontSize: 10,
-                      color: flag ? Colors.white : Colors.black,
+                      color: flag && !miniFlag ? Colors.white : Colors.black,
                     ),
                   ));
                 }
