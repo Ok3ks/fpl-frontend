@@ -139,7 +139,7 @@ class AllQueries {
     }
   }""";
 
-static String getParticipantStats = """
+  static String getParticipantStats = """
   query participantReport(\$entryId: Int!) {
     participantReport(entryId: \$entryId) {
       gw

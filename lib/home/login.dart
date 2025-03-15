@@ -65,11 +65,11 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
       ref.read(currentUserProvider.notifier).state = User(
-                    email: userData['email'],
-                    favoriteTeam: userData['favoriteTeam'],
-                    fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
-                    yearsPlayingFpl: userData['yearsPlayingFpl'],
-                    username: userData['username']);
+          email: userData['email'],
+          favoriteTeam: userData['favoriteTeam'],
+          fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
+          yearsPlayingFpl: userData['yearsPlayingFpl'],
+          username: userData['username']);
       print('Logged in successfully with email: $email');
       print(userData['favoriteTeam']);
       Navigator.pushNamed(context, "/home");
@@ -142,7 +142,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       );
     } else {
       //TODO: Persist Login Session
-      return  Home();
+      return Home();
     }
   }
 }

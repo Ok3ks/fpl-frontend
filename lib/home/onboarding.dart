@@ -158,26 +158,26 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           ),
           const SizedBox(height: 16),
           TextFormField(
-              autocorrect: false,
-              // initialValue: "a",
-              decoration: const InputDecoration(
-                labelText: 'Fantasy Premier League URL',
-                border: OutlineInputBorder(),
-                hintTextDirection: TextDirection.ltr,
-                hintText:
-                    "https://fantasy.premierleague.com/entry/*****/event/**",
-              ),
-              keyboardType: TextInputType.url,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter your Fantasy Premier League URL';
-                }
-                if (!value.contains('entry')) {
-                  return 'Please enter a valid Fantasy Premier League URL';
-                }
-                return null;
-              },
-              ),
+            autocorrect: false,
+            // initialValue: "a",
+            decoration: const InputDecoration(
+              labelText: 'Fantasy Premier League URL',
+              border: OutlineInputBorder(),
+              hintTextDirection: TextDirection.ltr,
+              hintText:
+                  "https://fantasy.premierleague.com/entry/*****/event/**",
+            ),
+            keyboardType: TextInputType.url,
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return 'Please enter your Fantasy Premier League URL';
+              }
+              if (!value.contains('entry')) {
+                return 'Please enter a valid Fantasy Premier League URL';
+              }
+              return null;
+            },
+          ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(

@@ -154,17 +154,17 @@ class participantIdWidget extends ConsumerWidget {
             side: BorderSide(
                 width: 0,
                 color:
-                MaterialTheme.darkMediumContrastScheme().primaryContainer),
+                    MaterialTheme.darkMediumContrastScheme().primaryContainer),
             borderRadius: BorderRadius.circular(4)),
         child: SizedBox(
-          // width: 80,
-          // height: 50,
+            // width: 80,
+            // height: 50,
             child: Center(
-              child: Text("Current User: ${currUser?.fplUrl.toString()}",
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
-                      fontSize: 15)),
-            )),
+          child: Text("Current User: ${currUser?.fplUrl.toString()}",
+              style: TextStyle(
+                  color: MaterialTheme.darkMediumContrastScheme().onSurface,
+                  fontSize: 15)),
+        )),
       ),
     );
   }
