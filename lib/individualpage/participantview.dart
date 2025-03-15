@@ -136,51 +136,72 @@ class ParticipantStats extends StatelessWidget {
           var hpPoints = double.tryParse(
                   highestScoringPlayerPoints[rowIndex].toString()) ??
               0;
+          bool flag = hpPoints > vcPoint * 2 && hpPoints > capPoint + 6;
           return DataRow(
               color: WidgetStateProperty.resolveWith<Color?>(
                   (Set<MaterialState> states) {
-                if (vcPoint * 2 > capPoint) {
-                  return MaterialTheme.darkMediumContrastScheme()
-                      .error
-                      .withOpacity(1.0);
-                }
-                return MaterialTheme.darkMediumContrastScheme()
-                    .onSurface
-                    .withOpacity(1.0); // Use the default value.
-              }),
+                    if (vcPoint * 2 > capPoint) {
+                      return MaterialTheme
+                          .lightHighContrastScheme()
+                          .surfaceContainerLowest
+                          .withOpacity(1.0);
+                    }
+                  else if (flag) {
+                      return MaterialTheme
+                          .lightHighContrastScheme()
+                          .errorContainer
+                          .withOpacity(1.0);}
+                  else {
+    return MaterialTheme
+        .lightHighContrastScheme()
+        .surfaceContainerHighest
+        .withOpacity(1.0); // Use the default value.
+    }}),
               cells: List.generate(interest.length, (cellIndex) {
                 if (interest[cellIndex] == captainPoints) {
                   return DataCell(captainViceCaptainName(
                     playerName: captain[rowIndex]['info']['playerName'],
                     playerPoint: capPoint,
+                    flag:flag,
                   ));
                 }
                 if (interest[cellIndex] == viceCaptainPoints) {
                   return DataCell(captainViceCaptainName(
                       playerName: viceCaptain[rowIndex]['info']['playerName'],
-                      playerPoint: vcPoint));
+                      playerPoint: vcPoint,
+                      flag:flag,
+                  ));
                 }
                 if (interest[cellIndex] == highestScoringPlayer) {
                   return DataCell(captainViceCaptainName(
                     playerName: highestScoringPlayer[rowIndex]['info']
                         ['playerName'],
                     playerPoint: hpPoints,
+                    flag:flag,
+
                   ));
                 }
                 if (interest[cellIndex] == totalPoints) {
                   return DataCell(Row(children: [
-                    Text(interest[cellIndex][rowIndex].toString()),
+                    Text(interest[cellIndex][rowIndex].toString(),
+                        style:  TextStyle(
+                            fontSize: 10,
+                            color: flag ? Colors.white : Colors.black)),
                     if (activeChip[rowIndex] != null)
                       Text(
                         activeChip[rowIndex].toString(),
-                        style: const TextStyle(
-                            fontSize: 10, fontStyle: FontStyle.italic),
+                        style:  TextStyle(
+                            fontSize: 10, fontStyle: FontStyle.italic,
+                            color: flag ? Colors.white : Colors.black),
                       ),
                   ]));
                 } else {
                   return DataCell(
-                    Text("${interest[cellIndex][rowIndex].toString()}"),
-                  );
+                    Text("${interest[cellIndex][rowIndex].toString()}",
+                      style:  TextStyle(
+                          fontSize: 10, color: flag ? Colors.white : Colors.black,
+                    ),
+                  ));
                 }
               }));
         }));

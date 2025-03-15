@@ -11,11 +11,13 @@ import '../types.dart';
 class captainViceCaptainName extends ConsumerWidget {
   String playerName;
   double playerPoint;
+  bool flag;
 
   captainViceCaptainName({
     super.key,
     required this.playerName,
-    required this.playerPoint
+    required this.playerPoint,
+    required this.flag,
   });
 
   @override
@@ -28,14 +30,19 @@ class captainViceCaptainName extends ConsumerWidget {
                               playerName.split(" ").last,
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: MaterialTheme.darkMediumContrastScheme().onTertiaryContainer,
+                                  color: flag ?
+                                    MaterialTheme.lightHighContrastScheme().onErrorContainer
+                                    :MaterialTheme.lightHighContrastScheme().onSurface
+                                  ,
                                   fontSize: 10)),
                           onPressed: () {},
                         ),
              TextButton(
               child:Text("${playerPoint}",
                           style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme().primary,
+                              color: flag ?
+                              MaterialTheme.lightHighContrastScheme().onErrorContainer
+                                  :MaterialTheme.lightHighContrastScheme().onSurface,
                               fontSize: 12)),
     onPressed: () {},),
     ]));
