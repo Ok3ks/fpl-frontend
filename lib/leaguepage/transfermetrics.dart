@@ -92,9 +92,9 @@ class TransferTile extends ConsumerWidget {
                         },
                       ),
                       Column(
-                          children: List.generate(playerInIds.length, (i) {
+                          children: List.generate(playerOutIds.length, (i) {
                         return playerName(
-                          playerId: int.parse(playerInIds[i].toString() ?? "0"),
+                          playerId: int.parse(playerOutIds[i].toString() ?? "0"),
                           notTransfer: false,
                         );
                       })),
@@ -107,10 +107,10 @@ class TransferTile extends ConsumerWidget {
                         color: Colors.green,
                       ),
                       Column(
-                          children: List.generate(playerOutIds.length, (i) {
+                          children: List.generate(playerInIds.length, (i) {
                         return playerName(
                           playerId:
-                              int.parse(playerOutIds[i].toString() ?? "0"),
+                              int.parse(playerInIds[i].toString() ?? "0"),
                           notTransfer: false,
                         );
                       })),
