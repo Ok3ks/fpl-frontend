@@ -72,7 +72,8 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           username: userData['username']);
       print('Logged in successfully with email: $email');
       print(userData['favoriteTeam']);
-      Navigator.pushNamed(context, "/home");
+      // context.go('/home');
+      Navigator.of(context).pushNamed('/home');
     }
   }
 
