@@ -61,14 +61,16 @@ class User {
       if (e.code == 'invalid-email' ||
           e.code == 'user-not-found' ||
           e.code == 'wrong-password') {
-        error = 'Email or password supplied is incorrect';
-        return null;
+          error = e.code;
+          return null;
+        }
       }
+
       return null;
     }
+
   }
 
   //TODO: Add LogOut
 
   //TODO: Add FireStore to save other user's information
-}
