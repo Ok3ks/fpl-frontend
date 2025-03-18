@@ -96,7 +96,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
     if (currentUser == null) {
       return Scaffold(
         appBar: AppBar(
-          title: Text('Login'),
+          title: const Text('Login'),
         ),
         body: Center(
           child: Padding(
@@ -128,22 +128,22 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                     IconButton(
                         onPressed: toggleObscurePassword,
                         icon: const Icon(Icons.remove_red_eye)),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     // SizedBox(height: 20, child : Text("This ")),
                     ElevatedButton(
                       onPressed: _login,
-                      child: Text('Sign In'),
+                      child: const Text('Sign In'),
                     ),
                     TextButton(
                       onPressed: _register,
-                      child: Text('Register'),
+                      child: const Text('Register'),
                     ),
                     TextButton(
                       onPressed: () {
                         // Logic for sending email link for password reset
                         print('Send password reset email');
                       },
-                      child: Text('Forgot Password?'),
+                      child: const Text('Forgot Password?'),
                     ),
                   ],
                 ),
@@ -154,7 +154,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       );
     } else {
       //TODO: Persist Login Session
-      return Home();
+      return const Home();
     }
   }
 }

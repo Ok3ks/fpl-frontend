@@ -576,7 +576,7 @@ class FplTheme extends ThemeExtension<FplTheme> {
         // appBarTheme: AppBarTheme(
         //   backgroundColor: isLight ? neutralColor : colorScheme.surface
         // ),
-        chipTheme: ChipThemeData(backgroundColor: Colors.greenAccent),
+        chipTheme: const ChipThemeData(backgroundColor: Colors.greenAccent),
         cardTheme: CardTheme(
           color: MaterialTheme.darkMediumContrastScheme().secondaryContainer,
         ));

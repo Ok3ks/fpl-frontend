@@ -221,7 +221,7 @@ class LandingPage extends StatelessWidget {
           Column(
             children: [
               ExpansionTile(
-                  title: Text('Frequently Asked Questions'),
+                  title: const Text('Frequently Asked Questions'),
                   initiallyExpanded: true,
                   backgroundColor: Colors.white,
                   collapsedBackgroundColor: Colors.white,
@@ -232,16 +232,16 @@ class LandingPage extends StatelessWidget {
                   iconColor: MaterialTheme.darkMediumContrastScheme().primary,
                   children: [
                     ExpansionTile(
-                      leading: Icon(Icons.sports_soccer),
+                      leading: const Icon(Icons.sports_soccer),
                       iconColor:
                           MaterialTheme.darkMediumContrastScheme().primary,
                       collapsedIconColor:
                           MaterialTheme.darkMediumContrastScheme().primary,
-                      title: Text('What is this?'),
+                      title: const Text('What is this?'),
                       childrenPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 30),
                       children: [
-                        Text(
+                        const Text(
                           "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                           style: TextStyle(fontSize: 10),
                           textAlign: TextAlign.justify,
@@ -250,7 +250,7 @@ class LandingPage extends StatelessWidget {
                       ],
                     ),
                     ExpansionTile(
-                        leading: Icon(Icons.sports_soccer),
+                        leading: const Icon(Icons.sports_soccer),
                         iconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
                         collapsedIconColor:
@@ -258,7 +258,7 @@ class LandingPage extends StatelessWidget {
                         childrenPadding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 30),
                         maintainState: true,
-                        title: Text('How can i find my FPL league URL'),
+                        title: const Text('How can i find my FPL league URL'),
                         children: [
                           Column(
                               // mainAxisAlignment: MainAxisAlignment.start,
@@ -272,12 +272,12 @@ class LandingPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Image.asset(
                                     "assets/images/useApp - Step 1.png"),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 const Text(
@@ -288,14 +288,14 @@ class LandingPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Image.asset(
                                     "assets/images/useApp - Step 2.png"),
                                 Image.asset(
                                     "assets/images/useApp - Step 3.png"),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 const Text(
@@ -306,15 +306,15 @@ class LandingPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Image.asset(
                                     "assets/images/useApp - Step 4.png"),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Align(
+                                const Align(
                                     alignment: Alignment.center,
                                     child: Text(
                                       "Now you have a mini league report to view.",
@@ -328,12 +328,12 @@ class LandingPage extends StatelessWidget {
                               ]),
                         ]),
                     ExpansionTile(
-                        leading: Icon(Icons.sports_soccer),
+                        leading: const Icon(Icons.sports_soccer),
                         iconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
                         collapsedIconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
-                        title: Text('What should we expect in the future?'),
+                        title: const Text('What should we expect in the future?'),
                         children: []),
                   ]),
             ],

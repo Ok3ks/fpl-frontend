@@ -44,7 +44,7 @@ class Home extends StatelessWidget {
             children: [
               ProviderScope(child: ParticipantView()),
               ProviderScope(child: LeagueView()),
-              Icon(Icons.sports_soccer),
+              const Icon(Icons.sports_soccer),
             ],
           ),
         ),
