@@ -56,21 +56,21 @@ class Participant {
     try {
       UserCredential loggedInFirebaseUser = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      error = '';
       return loggedInFirebaseUser;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email' ||
           e.code == 'user-not-found' ||
           e.code == 'wrong-password') {
-          error = e.code;
-          return null;
-        }
+        error = e.code;
+        return null;
       }
-
-      return null;
     }
 
+    return null;
   }
+}
 
-  //TODO: Add LogOut
+//TODO: Add LogOut
 
-  //TODO: Add FireStore to save other user's information
+//TODO: Add FireStore to save other user's information

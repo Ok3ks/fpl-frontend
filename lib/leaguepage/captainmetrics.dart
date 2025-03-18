@@ -114,8 +114,7 @@ class CaptainMetricsCard extends ConsumerWidget {
                                   // crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const SizedBox(width: 4),
-                                    Text(
-                                        data?['count'].toString() ?? "null",
+                                    Text(data?['count'].toString() ?? "null",
                                         style: const TextStyle(
                                           color: Colors.grey,
                                           fontSize: 11,
