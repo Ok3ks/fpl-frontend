@@ -197,7 +197,7 @@ class ParticipantStats extends StatelessWidget {
                   ]));
                 } else {
                   return DataCell(Text(
-                    "${interest[cellIndex][rowIndex].toString()}",
+                    interest[cellIndex][rowIndex].toString(),
                     style: TextStyle(
                       fontSize: 10,
                       color: flag && !miniFlag ? Colors.white : Colors.black,
