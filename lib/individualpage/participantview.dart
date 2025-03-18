@@ -19,7 +19,7 @@ class ParticipantView extends StatelessWidget {
 
     if (orientation == Orientation.landscape) {
       return const Center(
-          child: const Text("Adjust your device into a portrait orientation",
+          child: Text("Adjust your device into a portrait orientation",
               style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,

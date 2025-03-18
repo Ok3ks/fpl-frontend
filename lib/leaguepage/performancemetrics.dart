@@ -16,7 +16,7 @@ class PerformanceMetrics extends StatelessWidget {
         children: [
           const Align(
               alignment: Alignment.bottomLeft,
-              child: const Text("Performance",
+              child: Text("Performance",
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.black,

@@ -106,11 +106,11 @@ class TransferTile extends ConsumerWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Icon(
+                              Icon(
                                 Icons.arrow_circle_right_sharp,
                                 color: Colors.red,
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_circle_left_sharp,
                                 color: Colors.green,
                               )
