@@ -7,7 +7,6 @@ import 'dart:math';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/types.dart';
 
-
 void main() {
   runApp(const Onboarding());
 }
@@ -46,6 +45,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   String? favoriteTeam;
   String? yearsPlaying;
   String? password;
+  String? _error;
 
   final List<Map<String, String>> steps = [
     {
@@ -118,8 +118,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
-
-
   Widget _buildStepContent() {
     switch (currentStep) {
       case 0:
@@ -135,7 +133,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     }
   }
 
-
   void _handleBack() {
     setState(() {
       currentStep = max(currentStep - 1, 0);
@@ -143,10 +140,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   }
 
   void _handleNext() async {
-    if (currentStep ==3 ) {
+    if (currentStep == 3) {
       context.go('/login');
-    }
-    if (currentStep == 2) {
+    } else if (currentStep == 2) {
       if (_formKey.currentState?.validate() ?? false) {
         _formKey.currentState?.save();
         print(
@@ -164,9 +160,13 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               email: email!,
               fplUrl: fplUrl!,
               yearsPlayingFpl: yearsPlaying!);
-          UserCredential? currentUser = await registeringParticipant.registerUser();
 
-          print(registeringParticipant.error);
+          UserCredential? currentUser =
+              await registeringParticipant.registerUser();
+          setState(() {
+            _error =registeringParticipant.error;
+          });
+
           if (currentUser != null) {
             //update current user for remaining part of the application
             ref.read(currentUserProvider.notifier).state = Participant(
@@ -183,7 +183,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       }
     } else if (currentStep == 1) {
       if (_formKey.currentState?.validate() ?? false) {
-
         setState(() {
           currentStep = min(currentStep + 1, steps.length - 1);
         });
@@ -206,13 +205,17 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               labelText: 'username',
               border: OutlineInputBorder(),
             ),
+            onChanged: (String? value) {
+              setState(() {
+                username = value;
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter a username';
               }
               return null;
             },
-            onSaved: (value) => username = value,
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -221,6 +224,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.emailAddress,
+            onChanged: (String? value) {
+              setState(() {
+                email = value;
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
@@ -230,31 +238,33 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               }
               return null;
             },
-            onSaved: (value) => email = value,
           ),
           const SizedBox(height: 16),
           TextFormField(
-            autocorrect: false,
-            // initialValue: "a",
-            decoration: const InputDecoration(
-              labelText: 'Fantasy Premier League URL',
-              border: OutlineInputBorder(),
-              hintTextDirection: TextDirection.ltr,
-              hintText:
-                  "https://fantasy.premierleague.com/entry/*****/event/**",
-            ),
-            keyboardType: TextInputType.url,
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter your Fantasy Premier League URL';
-              }
-              if (!value.contains('entry')) {
-                return 'Please enter a valid Fantasy Premier League URL';
-              }
-              return null;
-            },
-            onSaved: (value) => fplUrl = value,
-          ),
+              autocorrect: false,
+              // initialValue: "a",
+              decoration: const InputDecoration(
+                labelText: 'Fantasy Premier League URL',
+                border: OutlineInputBorder(),
+                hintTextDirection: TextDirection.ltr,
+                hintText:
+                    "https://fantasy.premierleague.com/entry/*****/event/**",
+              ),
+              keyboardType: TextInputType.url,
+              onChanged: (String? value) {
+                setState(() {
+                  fplUrl = value;
+                });
+              },
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter your Fantasy Premier League URL';
+                }
+                if (!value.contains('entry')) {
+                  return 'Please enter a valid Fantasy Premier League URL';
+                }
+                return null;
+              }),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
@@ -315,8 +325,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           _buildFeatureItem(Icons.key, 'Please enter a password'),
           TextFormField(
             obscureText: true,
-            decoration: const InputDecoration(
+            decoration:  InputDecoration(
               labelText: 'password',
+              errorText: _error,
               border: OutlineInputBorder(),
             ),
             onChanged: (String? value) {
@@ -353,9 +364,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           onPressed: () {
             // Navigate to dashboard
             debugPrint('Navigating to dashboard');
-            context.go('/home');
+            context.go('/login');
           },
-          child: const Text('Go to Dashboard'),
+          child: const Text('Now login to view your Dashboard'),
         ),
       ],
     );

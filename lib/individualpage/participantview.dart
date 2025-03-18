@@ -333,7 +333,8 @@ class LandingPage extends StatelessWidget {
                             MaterialTheme.darkMediumContrastScheme().primary,
                         collapsedIconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
-                        title: const Text('What should we expect in the future?'),
+                        title:
+                            const Text('What should we expect in the future?'),
                         children: []),
                   ]),
             ],

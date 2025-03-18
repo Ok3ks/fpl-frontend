@@ -67,7 +67,8 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                             borderRadius: BorderRadius.circular(12)),
                         color: const Color.fromRGBO(100, 100, 100, 0),
                         child: TextField(
-                          style: const TextStyle(fontSize: 10, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 10, color: Colors.white),
                           cursorColor:
                               MaterialTheme.darkMediumContrastScheme().primary,
                           controller: leagueIdController,
@@ -322,7 +323,8 @@ class LandingPage extends StatelessWidget {
                             MaterialTheme.darkMediumContrastScheme().primary,
                         collapsedIconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
-                        title: const Text('What should we expect in the future?'),
+                        title:
+                            const Text('What should we expect in the future?'),
                         children: []),
                   ]),
             ],
@@ -493,7 +495,8 @@ class MetricsCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: const TextStyle(color: Colors.white, fontSize: 11)),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 11)),
                   const SizedBox(height: 7.5),
                   Text(
                     data.toString(),

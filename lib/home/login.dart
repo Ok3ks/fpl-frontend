@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
@@ -47,7 +46,8 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    Participant currentUser = Participant(email: _emailController.text, password: _passwordController.text);
+    Participant currentUser = Participant(
+        email: _emailController.text, password: _passwordController.text);
     dynamic loggedInUser = await currentUser.retrieveUser(password);
 
     // Mock logic for demonstration
@@ -55,17 +55,17 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       setState(() {
         _errorMessage = 'Email and Password cannot be empty.';
       });
-    } else if (currentUser.error == 'wrong-password' || currentUser.error == 'invalid-email') {
+    } else if (currentUser.error == 'wrong-password' ||
+        currentUser.error == 'invalid-email') {
       setState(() {
         _errorMessage = 'Email or password supplied is incorrect';
       });
-    } else if (currentUser.error != 'user-not-found') {
+    } else if (currentUser.error == 'user-not-found') {
       // Proceed with login
       setState(() {
         _errorMessage = 'User does not exist, please Register and retry';
       });
-    }
-      else {
+    } else {
       // Proceed with login
       setState(() {
         _errorMessage = '';
@@ -80,8 +80,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
           yearsPlayingFpl: userData['yearsPlayingFpl'],
           username: userData['username']);
-      print('Logged in successfully with email: $email');
-      print(userData['favoriteTeam']);
       Navigator.of(context).pushNamed('/home');
     }
   }
@@ -114,7 +112,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                       controller: _emailController,
                       decoration: InputDecoration(
                         labelText: 'Email',
-
                       ),
                     ),
                     TextField(
