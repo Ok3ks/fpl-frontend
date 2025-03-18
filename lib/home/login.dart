@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
@@ -51,9 +53,9 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       setState(() {
         _errorMessage = 'Email and Password cannot be empty.';
       });
-    } else if (loggedInUser == 'null') {
+    } else if (loggedInUser == null) {
       setState(() {
-        _errorMessage = 'User does not exist, please register an account';
+        _errorMessage = 'Email or password supplied is incorrect';
       });
     } else if (loggedInUser != null) {
       // Proceed with login
@@ -72,7 +74,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           username: userData['username']);
       print('Logged in successfully with email: $email');
       print(userData['favoriteTeam']);
-      // context.go('/home');
       Navigator.of(context).pushNamed('/home');
     }
   }
@@ -111,14 +112,16 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                     ),
                     TextField(
                       controller: _passwordController,
-                      obscureText: true,
+                      obscureText: toggled ? true : false,
                       decoration: InputDecoration(
                         labelText: 'Password',
                         errorText:
                             _errorMessage.isNotEmpty ? _errorMessage : null,
                       ),
                     ),
+                    IconButton(onPressed: toggleObscurePassword, icon: const Icon(Icons.remove_red_eye)),
                     SizedBox(height: 20),
+                    // SizedBox(height: 20, child : Text("This ")),
                     ElevatedButton(
                       onPressed: _login,
                       child: Text('Sign In'),
@@ -134,7 +137,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                       },
                       child: Text('Forgot Password?'),
                     ),
-                  ],
+                ],
                 ),
               ),
             ),
