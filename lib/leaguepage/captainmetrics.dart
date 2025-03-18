@@ -120,7 +120,7 @@ class CaptainMetricsCard extends ConsumerWidget {
                                           color: Colors.grey,
                                           fontSize: 11,
                                         )),
-                                    SizedBox(width: 2),
+                                    const SizedBox(width: 2),
                                     const Icon(
                                       Icons.people,
                                       size: 11,

@@ -42,7 +42,7 @@ class GameweekWidget extends ConsumerWidget {
               height: 50,
               // width: 180,
               child: Card(
-                  color: Color.fromRGBO(100, 100, 100, 0),
+                  color: const Color.fromRGBO(100, 100, 100, 0),
                   shape: RoundedRectangleBorder(
                       side: BorderSide(
                           width: 0,
@@ -69,7 +69,7 @@ class GameweekWidget extends ConsumerWidget {
                           width: 40,
                           height: 50,
                           child: Card(
-                              color: Color.fromRGBO(100, 100, 100, 0),
+                              color: const Color.fromRGBO(100, 100, 100, 0),
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(
                                       width: 1.5,
@@ -115,7 +115,7 @@ class leagueIDWidget extends ConsumerWidget {
       height: 30,
       width: 180,
       child: Card(
-        color: Color.fromRGBO(100, 100, 100, 0),
+        color: const Color.fromRGBO(100, 100, 100, 0),
         shape: RoundedRectangleBorder(
             side: BorderSide(
                 width: 0,
@@ -148,7 +148,7 @@ class participantIdWidget extends ConsumerWidget {
       height: 30,
       width: 180,
       child: Card(
-        color: Color.fromRGBO(100, 100, 100, 0),
+        color: const Color.fromRGBO(100, 100, 100, 0),
         shape: RoundedRectangleBorder(
             side: BorderSide(
                 width: 0,

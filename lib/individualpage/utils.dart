@@ -73,7 +73,7 @@ class participantIDWidget extends StatelessWidget {
       height: 30,
       width: 180,
       child: Card(
-        color: Color.fromRGBO(100, 100, 100, 0),
+        color: const Color.fromRGBO(100, 100, 100, 0),
         shape: RoundedRectangleBorder(
             side: BorderSide(
                 width: 0,
