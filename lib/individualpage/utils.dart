@@ -32,7 +32,7 @@ class captainViceCaptainName extends ConsumerWidget {
         onPressed: () {},
       ),
       TextButton(
-        child: Text("${playerPoint}",
+        child: Text("$playerPoint",
             style: TextStyle(
                 color: flag
                     ? MaterialTheme.lightHighContrastScheme().onErrorContainer
