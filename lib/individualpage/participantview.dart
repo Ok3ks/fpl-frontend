@@ -135,7 +135,7 @@ class ParticipantStats extends StatelessWidget {
           bool miniFlag = vcPoint * 2 > capPoint;
           return DataRow(
               color: WidgetStateProperty.resolveWith<Color?>(
-                  (Set<MaterialState> states) {
+                  (Set<WidgetState> states) {
                 if (miniFlag) {
                   return MaterialTheme.lightHighContrastScheme()
                       .surfaceContainerLowest
