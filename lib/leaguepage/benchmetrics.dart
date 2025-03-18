@@ -231,7 +231,7 @@ class PlayMeInstead extends StatelessWidget {
                   // )),
                   const SizedBox(height: 5),
                   Center(
-                      child: Text("${teamName}",
+                      child: Text("$teamName",
                           style: TextStyle(
                               color: MaterialTheme.darkMediumContrastScheme()
                                   .primary,
