@@ -125,7 +125,9 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                             _errorMessage.isNotEmpty ? _errorMessage : null,
                       ),
                     ),
-                    IconButton(onPressed: toggleObscurePassword, icon: const Icon(Icons.remove_red_eye)),
+                    IconButton(
+                        onPressed: toggleObscurePassword,
+                        icon: const Icon(Icons.remove_red_eye)),
                     SizedBox(height: 20),
                     // SizedBox(height: 20, child : Text("This ")),
                     ElevatedButton(
@@ -143,7 +145,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                       },
                       child: Text('Forgot Password?'),
                     ),
-                ],
+                  ],
                 ),
               ),
             ),

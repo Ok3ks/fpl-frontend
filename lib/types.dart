@@ -57,8 +57,10 @@ class User {
       UserCredential loggedInFirebaseUser = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
       return loggedInFirebaseUser;
-    }  on FirebaseAuthException catch (e) {
-      if (e.code == 'invalid-email' || e.code == 'user-not-found' || e.code == 'wrong-password') {
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email' ||
+          e.code == 'user-not-found' ||
+          e.code == 'wrong-password') {
         error = 'Email or password supplied is incorrect';
         return null;
       }

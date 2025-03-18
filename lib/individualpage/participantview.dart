@@ -113,7 +113,6 @@ class ParticipantStats extends StatelessWidget {
       highestScoringPlayer
     ];
 
-
     return DataTable(
         columns: const [
           DataColumn(label: Text("GW")),
@@ -182,14 +181,18 @@ class ParticipantStats extends StatelessWidget {
                     Text(interest[cellIndex][rowIndex].toString(),
                         style: TextStyle(
                             fontSize: 10,
-                            color: flag && !miniFlag ? Colors.white : Colors.black)),
+                            color: flag && !miniFlag
+                                ? Colors.white
+                                : Colors.black)),
                     if (activeChip[rowIndex] != null)
                       Text(
                         activeChip[rowIndex].toString(),
                         style: TextStyle(
                             fontSize: 10,
                             fontStyle: FontStyle.italic,
-                            color: flag && !miniFlag ? Colors.white : Colors.black),
+                            color: flag && !miniFlag
+                                ? Colors.white
+                                : Colors.black),
                       ),
                   ]));
                 } else {
