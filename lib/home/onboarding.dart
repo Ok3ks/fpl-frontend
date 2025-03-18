@@ -52,17 +52,14 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     {
       'title': 'Welcome to DontSuckatFpl',
       'description':
-      'DontSuckatFPL is a fpl analysis tool, particularly for your mini leagues.'
-          ' Find trends and patterns in your FPL Mini League'
+          'DontSuckatFPL is a fpl analysis tool, particularly for your mini leagues.'
+              ' Find trends and patterns in your FPL Mini League'
     },
     {
       'title': 'Tell us about yourself',
       'description': 'Help us personalize your experience'
     },
-    {
-      'title': 'Secure your account',
-      'description': ''
-    },
+    {'title': 'Secure your account', 'description': ''},
     {
       'title': 'Get Started',
       'description': "You're all set to begin your journey to FPL mastery",
@@ -125,9 +122,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   Widget _addPassword() {
     return Form(
         key: _formKey,
-        child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           _buildFeatureItem(Icons.key, 'Please enter a password'),
           TextFormField(
             obscureText: true,
@@ -135,10 +130,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               labelText: 'password',
               border: OutlineInputBorder(),
             ),
-              onChanged: (String? value) {
-                setState(() {
-                  password = value;
-                });},
+            onChanged: (String? value) {
+              setState(() {
+                password = value;
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty || value.length < 4) {
                 return 'Please enter a password with 4+ characters';
@@ -147,7 +143,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             },
             onSaved: (value) => password = value,
           ),
-
         ]));
     // )]);
   }
@@ -184,23 +179,20 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             email != null &&
             fplUrl != null &&
             yearsPlaying != null &&
-            password != null
-        ) {
+            password != null) {
           var currentUser = await User(
-              favoriteTeam: favoriteTeam!,
-              username: username!,
-              password: password!,
-              email: email!,
-              fplUrl: fplUrl!,
-              yearsPlayingFpl: yearsPlaying!)
+                  favoriteTeam: favoriteTeam!,
+                  username: username!,
+                  password: password!,
+                  email: email!,
+                  fplUrl: fplUrl!,
+                  yearsPlayingFpl: yearsPlaying!)
               .registerUser();
 
           print(currentUser);
           if (currentUser != null) {
             //update current user for remaining part of the application
-            ref
-                .read(currentUserProvider.notifier)
-                .state = User(
+            ref.read(currentUserProvider.notifier).state = User(
                 email: currentUser.user?.email ?? "default@gmail.com",
                 favoriteTeam: favoriteTeam,
                 fplUrl: fplUrl,
@@ -213,8 +205,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           }
         }
       }
-    }
-    else if (currentStep == 1) {
+    } else if (currentStep == 1) {
       if (_formKey.currentState?.validate() ?? false) {
         _formKey.currentState?.save();
 
@@ -222,16 +213,12 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           currentStep = min(currentStep + 1, steps.length - 1);
         });
       }
+    } else {
+      setState(() {
+        currentStep = min(currentStep + 1, steps.length - 1);
+      });
     }
-
-      else {
-        setState(() {
-          currentStep = min(currentStep + 1, steps.length - 1);
-        });
-      }
-    }
-
-
+  }
 
   Widget _buildFormStep() {
     return Form(
@@ -279,7 +266,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               border: OutlineInputBorder(),
               hintTextDirection: TextDirection.ltr,
               hintText:
-              "https://fantasy.premierleague.com/entry/*****/event/**",
+                  "https://fantasy.premierleague.com/entry/*****/event/**",
             ),
             keyboardType: TextInputType.url,
             validator: (value) {
@@ -292,7 +279,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               return null;
             },
             onSaved: (value) => fplUrl = value,
-
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
@@ -347,8 +333,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
-
-
   Widget _buildCompletionStep() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -374,110 +358,108 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
-
-
   @override
-    Widget build(BuildContext context) {
-      return Scaffold(
-        body: SafeArea(
-          child: Column(
-            children: [
-              // Progress indicator
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  children: List.generate(
-                    steps.length * 2 - 1,
-                        (index) {
-                      if (index.isOdd) {
-                        return Expanded(
-                          child: Container(
-                            height: 2,
-                            color: index < currentStep * 2
-                                ? Colors.blue
-                                : Colors.grey[300],
-                          ),
-                        );
-                      }
-                      final stepIndex = index ~/ 2;
-                      return Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: stepIndex <= currentStep
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Progress indicator
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                children: List.generate(
+                  steps.length * 2 - 1,
+                  (index) {
+                    if (index.isOdd) {
+                      return Expanded(
+                        child: Container(
+                          height: 2,
+                          color: index < currentStep * 2
                               ? Colors.blue
                               : Colors.grey[300],
                         ),
-                        child: Center(
-                          child: stepIndex < currentStep
-                              ? const Icon(Icons.check,
-                              color: Colors.white, size: 16)
-                              : Text(
-                            '${stepIndex + 1}',
-                            style: TextStyle(
-                              color: stepIndex <= currentStep
-                                  ? Colors.white
-                                  : Colors.grey[600],
-                            ),
-                          ),
-                        ),
                       );
-                    },
+                    }
+                    final stepIndex = index ~/ 2;
+                    return Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: stepIndex <= currentStep
+                            ? Colors.blue
+                            : Colors.grey[300],
+                      ),
+                      child: Center(
+                        child: stepIndex < currentStep
+                            ? const Icon(Icons.check,
+                                color: Colors.white, size: 16)
+                            : Text(
+                                '${stepIndex + 1}',
+                                style: TextStyle(
+                                  color: stepIndex <= currentStep
+                                      ? Colors.white
+                                      : Colors.grey[600],
+                                ),
+                              ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            // Step title and description
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  Text(
+                    steps[currentStep]['title']!,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
-              ),
-              // Step title and description
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    Text(
-                      steps[currentStep]['title']!,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  const SizedBox(height: 8),
+                  Text(
+                    steps[currentStep]['description']!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.grey[600],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      steps[currentStep]['description']!,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                      ),
+                  ),
+                ],
+              ),
+            ),
+            // Step content
+            Expanded(
+              child: _buildStepContent(),
+            ),
+            // Navigation buttons
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  if (currentStep > 0)
+                    TextButton(
+                      onPressed: _handleBack,
+                      child: const Text('Back'),
+                    )
+                  else
+                    const SizedBox(width: 80),
+                  if (currentStep < steps.length - 1)
+                    ElevatedButton(
+                      onPressed: _handleNext,
+                      child: const Text('Next'),
                     ),
-                  ],
-                ),
+                ],
               ),
-              // Step content
-              Expanded(
-                child: _buildStepContent(),
-              ),
-              // Navigation buttons
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    if (currentStep > 0)
-                      TextButton(
-                        onPressed: _handleBack,
-                        child: const Text('Back'),
-                      )
-                    else
-                      const SizedBox(width: 80),
-                    if (currentStep < steps.length - 1 )
-                      ElevatedButton(
-                        onPressed: _handleNext,
-                        child: const Text('Next'),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
-    }
+      ),
+    );
   }
+}

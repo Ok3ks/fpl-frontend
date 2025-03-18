@@ -80,45 +80,47 @@ class TransferTile extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: 100,
-                        child:TextButton(
-                        child: Text("${data[index]['teamName']}",
-                            style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface,
-                              fontSize: 10,
-                            )),
-                        onPressed: () {
-                          html.window.location.assign(
-                              "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
-                        },
-                      )),
+                          width: 100,
+                          child: TextButton(
+                            child: Text("${data[index]['teamName']}",
+                                style: TextStyle(
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .onSurface,
+                                  fontSize: 10,
+                                )),
+                            onPressed: () {
+                              html.window.location.assign(
+                                  "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                            },
+                          )),
                       Column(
                           children: List.generate(playerOutIds.length, (i) {
                         return playerName(
-                          playerId: int.parse(playerOutIds[i].toString() ?? "0"),
+                          playerId:
+                              int.parse(playerOutIds[i].toString() ?? "0"),
                           notTransfer: false,
                         );
                       })),
                       const SizedBox(
-                        width: 100,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                      const Icon(
-                        Icons.arrow_circle_right_sharp,
-                        color: Colors.red,
-                      ),
-                      const Icon(
-                        Icons.arrow_circle_left_sharp,
-                        color: Colors.green,
-                      )],
-                        )),
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Icon(
+                                Icons.arrow_circle_right_sharp,
+                                color: Colors.red,
+                              ),
+                              const Icon(
+                                Icons.arrow_circle_left_sharp,
+                                color: Colors.green,
+                              )
+                            ],
+                          )),
                       Column(
                           children: List.generate(playerInIds.length, (i) {
                         return playerName(
-                          playerId:
-                              int.parse(playerInIds[i].toString() ?? "0"),
+                          playerId: int.parse(playerInIds[i].toString() ?? "0"),
                           notTransfer: false,
                         );
                       })),
