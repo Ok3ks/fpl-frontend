@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:fpl/dataprovider.dart";
 
-class User {
+class Participant {
   String email;
   String? username;
   String? favoriteTeam;
@@ -12,7 +12,7 @@ class User {
   String? password;
   String? error;
 
-  User(
+  Participant(
       {required this.email,
       this.favoriteTeam,
       this.username,
