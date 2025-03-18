@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/dataprovider.dart';
 import 'dart:math';
 
 import 'package:go_router/go_router.dart';
 import 'package:fpl/types.dart';
 
-import '../individualpage/utils.dart';
 
 void main() {
   runApp(const Onboarding());

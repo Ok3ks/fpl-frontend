@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'constants.dart';
 import 'dataprovider.dart';

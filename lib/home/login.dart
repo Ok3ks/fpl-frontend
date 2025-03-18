@@ -1,12 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
-import 'package:fpl/home/onboarding.dart';
-import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/individualpage/utils.dart';
-import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/home/home.dart';
 

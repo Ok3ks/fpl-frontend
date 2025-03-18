@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/logging.dart';
 import "package:fpl/graphql_schemas.dart";
 import "package:fpl/types.dart";
-import "dart:js_interop";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
