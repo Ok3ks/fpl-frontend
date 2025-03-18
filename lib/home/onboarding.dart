@@ -199,7 +199,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             setState(() {
               currentStep++;
             });
-            context.go('/home');
+            context.go('/login');
           }
         }
       }
