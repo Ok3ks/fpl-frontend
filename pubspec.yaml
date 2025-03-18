@@ -47,6 +47,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   cloud_firestore: ^5.6.5
 
+  http: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
