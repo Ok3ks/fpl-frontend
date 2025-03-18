@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 
 import '../types.dart';

@@ -10,7 +10,6 @@ import 'package:fpl/leaguepage/transfermetrics.dart';
 import 'package:fpl/leaguepage/performancemetrics.dart';
 
 import 'dart:convert';
-import 'package:fpl/auth.dart';
 
 class LeagueView extends ConsumerStatefulWidget {
   LeagueView({

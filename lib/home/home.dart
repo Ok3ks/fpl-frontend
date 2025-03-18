@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/dataprovider.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
 
-import '../themes.dart';
 
 void main() {
   runApp(const Home());
