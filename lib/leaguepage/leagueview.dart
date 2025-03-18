@@ -496,7 +496,7 @@ class MetricsCard extends StatelessWidget {
                       style: const TextStyle(color: Colors.white, fontSize: 11)),
                   const SizedBox(height: 7.5),
                   Text(
-                    "${data.toString()}",
+                    data.toString(),
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,

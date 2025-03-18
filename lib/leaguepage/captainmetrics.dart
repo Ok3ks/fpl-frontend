@@ -115,7 +115,7 @@ class CaptainMetricsCard extends ConsumerWidget {
                                   children: [
                                     const SizedBox(width: 4),
                                     Text(
-                                        "${data?['count'].toString() ?? "null"}",
+                                        data?['count'].toString() ?? "null",
                                         style: const TextStyle(
                                           color: Colors.grey,
                                           fontSize: 11,
