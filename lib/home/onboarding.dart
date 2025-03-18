@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
@@ -117,33 +118,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
-  Widget _addPassword() {
-    return Form(
-        key: _formKey,
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          _buildFeatureItem(Icons.key, 'Please enter a password'),
-          TextFormField(
-            obscureText: true,
-            decoration: const InputDecoration(
-              labelText: 'password',
-              border: OutlineInputBorder(),
-            ),
-            onChanged: (String? value) {
-              setState(() {
-                password = value;
-              });
-            },
-            validator: (value) {
-              if (value == null || value.isEmpty || value.length < 4) {
-                return 'Please enter a password with 4+ characters';
-              }
-              return null;
-            },
-            onSaved: (value) => password = value,
-          ),
-        ]));
-    // )]);
-  }
+
 
   Widget _buildStepContent() {
     switch (currentStep) {
@@ -160,6 +135,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     }
   }
 
+
   void _handleBack() {
     setState(() {
       currentStep = max(currentStep - 1, 0);
@@ -167,6 +143,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   }
 
   void _handleNext() async {
+    if (currentStep ==3 ) {
+      context.go('/login');
+    }
     if (currentStep == 2) {
       if (_formKey.currentState?.validate() ?? false) {
         _formKey.currentState?.save();
@@ -178,19 +157,19 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             fplUrl != null &&
             yearsPlaying != null &&
             password != null) {
-          var currentUser = await User(
-                  favoriteTeam: favoriteTeam!,
-                  username: username!,
-                  password: password!,
-                  email: email!,
-                  fplUrl: fplUrl!,
-                  yearsPlayingFpl: yearsPlaying!)
-              .registerUser();
+          Participant registeringParticipant = Participant(
+              favoriteTeam: favoriteTeam!,
+              username: username!,
+              password: password!,
+              email: email!,
+              fplUrl: fplUrl!,
+              yearsPlayingFpl: yearsPlaying!);
+          UserCredential? currentUser = await registeringParticipant.registerUser();
 
-          print(currentUser);
+          print(registeringParticipant.error);
           if (currentUser != null) {
             //update current user for remaining part of the application
-            ref.read(currentUserProvider.notifier).state = User(
+            ref.read(currentUserProvider.notifier).state = Participant(
                 email: currentUser.user?.email ?? "default@gmail.com",
                 favoriteTeam: favoriteTeam,
                 fplUrl: fplUrl,
@@ -199,13 +178,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             setState(() {
               currentStep++;
             });
-            context.go('/login');
           }
         }
       }
     } else if (currentStep == 1) {
       if (_formKey.currentState?.validate() ?? false) {
-        _formKey.currentState?.save();
 
         setState(() {
           currentStep = min(currentStep + 1, steps.length - 1);
@@ -329,6 +306,34 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
         ],
       ),
     );
+  }
+
+  Widget _addPassword() {
+    return Form(
+        key: _formKey,
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          _buildFeatureItem(Icons.key, 'Please enter a password'),
+          TextFormField(
+            obscureText: true,
+            decoration: const InputDecoration(
+              labelText: 'password',
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                password = value;
+              });
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty || value.length < 4) {
+                return 'Please enter a password with 4+ characters';
+              }
+              return null;
+            },
+            onSaved: (value) => password = value,
+          ),
+        ]));
+    // )]);
   }
 
   Widget _buildCompletionStep() {

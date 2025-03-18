@@ -61,7 +61,7 @@ String? parseParticipantIdFromUrl(String url) {
 }
 
 class participantIDWidget extends StatelessWidget {
-  User? currParticipant;
+  Participant? currParticipant;
   participantIDWidget({super.key, required this.currParticipant});
 
   @override

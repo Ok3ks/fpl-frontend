@@ -47,7 +47,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    User currentUser = User(email: _emailController.text, password: _passwordController.text);
+    Participant currentUser = Participant(email: _emailController.text, password: _passwordController.text);
     dynamic loggedInUser = await currentUser.retrieveUser(password);
 
     // Mock logic for demonstration
@@ -74,7 +74,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
-      ref.read(currentUserProvider.notifier).state = User(
+      ref.read(currentUserProvider.notifier).state = Participant(
           email: userData['email'],
           favoriteTeam: userData['favoriteTeam'],
           fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
