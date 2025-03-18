@@ -39,11 +39,17 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = '';
+  bool toggled = false;
+
+  void toggleObscurePassword() {
+    setState(() {
+      toggled = !toggled;
+    });
+  }
 
   void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
-    print(password);
 
     User currentUser = User(email: email, password: password);
     dynamic loggedInUser = await currentUser.retrieveUser(password);
