@@ -18,15 +18,6 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
           "leagueId": leagueId, //538731,
           "gameweek": gameweek, //3
         }));
-    // Log.logger.i("Pulling Events Exception: ${results.exception}");
-    // print(results.exception);
-    // print(results.data?['captain']);
-    // for (var data in results.data?['captain']) {
-    // print(data);
-    // Log.logger.i(data);
-
-    // print(results.data);
-
     return results;
     // }
   } catch (e) {
@@ -127,3 +118,5 @@ final gameweekProvider = StateProvider<double>((ref) {
 var currentUserProvider = StateProvider<Participant?>((ref) {
   return null;
 });
+
+

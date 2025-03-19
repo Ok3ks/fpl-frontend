@@ -70,16 +70,25 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       setState(() {
         _errorMessage = '';
       });
+      //Update field with userHistory
+
 
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
+
+      final participantID = parseParticipantIdFromUrl(userData['fplUrl']);
+      currentUser.getHistory(participantID ?? "null");
+
       ref.read(currentUserProvider.notifier).state = Participant(
           email: userData['email'],
           favoriteTeam: userData['favoriteTeam'],
           fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
           yearsPlayingFpl: userData['yearsPlayingFpl'],
-          username: userData['username']);
+          username: userData['username'],
+          history: userData['history']
+      );
+
       Navigator.of(context).pushNamed('/home');
     }
   }
