@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import "package:fpl/dataprovider.dart";
+import 'package:http/http.dart' as http;
 
 class Participant {
   String email;
@@ -11,21 +12,23 @@ class Participant {
   String? location;
   String? password;
   String? error;
+  Map<String, dynamic>? history;
 
-  Participant(
-      {required this.email,
-      this.favoriteTeam,
-      this.username,
-      this.fplUrl,
-      this.yearsPlayingFpl,
-      this.location,
-      this.password});
+  Participant({required this.email,
+    this.favoriteTeam,
+    this.username,
+    this.fplUrl,
+    this.yearsPlayingFpl,
+    this.location,
+    this.password,
+    this.history
+  });
 
   Future<UserCredential?> registerUser() async {
     try {
       UserCredential firebaseUser = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: email, password: password ?? "VRBWX6k3gZ");
+          email: email, password: password ?? "VRBWX6k3gZ");
       //TODO: Opportunity to add more information as drawn from FPL, into Firestore
       DocumentReference userId = await userDbRef.add({
         "email": email,
@@ -69,8 +72,26 @@ class Participant {
 
     return null;
   }
-}
+
+  Future<UserCredential?> getHistory(String participantID) async {
+
+    final history = await Uri.parse(
+        "https://fantasy.premierleague.com/api/entry/$participantID/history/");
+    final response = await http.read(history);
+    DocumentReference userId = await userDbRef.add({
+      "history": {
+        response
+      }
+    });
+  }
 
 //TODO: Add LogOut
+}
 
-//TODO: Add FireStore to save other user's information
+class ParticipantHistory {
+
+  List<Map<String, dynamic>>? current;
+  List<Map<String, dynamic>>? past;
+  List<Map<String, dynamic>>? chips;
+
+}
