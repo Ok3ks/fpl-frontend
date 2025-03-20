@@ -71,7 +71,7 @@ class Participant {
 
   Future<UserCredential?> retrieveUser(String password) async {
 
-    var app = await Firebase.initializeApp(
+    final app = await Firebase.initializeApp(
         options: const FirebaseOptions(
             apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
             authDomain: 'fpl-frontend.firebaseapp.com',
@@ -81,7 +81,7 @@ class Participant {
             appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
             measurementId: 'G-RCXFD9EQ9E'));
 
-    var auth = FirebaseAuth.instanceFor(app: app,);
+    final auth = FirebaseAuth.instanceFor(app: app,);
     auth.setPersistence(Persistence.LOCAL);
 
     try {
