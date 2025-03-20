@@ -12,6 +12,7 @@ import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/navigation_services.dart';
 import 'package:fpl/home/login.dart';
 import 'package:fpl/home/home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -23,10 +24,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  // dynamic res = await pullGameViewStats(true, true, false);
-  // print(res);
 
-  await Firebase.initializeApp(
+  var app = await Firebase.initializeApp(
       options: FirebaseOptions(
           apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
           authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
@@ -36,6 +35,8 @@ void main() async {
           appId: dotenv.env['appId'] ?? "<APP_ID>",
           measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
+  var auth = FirebaseAuth.instanceFor(app: app,);
+  auth.setPersistence(Persistence.LOCAL);
   // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(const FplApp());
 }
