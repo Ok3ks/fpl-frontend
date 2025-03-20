@@ -78,7 +78,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
 
       final participantID = parseParticipantIdFromUrl(userData['fplUrl']);
-      await currentUser.getHistory(participantID ?? "null");
+      // await currentUser.getHistory(participantID ?? "null");
 
       ref.read(currentUserProvider.notifier).state = Participant(
           email: userData['email'],

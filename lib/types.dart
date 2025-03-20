@@ -100,17 +100,25 @@ class Participant {
     return null;
   }
 
-  Future<UserCredential?> getHistory(String participantID) async {
-
-    final history = await Uri.parse(
-        "https://fantasy.premierleague.com/api/entry/$participantID/history/");
-    final response = await http.read(history);
-    DocumentReference userId = await userDbRef.add({
-      "history": {
-        response
-      }
-    });
-  }
+  // Future<UserCredential?> getHistory(String participantID) async {
+  //
+  //   final history = await Uri.parse(
+  //       "https://fantasy.premierleague.com/api/entry/$participantID/history/");
+  //   final response = await http.read(history,
+  //   headers: {
+  //     'Access-Control-Allow-Origin': '*',
+  //     'Access-Control-Allow-Methods': "OPTIONS, DELETE, GET, POST",
+  //     'Access-Control-Allow-Headers': "Content-Type",
+  //     'Access-Control-Allow-Credentials': "true"
+  //   });
+  //
+  //   CollectionReference userDbRef = FirebaseFirestore.instance.collection("users/$participantID/");
+  //   DocumentReference userId = await userDbRef.add({
+  //     "history": {
+  //       response
+  //     }
+  //   });
+  // }
 
 //TODO: Add LogOut
 }
