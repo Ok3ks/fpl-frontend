@@ -133,8 +133,6 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                       if (leagueId != 0 &&
                           leagueId != null &&
                           currParticipant != null) {
-                        print(leagueId);
-                        print(currParticipant);
                         await currParticipant.addLeague(leagueId);
                       }
                     },
@@ -175,6 +173,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
   Widget build(BuildContext context) {
     final leagueId = ref.watch(leagueProvider);
     final gameweek = ref.watch(gameweekProvider);
+    final currParticipant = ref.watch(currentUserProvider);
 
     if (leagueId != null) {
       return Column(children: [

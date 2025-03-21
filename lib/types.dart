@@ -121,7 +121,6 @@ class Participant {
           //"number_of_times_visited
           SetOptions(merge: true));
     }
-    print("added successfully");
   }
   // Future<UserCredential?> getHistory(String participantID) async {
   //
