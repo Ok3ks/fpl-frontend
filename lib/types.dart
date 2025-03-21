@@ -106,6 +106,7 @@ class Participant {
   Future<void> addLeague(double leagueId) async {
     """Adds user's associated leagueIds to Firestore""";
 
+    //Save to users firestore collection
     if (participantId != null) {
       CollectionReference userLeagueDbRef =
           FirebaseFirestore.instance.collection("users/");
