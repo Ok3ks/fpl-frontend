@@ -43,8 +43,7 @@ class BenchMetrics extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  if (data
-                          .data?['leagueWeeklyReport']['jammyPoints'][0]
+                  if (data['leagueWeeklyReport']['jammyPoints'][0]
                               ['subIn']
                           .length >
                       1)
@@ -66,7 +65,7 @@ class JammyPointsCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.sizeOf(context);
-    var obj = data.data?['leagueWeeklyReport']['jammyPoints'];
+    var obj = data['leagueWeeklyReport']['jammyPoints'];
     final gameweek = ref.watch(gameweekProvider);
     List<Object?>? playersSubIn = obj[0]['subIn'];
     List<Object?>? playersSubOut = obj[0]['subOut'];
@@ -139,7 +138,7 @@ class HighestPointsBenched extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.sizeOf(context);
     final gameweek = ref.watch(gameweekProvider);
-    dynamic highestBenched = data?.data?['leagueWeeklyReport']['mostBenched'];
+    dynamic highestBenched = data?['leagueWeeklyReport']['mostBenched'];
 
     String? highestBenchedPlayer = highestBenched?['player'].first;
 
@@ -191,9 +190,9 @@ class PlayMeInstead extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     List<Object?>? teams =
-        data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['players'];
+        data['leagueWeeklyReport']['mostPointsOnBench'].first['players'];
     String? teamName =
-        data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['teamName'];
+        data['leagueWeeklyReport']['mostPointsOnBench'].first['teamName'];
 
     return Column(children: [
       SizedBox(
