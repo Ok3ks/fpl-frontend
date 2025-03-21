@@ -81,7 +81,7 @@ class participantIDWidget extends StatelessWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("Participant ID : ${currParticipant?.fplUrl}",
+          child: Text("Participant ID : ${currParticipant?.participantId}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),

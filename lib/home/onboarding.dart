@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
+import 'package:fpl/individualpage/utils.dart';
 import 'dart:math';
 
 import 'package:go_router/go_router.dart';
@@ -158,7 +159,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               username: username!,
               password: password!,
               email: email!,
-              fplUrl: fplUrl!,
+              participantId: parseParticipantIdFromUrl(fplUrl!),
               yearsPlayingFpl: yearsPlaying!);
 
           UserCredential? currentUser =
@@ -166,19 +167,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           setState(() {
             _error = registeringParticipant.error;
           });
-
-          if (currentUser != null) {
-            //update current user for remaining part of the application
-            ref.read(currentUserProvider.notifier).state = Participant(
-                email: currentUser.user?.email ?? "default@gmail.com",
-                favoriteTeam: favoriteTeam,
-                fplUrl: fplUrl,
-                yearsPlayingFpl: yearsPlaying,
-                username: username);
-            setState(() {
-              currentStep++;
-            });
-          }
+          setState(() {
+            currentStep++;
+          });
         }
       }
     } else if (currentStep == 1) {

@@ -50,7 +50,7 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
   Widget build(BuildContext context) {
     final currParticipant = ref.watch(currentUserProvider);
 
-    if (currParticipant?.fplUrl != null) {
+    if (currParticipant?.participantId != null) {
       return SingleChildScrollView(
           child: Column(children: [
         Stack(alignment: AlignmentDirectional.center, children: [
@@ -68,7 +68,7 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
             // width: width,
             child: FutureBuilder(
                 future: pullParticipantStats(
-                    double.tryParse(currParticipant?.fplUrl ?? "")),
+                    double.tryParse(currParticipant?.participantId ?? "")),
                 builder: (context, snapshot) {
                   var obj = snapshot.data;
                   if (snapshot.hasData) {

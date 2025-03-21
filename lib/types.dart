@@ -8,7 +8,7 @@ class Participant {
   String email;
   String? username;
   String? favoriteTeam;
-  String? fplUrl;
+  String? participantId;
   String? yearsPlayingFpl;
   String? location;
   String? password;
@@ -19,7 +19,7 @@ class Participant {
       {required this.email,
       this.favoriteTeam,
       this.username,
-      this.fplUrl,
+      this.participantId,
       this.yearsPlayingFpl,
       this.location,
       this.password,
@@ -44,10 +44,11 @@ class Participant {
       UserCredential firebaseUser = await auth.createUserWithEmailAndPassword(
           email: email, password: password ?? "VRBWX6k3gZ");
       //TODO: Opportunity to add more information as drawn from FPL, into Firestore
-      DocumentReference userId = await userDbRef.add({
+      DocumentReference temp = userDbRef.doc(participantId);
+      await temp.set({
         "email": email,
         "status": "onboarding",
-        "fplUrl": fplUrl,
+        "participantId": participantId,
         "yearsPlayingFpl": yearsPlayingFpl,
         "location": location,
         "favoriteTeam": favoriteTeam,
@@ -102,6 +103,25 @@ class Participant {
     return null;
   }
 
+  Future<void> addLeague(double leagueId) async {
+    """Adds user's associated leagueIds to Firestore""";
+
+    if (participantId != null) {
+      CollectionReference userLeagueDbRef =
+          FirebaseFirestore.instance.collection("users/");
+
+      DocumentReference temp = userLeagueDbRef.doc(participantId);
+      CollectionReference leagues = await temp.collection("leagues");
+      //refactor for updates - test TODO
+      temp = leagues.doc(leagueId.toString());
+      temp.set(
+          {"id": leagueId},
+          // {"name":
+          //"number_of_times_visited
+          SetOptions(merge: true));
+    }
+    print("added successfully");
+  }
   // Future<UserCredential?> getHistory(String participantID) async {
   //
   //   final history = await Uri.parse(
@@ -123,6 +143,8 @@ class Participant {
   // }
 
 //TODO: Add LogOut
+
+//TODO: Provider which supplies most accessed element on login
 }
 
 class ParticipantHistory {

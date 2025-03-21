@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
+import 'package:fpl/types.dart';
 import 'package:fpl/utils.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/leaguepage/benchmetrics.dart';
@@ -31,6 +32,8 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width;
     final double height = size.height;
+
+    final currParticipant = ref.watch(currentUserProvider);
 
     if (orientation == Orientation.landscape) {
       return const Center(
@@ -113,16 +116,26 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                         color:
                             MaterialTheme.darkMediumContrastScheme().primary),
                     onPressed: () async {
-                      widget.leagueId =
-                          parseLeagueCodeFromUrl(leagueIdController.text);
-                      ref.read(leagueProvider.notifier).state =
-                          double.tryParse(widget.leagueId ?? "0");
                       if (leagueIdController.text.length > 1) {
-                        //TODO More data validation for league code, Also be able to parse link
                         setState(() {
                           widget.leagueId =
                               parseLeagueCodeFromUrl(leagueIdController.text);
                         });
+                      }
+
+                      ref.read(leagueProvider.notifier).state =
+                          double.tryParse(widget.leagueId ?? "0");
+                      // print(currParticipant.toString());
+                      final leagueId = ref.watch(leagueProvider);
+                      print(leagueId != 0 &&
+                          leagueId != null &&
+                          currParticipant != null);
+                      if (leagueId != 0 &&
+                          leagueId != null &&
+                          currParticipant != null) {
+                        print(leagueId);
+                        print(currParticipant);
+                        await currParticipant.addLeague(leagueId);
                       }
                     },
                   )
