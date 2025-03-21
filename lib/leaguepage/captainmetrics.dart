@@ -41,10 +41,10 @@ class CaptainMetrics extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                        data?.data?['leagueWeeklyReport']['captain'].length,
+                        data['leagueWeeklyReport']['captain'].length,
                         (index) {
                       return CaptainMetricsCard(
-                          data: data?.data?['leagueWeeklyReport']['captain']
+                          data: data['leagueWeeklyReport']['captain']
                               [index]);
                     }),
                   ))))

@@ -173,7 +173,6 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
   Widget build(BuildContext context) {
     final leagueId = ref.watch(leagueProvider);
     final gameweek = ref.watch(gameweekProvider);
-    final currParticipant = ref.watch(currentUserProvider);
 
     if (leagueId != null) {
       return Column(children: [
@@ -346,12 +345,15 @@ class LandingPage extends StatelessWidget {
 }
 
 class LeagueStats extends StatelessWidget {
-  QueryResult data;
+  Map<String, dynamic> data;
   LeagueStats({super.key, required this.data});
+
 
   @override
   Widget build(BuildContext context) {
-    String? leagueName = data.data?['leagueWeeklyReport']['leagueName'];
+    print("++++");
+    print(data);
+    String? leagueName = data['leagueWeeklyReport']['leagueName'];
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Text("$leagueName ",
           style: const TextStyle(
@@ -363,17 +365,17 @@ class LeagueStats extends StatelessWidget {
       Container(
           color: MaterialTheme.darkMediumContrastScheme().onSurface,
           child: Column(children: [
-            if (data.data?['leagueWeeklyReport']['leagueAverage'] != null)
+            if (data['leagueWeeklyReport']['leagueAverage'] != null)
               PerformanceMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['bestTransferIn'].length !=
+            if (data['leagueWeeklyReport']['bestTransferIn'].length !=
                 null)
               CaptainMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['mostBenched'].length != null)
+            if (data['leagueWeeklyReport']['mostBenched'].length != null)
               BenchMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['captain'].length != null &&
-                data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+            if (data['leagueWeeklyReport']['captain'].length != null &&
+                data['leagueWeeklyReport']['bestTransferIn'].length > 1)
               TransferMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['mostBenched'].length == null)
+            if (data['leagueWeeklyReport']['mostBenched'].length == null)
               Center(
                   child: Container(
                       // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
