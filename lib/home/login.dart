@@ -78,7 +78,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
-
+      final local = GetStorage();
       // await currentUser.getHistory(participantID ?? "null");
       box.write('isLoggedIn', true);
       ref.read(currentUserProvider.notifier).state = Participant(
@@ -88,6 +88,14 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           yearsPlayingFpl: userData['yearsPlayingFpl'],
           username: userData['username'],
           history: userData['history']);
+
+      local.write("participant", {
+        "email": userData['email'],
+        "favoriteTeam": userData['favoriteTeam'],
+        "participantId": userData['participantId'],
+        "yearsPlayingFpl": userData['yearsPlayingFpl'],
+        "username": userData['username'],
+      });
 
       Navigator.of(context).pushNamed('/home');
     }
