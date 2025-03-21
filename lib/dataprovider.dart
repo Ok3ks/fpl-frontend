@@ -7,6 +7,20 @@ import "package:cloud_firestore/cloud_firestore.dart";
 
 CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
 
+Future<void> addLeagueGlobal(
+    double leagueId, double gameweek, Map<String, dynamic>? result) async {
+  """Adds to Global League FireStore for other users""";
+
+  //Save to global league firestore collection
+  CollectionReference LeagueDbRef =
+      FirebaseFirestore.instance.collection("leagues/");
+
+  DocumentReference temp = LeagueDbRef.doc(leagueId.toString());
+  temp.set({gameweek.toString(): result}, SetOptions(merge: true));
+
+  print("added to global league successfully");
+}
+
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
   print(leagueId);
   try {
@@ -18,6 +32,11 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
           "leagueId": leagueId, //538731,
           "gameweek": gameweek, //3
         }));
+    if (gameweek != null && leagueId != null) {
+      await addLeagueGlobal(
+          leagueId, gameweek, results.data?['leagueWeeklyReport']);
+    }
+
     return results;
     // }
   } catch (e) {
