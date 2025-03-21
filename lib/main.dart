@@ -13,6 +13,7 @@ import 'package:fpl/navigation_services.dart';
 import 'package:fpl/home/login.dart';
 import 'package:fpl/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -24,6 +25,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+
+  await GetStorage.init();
 
   if (await dotenv.env['DEVELOPMENT'] == 'true') {
     var app = await Firebase.initializeApp(
@@ -51,7 +54,7 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return ProviderScope(child: LoginView());
+        return ProviderScope(child: Home());
       },
     ),
     GoRoute(

@@ -49,6 +49,7 @@ dependencies:
   http: any
   firebase_auth_web: ^5.14.1
   firebase_auth: ^5.5.1
+  get_storage: ^2.1.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

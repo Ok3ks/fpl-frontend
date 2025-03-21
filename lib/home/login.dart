@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/individualpage/utils.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/home/home.dart';
 
@@ -45,6 +46,8 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
+    final box = GetStorage();
+
 
     Participant currentUser = Participant(
         email: _emailController.text, password: _passwordController.text);
@@ -77,7 +80,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
 
       // await currentUser.getHistory(participantID ?? "null");
-
+      box.write('isLoggedIn', true);
       ref.read(currentUserProvider.notifier).state = Participant(
           email: userData['email'],
           favoriteTeam: userData['favoriteTeam'],
