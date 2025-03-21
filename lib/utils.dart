@@ -158,7 +158,7 @@ class participantIdWidget extends ConsumerWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("Current User: ${currUser?.fplUrl.toString()}",
+          child: Text("Current User: ${currUser?.participantId.toString()}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),
