@@ -150,24 +150,24 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> with
 
 
 class ParticipantStats extends StatelessWidget {
-  QueryResult data;
+  dynamic data;
   ParticipantStats({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    List<Object?> gameweek = data.data?['participantReport']['gw'];
-    List<Object?> totalPoints = data.data?['participantReport']['totalPoints'];
-    dynamic captain = data.data?['participantReport']['captain'];
-    dynamic viceCaptain = data.data?['participantReport']['viceCaptain'];
+    List<Object?> gameweek = data['participantReport']['gw'];
+    List<Object?> totalPoints = data['participantReport']['totalPoints'];
+    dynamic captain = data['participantReport']['captain'];
+    dynamic viceCaptain = data['participantReport']['viceCaptain'];
     List<Object?> captainPoints =
-        data.data?['participantReport']['captainPoints'];
+        data['participantReport']['captainPoints'];
     List<Object?> viceCaptainPoints =
-        data.data?['participantReport']['viceCaptainPoints'];
-    List<Object?> activeChip = data.data?['participantReport']['activeChip'];
+        data['participantReport']['viceCaptainPoints'];
+    List<Object?> activeChip = data['participantReport']['activeChip'];
     dynamic highestScoringPlayer =
-        data.data?['participantReport']['highestScoringPlayer'];
+        data['participantReport']['highestScoringPlayer'];
     List<Object?> highestScoringPlayerPoints =
-        data.data?['participantReport']['highestScoringPlayerPoints'];
+        data['participantReport']['highestScoringPlayerPoints'];
     List<List<Object?>> interest = [
       gameweek,
       totalPoints,

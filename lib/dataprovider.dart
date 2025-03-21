@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/logging.dart';
 import "package:fpl/graphql_schemas.dart";
@@ -85,20 +86,28 @@ Future<dynamic> pullPlayerStats(int? playerId, double? gameweek) async {
 }
 
 Future<dynamic> pullParticipantStats(double? participantId) async {
-  try {
-    QueryResult results = await client.value.query(QueryOptions(
-        document: gql(AllQueries.getParticipantStats), //
-        fetchPolicy: null,
-        cacheRereadPolicy: null,
-        variables: {
-          "entryId": participantId, //4,
-        }));
+  // final box
+  final local = GetStorage();
+  final results = local.read("participantStats");
+
+  if (results != null) {
     return results;
-    // }
-  } catch (e) {
-    print(e);
-    return false;
-    // Log.logger.e("Error during synchronization: $e");
+  } else {
+    try {
+      QueryResult results = await client.value.query(QueryOptions(
+          document: gql(AllQueries.getParticipantStats), //
+          fetchPolicy: null,
+          cacheRereadPolicy: null,
+          variables: {
+            "entryId": participantId, //4,
+          }));
+      local.write("participantStats", results.data);
+      return results.data;
+    } catch (e) {
+      print(e);
+      return false;
+      // Log.logger.e("Error during synchronization: $e");
+    }
   }
 }
 
@@ -154,5 +163,18 @@ final gameweekProvider = StateProvider<double>((ref) {
 });
 
 var currentUserProvider = StateProvider<Participant?>((ref) {
+
+  final local = GetStorage();
+  final userData = local.read('participant');
+  if (userData != null) {
+    Participant currentParticipant = Participant(
+      email: userData['email'],
+      favoriteTeam: userData['favoriteTeam'],
+      participantId: userData['participantId'],
+      yearsPlayingFpl: userData['yearsPlayingFpl'],
+      username: userData['username'],
+    );
+    return currentParticipant;
+}
   return null;
 });

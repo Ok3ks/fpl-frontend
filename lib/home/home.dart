@@ -14,9 +14,9 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final box = GetStorage();
+    final local = GetStorage();
 
-    if (box.read("isLoggedIn") == true) {
+    if (local.read("isLoggedIn") == true) {
       return MaterialApp(
         home: DefaultTabController(
           initialIndex: 0,
