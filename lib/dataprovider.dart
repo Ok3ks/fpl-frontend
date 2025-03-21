@@ -21,28 +21,48 @@ Future<void> addLeagueGlobal(
   print("added to global league successfully");
 }
 
-Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
-  print(leagueId);
-  try {
-    QueryResult results = await client.value.query(QueryOptions(
-        document: gql(AllQueries.getLeagueStats), //
-        fetchPolicy: null,
-        cacheRereadPolicy: null,
-        variables: {
-          "leagueId": leagueId, //538731,
-          "gameweek": gameweek, //3
-        }));
-    if (gameweek != null && leagueId != null) {
-      await addLeagueGlobal(
-          leagueId, gameweek, results.data?['leagueWeeklyReport']);
-    }
+Future<Object?> getLeagueGlobal(double? leagueId) async {
 
-    return results;
-    // }
-  } catch (e) {
-    print(e);
-    return false;
-    // Log.logger.e("Error during synchronization: $e");
+  //Try individually, before downloading whole blob onto machine.
+
+  CollectionReference LeagueDbRef = FirebaseFirestore.instance.collection("leagues/");
+  final snapshot = await LeagueDbRef.doc(leagueId.toString()).get();
+  final temp = snapshot.data();
+  return temp;
+}
+
+
+Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
+ //First check firebase store, otherwise check backend
+
+  Map<String, dynamic> leagueRefResults = await getLeagueGlobal(leagueId) as Map<String, dynamic>;
+  dynamic response = leagueRefResults[gameweek.toString()];
+
+  if ( response != null) {
+    return Future.value(leagueRefResults[gameweek.toString()]);
+  } else {
+    try {
+      QueryResult results = await client.value.query(QueryOptions(
+          document: gql(AllQueries.getLeagueStats), //
+          fetchPolicy: null,
+          cacheRereadPolicy: null,
+          variables: {
+            "leagueId": leagueId, //538731,
+            "gameweek": gameweek, //3
+          }));
+      if (gameweek != null && leagueId != null) {
+        //add to global firestore cache
+        await addLeagueGlobal(
+            leagueId, gameweek, results.data);
+      }
+      // print(results.data);
+      return results.data;
+      // }
+    } catch (e) {
+      print(e);
+      return false;
+      Log.logger.e("Error during synchronization: $e");
+    }
   }
 }
 

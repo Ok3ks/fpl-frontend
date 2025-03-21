@@ -22,29 +22,18 @@ class PerformanceMetrics extends StatelessWidget {
                     color: Colors.black,
                     decoration: TextDecoration.none,
                   ))),
-          // Card(
-          //     shadowColor:
-          //     MaterialTheme
-          //         .darkMediumContrastScheme()
-          //         .secondaryContainer,
-          //     elevation: 2,
-          //     color: MaterialTheme
-          //         .darkMediumContrastScheme()
-          //         .onSurface,
-          //     //elevation: 0,
-          //     child:
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             MetricsCard(
                 title: "Exceptional ",
-                data: data.data?['leagueWeeklyReport']['exceptional']),
+                data: data['leagueWeeklyReport']['exceptional']),
             LeagueAverageCard(
                 title: "League Average",
-                data: data.data?['leagueWeeklyReport']),
-            if ((data.data != null) &&
-                (data.data?['leagueWeeklyReport']['abysmal']['score'] != null))
+                data: data['leagueWeeklyReport']),
+            if ((data != null) &&
+                (data['leagueWeeklyReport']['abysmal']['score'] != null))
               MetricsCard(
                   title: "Abysmal ",
-                  data: data.data?['leagueWeeklyReport']['abysmal']),
+                  data: data['leagueWeeklyReport']['abysmal']),
           ])
           // ),
         ]);

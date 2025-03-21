@@ -76,8 +76,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
 
-      final participantID =
-          parseParticipantIdFromUrl(userData['participantId']);
       // await currentUser.getHistory(participantID ?? "null");
 
       ref.read(currentUserProvider.notifier).state = Participant(
