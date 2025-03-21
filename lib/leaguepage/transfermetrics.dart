@@ -98,7 +98,7 @@ class TransferTile extends ConsumerWidget {
                         return playerName(
                           playerId:
                               int.parse(playerOutIds[i].toString() ?? "0"),
-                          notTransfer: false,
+                          vertical: false,
                         );
                       })),
                       const SizedBox(
@@ -120,7 +120,7 @@ class TransferTile extends ConsumerWidget {
                           children: List.generate(playerInIds.length, (i) {
                         return playerName(
                           playerId: int.parse(playerInIds[i].toString() ?? "0"),
-                          notTransfer: false,
+                          vertical: false,
                         );
                       })),
                       SizedBox(

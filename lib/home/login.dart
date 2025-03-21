@@ -72,7 +72,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       });
       //Update field with userHistory
 
-
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
@@ -86,8 +85,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
           yearsPlayingFpl: userData['yearsPlayingFpl'],
           username: userData['username'],
-          history: userData['history']
-      );
+          history: userData['history']);
 
       Navigator.of(context).pushNamed('/home');
     }

@@ -37,7 +37,9 @@ void main() async {
             appId: dotenv.env['appId'] ?? "<APP_ID>",
             measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
-    var auth = FirebaseAuth.instanceFor(app: app,);
+    var auth = FirebaseAuth.instanceFor(
+      app: app,
+    );
     auth.setPersistence(Persistence.LOCAL);
   }
   runApp(const FplApp());

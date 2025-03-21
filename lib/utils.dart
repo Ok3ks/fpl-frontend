@@ -170,9 +170,9 @@ class participantIdWidget extends ConsumerWidget {
 
 class playerName extends ConsumerWidget {
   int playerId;
-  bool? notTransfer;
+  bool? vertical;
 
-  playerName({super.key, this.notTransfer, required this.playerId});
+  playerName({super.key, this.vertical, required this.playerId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -181,28 +181,55 @@ class playerName extends ConsumerWidget {
         future: pullPlayerStats(playerId, gameweek),
         builder: (context, snapshot) {
           var obj = snapshot.data;
-          return SizedBox(
-              // width: 60,
-              // height: 50,
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            SizedBox(
-                // width: 75,
-                child: TextButton(
-              child: Text(
-                  "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
-                      fontSize: 10)),
-              onPressed: () {},
-            )),
-            if (notTransfer ?? true)
+          if (vertical ?? true) {
+            return SizedBox(
+                // width: 60,
+                // height: 50,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                  SizedBox(
+                      // width: 75,
+                      child: TextButton(
+                    child: Text(
+                        "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .onSurface,
+                            fontSize: 10)),
+                    onPressed: () {},
+                  )),
+                  Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
+                      style: TextStyle(
+                          color:
+                              MaterialTheme.darkMediumContrastScheme().primary,
+                          fontSize: 12)),
+                ]));
+          } else {
+            return SizedBox(
+                // width: 60,
+                // height: 50,
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              SizedBox(
+                  // width: 75,
+                  child: TextButton(
+                child: Text(
+                    "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color:
+                            MaterialTheme.darkMediumContrastScheme().onSurface,
+                        fontSize: 10)),
+                onPressed: () {},
+              )),
               Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
                   style: TextStyle(
                       color: MaterialTheme.darkMediumContrastScheme().primary,
                       fontSize: 12)),
-          ]));
+            ]));
+          }
         });
   }
 }

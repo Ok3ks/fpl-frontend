@@ -164,7 +164,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           UserCredential? currentUser =
               await registeringParticipant.registerUser();
           setState(() {
-            _error =registeringParticipant.error;
+            _error = registeringParticipant.error;
           });
 
           if (currentUser != null) {
@@ -325,7 +325,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           _buildFeatureItem(Icons.key, 'Please enter a password'),
           TextFormField(
             obscureText: true,
-            decoration:  InputDecoration(
+            decoration: InputDecoration(
               labelText: 'password',
               errorText: _error,
               border: OutlineInputBorder(),
