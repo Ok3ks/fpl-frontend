@@ -14,7 +14,7 @@ class TransferMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-    print(data.data?['leagueWeeklyReport']['bestTransferIn']);
+    print(data['leagueWeeklyReport']['bestTransferIn']);
 
     return SizedBox(
         child: Column(
@@ -28,20 +28,20 @@ class TransferMetrics extends StatelessWidget {
                 fontSize: 12,
                 decoration: TextDecoration.none,
               )),
-          if (data.data?['leagueWeeklyReport']['bestTransferIn'] != null)
+          if (data['leagueWeeklyReport']['bestTransferIn'] != null)
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(2, (index) {
                   return TransferTile(
-                      data: data.data?['leagueWeeklyReport']['bestTransferIn'],
+                      data: data['leagueWeeklyReport']['bestTransferIn'],
                       index: index);
                 })),
-          if (data.data?['leagueWeeklyReport']['worstTransferIn'] != null)
+          if (data['leagueWeeklyReport']['worstTransferIn'] != null)
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(2, (index) {
                   return TransferTile(
-                      data: data.data?['leagueWeeklyReport']['worstTransferIn'],
+                      data: data['leagueWeeklyReport']['worstTransferIn'],
                       index: index);
                 }))
         ]));
