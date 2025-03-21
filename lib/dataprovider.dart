@@ -118,5 +118,3 @@ final gameweekProvider = StateProvider<double>((ref) {
 var currentUserProvider = StateProvider<Participant?>((ref) {
   return null;
 });
-
-

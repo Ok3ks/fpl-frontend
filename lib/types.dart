@@ -4,7 +4,6 @@ import 'package:firebase_core/firebase_core.dart';
 import "package:fpl/dataprovider.dart";
 import 'package:http/http.dart' as http;
 
-
 class Participant {
   String email;
   String? username;
@@ -16,15 +15,15 @@ class Participant {
   String? error;
   Map<String, dynamic>? history;
 
-  Participant({required this.email,
-    this.favoriteTeam,
-    this.username,
-    this.fplUrl,
-    this.yearsPlayingFpl,
-    this.location,
-    this.password,
-    this.history
-  });
+  Participant(
+      {required this.email,
+      this.favoriteTeam,
+      this.username,
+      this.fplUrl,
+      this.yearsPlayingFpl,
+      this.location,
+      this.password,
+      this.history});
 
   Future<UserCredential?> registerUser() async {
     var app = await Firebase.initializeApp(
@@ -37,11 +36,12 @@ class Participant {
             appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
             measurementId: 'G-RCXFD9EQ9E'));
 
-    var auth = FirebaseAuth.instanceFor(app: app,);
+    var auth = FirebaseAuth.instanceFor(
+      app: app,
+    );
     auth.setPersistence(Persistence.LOCAL);
     try {
-      UserCredential firebaseUser = await auth
-          .createUserWithEmailAndPassword(
+      UserCredential firebaseUser = await auth.createUserWithEmailAndPassword(
           email: email, password: password ?? "VRBWX6k3gZ");
       //TODO: Opportunity to add more information as drawn from FPL, into Firestore
       DocumentReference userId = await userDbRef.add({
@@ -70,7 +70,6 @@ class Participant {
   }
 
   Future<UserCredential?> retrieveUser(String password) async {
-
     final app = await Firebase.initializeApp(
         options: const FirebaseOptions(
             apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
@@ -81,11 +80,14 @@ class Participant {
             appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
             measurementId: 'G-RCXFD9EQ9E'));
 
-    final auth = FirebaseAuth.instanceFor(app: app,);
+    final auth = FirebaseAuth.instanceFor(
+      app: app,
+    );
     auth.setPersistence(Persistence.LOCAL);
 
     try {
-      UserCredential loggedInFirebaseUser =  await auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential loggedInFirebaseUser = await auth
+          .signInWithEmailAndPassword(email: email, password: password);
       error = '';
       return loggedInFirebaseUser;
     } on FirebaseAuthException catch (e) {
@@ -124,9 +126,7 @@ class Participant {
 }
 
 class ParticipantHistory {
-
   List<Map<String, dynamic>>? current;
   List<Map<String, dynamic>>? past;
   List<Map<String, dynamic>>? chips;
-
 }
