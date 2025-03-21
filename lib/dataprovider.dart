@@ -55,13 +55,12 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
         await addLeagueGlobal(
             leagueId, gameweek, results.data);
       }
-      // print(results.data);
       return results.data;
       // }
     } catch (e) {
       print(e);
+      // Log.logger.e("Error during synchronization: $e");
       return false;
-      Log.logger.e("Error during synchronization: $e");
     }
   }
 }

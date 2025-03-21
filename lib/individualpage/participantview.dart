@@ -33,6 +33,25 @@ class ParticipantView extends StatelessWidget {
   }
 }
 
+//Test animated widget
+class AnimatedStar extends AnimatedWidget {
+  const AnimatedStar({super.key, required Animation<double> animation})
+      : super(listenable: animation);
+
+  @override
+  Widget build(BuildContext context) {
+    final animation = listenable as Animation<double>;
+    return Center(
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        height: animation.value,
+        width: animation.value,
+        child: const Icon(Icons.star),
+      ),
+    );
+  }
+}
+
 class ParticipantStatsView extends ConsumerStatefulWidget {
   ParticipantStatsView({
     super.key,
@@ -43,8 +62,22 @@ class ParticipantStatsView extends ConsumerStatefulWidget {
       ParticipantStatsViewState();
 }
 
-class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
+
+class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> with SingleTickerProviderStateMixin
+{
   String? leagueName;
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+    AnimationController(vsync: this, duration: const Duration(seconds: 2))
+      ..forward()
+      ..repeat(reverse: true);
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +108,36 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
                     return ParticipantStats(data: obj);
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return DataTable(
+                        columns: const [
+                          DataColumn(label: Text("GW")),
+                          DataColumn(label: Text("Points")),
+                          DataColumn(label: Text("Captain")),
+                          DataColumn(label: Text("Vice")),
+                          // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
+                          DataColumn(label: Text("Highest Scoring Player")),
+                          //league average
+                        ],
+                        rows: List.generate(10, (rowIndex) {
+                          return DataRow(
+                              color: WidgetStateProperty.resolveWith<Color?>(
+                                      (Set<WidgetState> states) {
+                                  }),
+                              cells: List.generate(5, (cellIndex) {
+                                  return DataCell(
+                                    //Maybe Add lottie here
+                                    Opacity(
+                                      child: AnimatedIcon(
+                                      icon: AnimatedIcons.play_pause,
+                                      progress: animation,
+                                      size: 10.0,
+                                    ),
+                                  opacity: 0.5,
+                                  // ],
+                                  ));
+                                }
+                              ));
+                        }));
                   } else {
                     return const Text("No Data");
                   }
@@ -85,6 +147,7 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
     return LandingPage();
   }
 }
+
 
 class ParticipantStats extends StatelessWidget {
   QueryResult data;
