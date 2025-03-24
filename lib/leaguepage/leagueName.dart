@@ -10,7 +10,7 @@ class leagueName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // String  name = data['leagueWeeklyReport']['leagueName'];
-    if (hydrate == false) {
+    if (hydrate == true) {
       return Text("$name ",
           style: const TextStyle(
             color: Colors.black,
