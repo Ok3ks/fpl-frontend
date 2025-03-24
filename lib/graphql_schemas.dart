@@ -61,7 +61,6 @@ class AllQueries {
       bestTransferIn{
         entryId
         teamName
-        entryId
         playerIn
         playerOut
         pointsDelta
@@ -69,7 +68,6 @@ class AllQueries {
       worstTransferIn{
         entryId
         teamName
-        entryId
         playerIn
         playerOut
         pointsDelta
