@@ -4,7 +4,7 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 
 class CaptainMetrics extends StatelessWidget {
-  dynamic data;
+  Map<String, dynamic>? data;
 
   CaptainMetrics({super.key, required this.data});
   final yourScrollController = ScrollController(
@@ -15,6 +15,7 @@ class CaptainMetrics extends StatelessWidget {
   final double gap = 10;
   @override
   Widget build(BuildContext context) {
+    final List<dynamic>? captain = data?['leagueWeeklyReport']['captain'];
     return SizedBox(
         child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       const SizedBox(
@@ -28,7 +29,8 @@ class CaptainMetrics extends StatelessWidget {
                 fontSize: 11,
                 decoration: TextDecoration.none,
               ))),
-      Card(
+        if (captain != null)
+        Card(
           color: MaterialTheme.darkMediumContrastScheme().onSurface,
           elevation: 5,
           child: Scrollbar(
@@ -40,13 +42,14 @@ class CaptainMetrics extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                        data['leagueWeeklyReport']['captain'].length,
-                        (index) {
-                      return CaptainMetricsCard(
-                          data: data['leagueWeeklyReport']['captain']
-                              [index]);
-                    }),
+
+              children: List.generate(
+              captain.length,
+              (index) {
+              return CaptainMetricsCard(
+              data: data?['leagueWeeklyReport']['captain']
+              [index]);
+              }),
                   ))))
     ]));
     // ],
