@@ -5,9 +5,17 @@ import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
 import 'dart:html' as html;
 
-class BenchMetrics extends StatelessWidget {
+class BenchMetrics extends StatefulWidget {
   final Map<String, dynamic>? data;
+
   BenchMetrics({super.key, required this.data});
+
+  @override
+  State<BenchMetrics> createState() => BenchMetricsState();
+
+}
+
+class BenchMetricsState extends State<BenchMetrics> {
 
   final yourScrollController = ScrollController(
     onAttach: (position) {},
@@ -16,39 +24,46 @@ class BenchMetrics extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.of(context).orientation;
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const Align(
-              alignment: Alignment.bottomLeft,
-              child: Text("Bench Effect",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 11,
-                    decoration: TextDecoration.none,
-                  ))),
-          Scrollbar(
-              thickness: 2,
-              trackVisibility: true,
-              controller: yourScrollController,
-              radius: const Radius.circular(3),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    JammyPointsCard(data: data),
-                  HighestPointsBenched(data: data),
-                  PlayMeInstead(data: data),
-                ]),
-                // Text("Bench Points")
-              ))
-          // )
-        ]);
-  }
-}
+    Orientation orientation = MediaQuery
+        .of(context)
+        .orientation;
+    if (widget.data != null) {
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Align(
+                alignment: Alignment.bottomLeft,
+                child: Text("Bench Effect",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 11,
+                      decoration: TextDecoration.none,
+                    ))),
+            Scrollbar(
+                thickness: 2,
+                trackVisibility: true,
+                controller: yourScrollController,
+                radius: const Radius.circular(3),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child:
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    JammyPointsCard(data: widget.data),
+                    HighestPointsBenched(data: widget.data),
+                    PlayMeInstead(data: widget.data),
+                  ]),
+                  // Text("Bench Points")
+                ))
+            // )
+          ]);
+    } else {
+      //replace with animation maybe
+      return CircularProgressIndicator();
+
+    }}}
+
 
 class JammyPointsCard extends ConsumerWidget {
   Map<String, dynamic>? data;
