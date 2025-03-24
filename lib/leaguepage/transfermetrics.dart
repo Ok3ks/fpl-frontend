@@ -3,48 +3,125 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/themes.dart';
 import '../utils.dart';
 import 'dart:html' as html;
-
 import '../dataprovider.dart';
 
-class TransferMetrics extends StatelessWidget {
+class TransferMetrics extends StatefulWidget {
   // final String title;
-  dynamic data;
-  TransferMetrics({super.key, required this.data});
+  Map<String,dynamic>? data;
+  bool hydrate;
+  TransferMetrics({super.key, required this.data, this.hydrate = true});
+
+  @override
+  State<TransferMetrics> createState() => TransferMetricsState();
+}
+
+class TransferMetricsState extends State<TransferMetrics> with SingleTickerProviderStateMixin{
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+    AnimationController(vsync: this, duration: const Duration(seconds: 2))
+      ..forward()
+      ..repeat(reverse: true);
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+  }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
 
-    return SizedBox(
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-          const Text("Transfer Impact",
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-                decoration: TextDecoration.none,
-              )),
-          if (data['leagueWeeklyReport']['bestTransferIn'] != null)
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(2, (index) {
-                  return TransferTile(
-                      data: data['leagueWeeklyReport']['bestTransferIn'],
-                      index: index);
-                })),
-          if (data['leagueWeeklyReport']['worstTransferIn'] != null)
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(2, (index) {
-                  return TransferTile(
-                      data: data['leagueWeeklyReport']['worstTransferIn'],
-                      index: index);
-                }))
-        ]));
-    // );
+    if (widget.hydrate) {
+      return SizedBox(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                const Text("Transfer Impact",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      decoration: TextDecoration.none,
+                    )),
+                if (widget.data?['leagueWeeklyReport']['bestTransferIn'] !=
+                    null)
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(2, (index) {
+                        return TransferTile(
+                            data: widget
+                                .data?['leagueWeeklyReport']['bestTransferIn'],
+                            index: index);
+                      })),
+                if (widget.data?['leagueWeeklyReport']['worstTransferIn'] !=
+                    null)
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(2, (index) {
+                        return TransferTile(
+                            data: widget
+                                .data?['leagueWeeklyReport']['worstTransferIn'],
+                            index: index);
+                      }))
+              ]));
+    }
+    else {
+      return SizedBox(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(2, (index) {
+                        return SizedBox(
+                            width: 600,
+                            child: Card(
+                            shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                            width: 1.5,
+                            color: MaterialTheme.darkMediumContrastScheme().primary),
+                            borderRadius: BorderRadius.circular(8)),
+                            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                            child: Opacity(
+                              child: AnimatedIcon(
+                                icon: AnimatedIcons.play_pause,
+                                progress: animation,
+                                size: 10.0,
+                              ),
+                              opacity: 0.5,
+                            )
+                            )
+                        );
+                      })),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: List.generate(2, (index) {
+                         return SizedBox(
+                            width: 600,
+                            child: Card(
+                            shape: RoundedRectangleBorder(
+                            side: BorderSide(
+                            width: 1.5,
+                            color: MaterialTheme.darkMediumContrastScheme().primary),
+                        borderRadius: BorderRadius.circular(8)),
+                        color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                        child: Opacity(
+                          child: AnimatedIcon(
+                            icon: AnimatedIcons.play_pause,
+                            progress: animation,
+                            size: 10.0,
+                          ),
+                          opacity: 0.5,
+                        )
+                            )
+                         );
+                      }))
+              ]));
+    }
   }
 }
 
@@ -64,7 +141,6 @@ class TransferTile extends ConsumerWidget {
 
     return SizedBox(
         width: 600,
-        // height: 45,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(

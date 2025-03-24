@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:fpl/themes.dart';
 
 class leagueName extends StatelessWidget {
-  String? name;
+  Map<String, dynamic>? data;
   bool hydrate;
 
-  leagueName({super.key, required this.name, this.hydrate = false});
+  leagueName({super.key, required this.data, this.hydrate = true});
 
   @override
   Widget build(BuildContext context) {
     // String  name = data['leagueWeeklyReport']['leagueName'];
     if (hydrate == true) {
-      return Text("$name ",
+      return Text("${data?['leagueWeeklyReport']['leagueName']}",
           style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.w400,
