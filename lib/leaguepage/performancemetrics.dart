@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fpl/themes.dart';
 
 class PerformanceMetrics extends StatelessWidget {
-  dynamic data;
+  Map<String, dynamic>? data;
 
   PerformanceMetrics({super.key, required this.data});
 
@@ -25,15 +25,15 @@ class PerformanceMetrics extends StatelessWidget {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             MetricsCard(
                 title: "Exceptional ",
-                data: data['leagueWeeklyReport']['exceptional']),
+                data: data?['leagueWeeklyReport']['exceptional']),
             LeagueAverageCard(
                 title: "League Average",
-                data: data['leagueWeeklyReport']),
+                data: data?['leagueWeeklyReport']),
             if ((data != null) &&
-                (data['leagueWeeklyReport']['abysmal']['score'] != null))
+                (data?['leagueWeeklyReport']['abysmal']['score'] != null))
               MetricsCard(
                   title: "Abysmal ",
-                  data: data['leagueWeeklyReport']['abysmal']),
+                  data: data?['leagueWeeklyReport']['abysmal']),
           ])
           // ),
         ]);

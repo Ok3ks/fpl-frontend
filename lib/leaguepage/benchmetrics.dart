@@ -40,8 +40,8 @@ class BenchMetrics extends StatelessWidget {
                 child:
                     Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     JammyPointsCard(data: data),
-                  // HighestPointsBenched(data: data),
-                  // PlayMeInstead(data: data),
+                  HighestPointsBenched(data: data),
+                  PlayMeInstead(data: data),
                 ]),
                 // Text("Bench Points")
               ))
@@ -179,8 +179,6 @@ class HighestPointsBenched extends ConsumerWidget {
                       playerId: int.parse(highestBenchedPlayer ?? '0') ?? 0),
                 ],
               ),
-              // ],
-              // ),
             )),
       )
     ]);
