@@ -14,7 +14,6 @@ class TransferMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-    print(data['leagueWeeklyReport']['bestTransferIn']);
 
     return SizedBox(
         child: Column(
@@ -85,7 +84,7 @@ class TransferTile extends ConsumerWidget {
                                 style: TextStyle(
                                   color:
                                       MaterialTheme.darkMediumContrastScheme()
-                                          .onSurface,
+                                          .primary,
                                   fontSize: 10,
                                 )),
                             onPressed: () {
