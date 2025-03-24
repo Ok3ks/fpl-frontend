@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
+import 'dart:html' as html;
 
 class BenchMetrics extends StatelessWidget {
   final dynamic data;
@@ -29,11 +30,6 @@ class BenchMetrics extends StatelessWidget {
                     fontSize: 11,
                     decoration: TextDecoration.none,
                   ))),
-          // Card(
-          //   shadowColor:
-          //   MaterialTheme.darkMediumContrastScheme().secondaryContainer,
-          //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          //   child:
           Scrollbar(
               thickness: 2,
               trackVisibility: true,
@@ -66,7 +62,6 @@ class JammyPointsCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.sizeOf(context);
     var obj = data['leagueWeeklyReport']['jammyPoints'];
-    final gameweek = ref.watch(gameweekProvider);
     List<Object?>? playersSubIn = obj[0]['subIn'];
     List<Object?>? playersSubOut = obj[0]['subOut'];
     return Row(children: [
@@ -119,7 +114,7 @@ class JammyPointsCard extends ConsumerWidget {
                       child: Text("${obj[0]['teamName']}",
                           style: TextStyle(
                               color: MaterialTheme.darkMediumContrastScheme()
-                                  .primary,
+                                  .onSurface,
                               fontSize: 10))),
                 ],
               ),
@@ -194,6 +189,8 @@ class PlayMeInstead extends StatelessWidget {
     String? teamName =
         data['leagueWeeklyReport']['mostPointsOnBench'].first['teamName'];
 
+    //ToDo: add entryId to graphqlschema, need to update django backend. Maybe Version and aggregate all changes
+
     return Column(children: [
       SizedBox(
         // width: 270,
@@ -230,16 +227,17 @@ class PlayMeInstead extends StatelessWidget {
                   // )),
                   const SizedBox(height: 5),
                   Center(
-                      child: Text("$teamName",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .primary,
-                              fontSize: 10))),
-                ],
-              ),
-            )),
+                      child:Text("$teamName",
+                            style: TextStyle(
+                              color:
+                              MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10,
+                            )),
+                        ),
+            ])),
       )
-    ]);
+      )]);
     // ]);
   }
 }
