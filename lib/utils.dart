@@ -181,54 +181,79 @@ class playerName extends ConsumerWidget {
         future: pullPlayerStats(playerId, gameweek),
         builder: (context, snapshot) {
           var obj = snapshot.data;
-          if (vertical ?? true) {
-            return SizedBox(
+          if (snapshot.hasData) {
+            // return ParticipantStats(data: obj);
+            if (vertical ?? true) {
+              return SizedBox(
                 // width: 60,
                 // height: 50,
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                  SizedBox(
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          // width: 75,
+                            child: TextButton(
+                              child: Text(
+                                  "${obj.data?['player']['info']['playerName']
+                                      .toString()
+                                      .split(" ")
+                                      .last}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: MaterialTheme
+                                          .darkMediumContrastScheme()
+                                          .onSurface,
+                                      fontSize: 10)),
+                              onPressed: () {},
+                            )),
+                        Text("${obj
+                            .data?['player']['gameweekScore']['totalPoints']}",
+                            style: TextStyle(
+                                color:
+                                MaterialTheme
+                                    .darkMediumContrastScheme()
+                                    .primary,
+                                fontSize: 12)),
+                      ]));
+            } else {
+              return SizedBox(
+                // width: 60,
+                // height: 50,
+                  child:
+                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                    SizedBox(
                       // width: 75,
-                      child: TextButton(
-                    child: Text(
-                        "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
-                        textAlign: TextAlign.center,
+                        child: TextButton(
+                          child: Text(
+                              "${obj.data?['player']['info']['playerName']
+                                  .toString()
+                                  .split(" ")
+                                  .last}",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color:
+                                  MaterialTheme
+                                      .darkMediumContrastScheme()
+                                      .onSurface,
+                                  fontSize: 10)),
+                          onPressed: () {},
+                        )),
+                    Text("${obj
+                        .data?['player']['gameweekScore']['totalPoints']}",
                         style: TextStyle(
-                            color: MaterialTheme.darkMediumContrastScheme()
-                                .onSurface,
-                            fontSize: 10)),
-                    onPressed: () {},
-                  )),
-                  Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
-                      style: TextStyle(
-                          color:
-                              MaterialTheme.darkMediumContrastScheme().primary,
-                          fontSize: 12)),
-                ]));
-          } else {
-            return SizedBox(
-                // width: 60,
-                // height: 50,
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-              SizedBox(
-                  // width: 75,
-                  child: TextButton(
-                child: Text(
-                    "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color:
-                            MaterialTheme.darkMediumContrastScheme().onSurface,
-                        fontSize: 10)),
-                onPressed: () {},
-              )),
-              Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().primary,
-                      fontSize: 12)),
-            ]));
+                            color: MaterialTheme
+                                .darkMediumContrastScheme()
+                                .primary,
+                            fontSize: 12)),
+                  ]));
+            }
+          }
+          else if (snapshot.connectionState ==
+              ConnectionState.waiting) {
+                return CircularProgressIndicator();
+          }
+          else {
+            return Text("No Data");
           }
         });
   }
