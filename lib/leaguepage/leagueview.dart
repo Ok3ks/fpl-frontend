@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
-import 'package:fpl/types.dart';
 import 'package:fpl/utils.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/leaguepage/benchmetrics.dart';
 import 'package:fpl/leaguepage/captainmetrics.dart';
 import 'package:fpl/leaguepage/transfermetrics.dart';
 import 'package:fpl/leaguepage/performancemetrics.dart';
+import 'package:fpl/leaguepage/leagueName.dart';
 
 import 'dart:convert';
 
@@ -185,7 +184,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
               if (snapshot.hasData) {
                 return LeagueStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return LeagueStats(data: obj);
               } else {
                 return const Text("No Data");
               }
@@ -345,7 +344,9 @@ class LandingPage extends StatelessWidget {
 }
 
 class LeagueStats extends StatelessWidget {
-  Map<String, dynamic> data;
+  Map<String, dynamic>? data;
+  bool hydrate = true;
+
   LeagueStats({super.key, required this.data});
 
 
@@ -353,43 +354,72 @@ class LeagueStats extends StatelessWidget {
   Widget build(BuildContext context) {
     print("++++");
     print(data);
-    String? leagueName = data['leagueWeeklyReport']['leagueName'];
-    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Text("$leagueName ",
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-            decoration: TextDecoration.none,
-          )),
-      Container(
-          color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          child: Column(children: [
-            if (data['leagueWeeklyReport']['leagueAverage'] != null)
+    print("++++");
+
+    if (hydrate == true) {
+      return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Container(
+            color: MaterialTheme
+                .darkMediumContrastScheme()
+                .onSurface,
+            child: Column(children: [
+              leagueName(name: data?['leagueWeeklyReport']['leagueName'],
+                hydrate: hydrate,),
               PerformanceMetrics(data: data),
-            if (data['leagueWeeklyReport']['bestTransferIn'].length !=
-                null)
               CaptainMetrics(data: data),
-            if (data['leagueWeeklyReport']['mostBenched'].length != null)
               BenchMetrics(data: data),
-            if (data['leagueWeeklyReport']['captain'].length != null &&
-                data['leagueWeeklyReport']['bestTransferIn'].length > 1)
               TransferMetrics(data: data),
-            if (data['leagueWeeklyReport']['mostBenched'].length == null)
-              Center(
-                  child: Container(
+              if (data?['leagueWeeklyReport']['mostBenched'].length ==
+                  null) //ToDo Add timeout here or just validate from entry?
+                Center(
+                    child: Container(
                       // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                      color: Colors.white,
-                      child: Column(children: [
-                        const Text("Input is invalid",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.red)),
-                        LandingPage(),
-                      ])))
-          ])),
-    ]);
+                        color: Colors.white,
+                        child: Column(children: [
+                          const Text("Input is invalid",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w200,
+                                  color: Colors.red)),
+                          LandingPage(),
+                        ])))
+            ])),
+      ]);
+    }
+    else {
+      return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        Container(
+            color: MaterialTheme
+                .darkMediumContrastScheme()
+                .onSurface,
+            child: Column(children: [
+              leagueName(name: data?['leagueWeeklyReport']['leagueName'],
+                  hydrate: hydrate),
+              PerformanceMetrics(data: data),
+              if (data?['leagueWeeklyReport']['bestTransferIn'].length !=
+                  null)
+                CaptainMetrics(data: data),
+              if (data?['leagueWeeklyReport']['mostBenched'].length != null)
+                BenchMetrics(data: data),
+              if (data?['leagueWeeklyReport']['captain'].length != null &&
+                  data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
+                TransferMetrics(data: data),
+              if (data?['leagueWeeklyReport']['mostBenched'].length == null)
+                Center(
+                    child: Container(
+                      // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                        color: Colors.white,
+                        child: Column(children: [
+                          const Text("Input is invalid",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w200,
+                                  color: Colors.red)),
+                          LandingPage(),
+                        ])))
+            ])),
+      ]);
+    }
   }
 }
 
