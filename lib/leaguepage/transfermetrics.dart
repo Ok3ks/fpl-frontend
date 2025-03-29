@@ -32,8 +32,9 @@ class TransferMetricsState extends State<TransferMetrics> with SingleTickerProvi
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
+    bool hasItems = widget.data?['leagueWeeklyReport']['bestTransferIn'].length > 0;
 
-    if (widget.hydrate) {
+    if (widget.hydrate && hasItems) {
       return SizedBox(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,8 +47,6 @@ class TransferMetricsState extends State<TransferMetrics> with SingleTickerProvi
                       fontSize: 12,
                       decoration: TextDecoration.none,
                     )),
-                if (widget.data?['leagueWeeklyReport']['bestTransferIn'] !=
-                    null)
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(2, (index) {
@@ -56,8 +55,6 @@ class TransferMetricsState extends State<TransferMetrics> with SingleTickerProvi
                                 .data?['leagueWeeklyReport']['bestTransferIn'],
                             index: index);
                       })),
-                if (widget.data?['leagueWeeklyReport']['worstTransferIn'] !=
-                    null)
                   Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: List.generate(2, (index) {
@@ -168,6 +165,7 @@ class TransferTile extends ConsumerWidget {
                                   "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
                             },
                           )),
+                      if (playerOutIds.isNotEmpty)
                       Column(
                           children: List.generate(playerOutIds.length, (i) {
                         return playerName(
@@ -191,6 +189,7 @@ class TransferTile extends ConsumerWidget {
                               )
                             ],
                           )),
+                      if (playerInIds.isNotEmpty)
                       Column(
                           children: List.generate(playerInIds.length, (i) {
                         return playerName(
@@ -199,9 +198,6 @@ class TransferTile extends ConsumerWidget {
                         );
                       })),
                       SizedBox(
-                          // clipBehavior: Clip.hardEdge,
-                          // height: 40,
-                          // width: 50,
                           child: Center(
                         child: Text(
                           "${data[index]['pointsDelta']}pts",

@@ -282,3 +282,24 @@ String parseParticipantIdFromUrl(String url) {
   return match?.group(1) ??
       "No participant ID"; // group(1) will contain the participant code
 }
+
+class CustomDivider extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.sizeOf(context);
+    final double width = size.width;
+      return SizedBox(
+                        width: width,
+                        height: 15,
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                    width: 1.5,
+                                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                                borderRadius: BorderRadius.circular(8)),
+                            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                            child: Text("")
+                    ));
+                  }
+  }

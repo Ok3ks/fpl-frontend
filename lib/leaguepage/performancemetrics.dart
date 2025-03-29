@@ -14,14 +14,6 @@ class PerformanceMetrics extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Align(
-              alignment: Alignment.bottomLeft,
-              child: Text("Performance",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.black,
-                    decoration: TextDecoration.none,
-                  ))),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             MetricsCard(
                 title: "Exceptional ",
