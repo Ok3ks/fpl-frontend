@@ -81,6 +81,10 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView>
   @override
   Widget build(BuildContext context) {
     final currParticipant = ref.watch(currentUserProvider);
+    final Size size = MediaQuery.sizeOf(context);
+    final double width = size.width;
+
+
 
     if (currParticipant?.participantId != null) {
       return SingleChildScrollView(
@@ -109,12 +113,12 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView>
                       ConnectionState.waiting) {
                     return DataTable(
                         columns: const [
-                          DataColumn(label: Text("GW")),
-                          DataColumn(label: Text("Points")),
-                          DataColumn(label: Text("Captain")),
-                          DataColumn(label: Text("Vice")),
+                          DataColumn(label: Text(""),),
+                          DataColumn(label: Text("")),
+                          DataColumn(label: Text("")),
                           // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
-                          DataColumn(label: Text("Highest Scoring Player")),
+                          DataColumn(label: Text("Best Player")),
+                          DataColumn(label: Text("Points")),
                           //league average
                         ],
                         rows: List.generate(10, (rowIndex) {
@@ -165,20 +169,25 @@ class ParticipantStats extends StatelessWidget {
         data['participantReport']['highestScoringPlayerPoints'];
     List<List<Object?>> interest = [
       gameweek,
-      totalPoints,
       captainPoints,
       viceCaptainPoints,
-      highestScoringPlayer
+      highestScoringPlayer,
+      totalPoints,
     ];
 
-    return DataTable(
+    return
+      // width: 500,
+    DataTable(
+        sortColumnIndex: 4,
+        dataRowMinHeight: 40,
+        columnSpacing: 4,
         columns: const [
-          DataColumn(label: Text("GW")),
-          DataColumn(label: Text("Points")),
-          DataColumn(label: Text("Captain")),
-          DataColumn(label: Text("Vice")),
+          DataColumn(label: Text("")),
+          DataColumn(label: Text("",style: TextStyle(fontSize: 10),)),
+          DataColumn(label: Text("")),
           // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
-          DataColumn(label: Text("Highest Scoring Player")),
+          DataColumn(label: Text("Best Player")),
+          DataColumn(label: Text("Points"), numeric:true),
           //league average
         ],
         rows: List.generate(gameweek.length, (rowIndex) {
@@ -198,9 +207,6 @@ class ParticipantStats extends StatelessWidget {
                   return MaterialTheme.lightHighContrastScheme()
                       .surfaceContainerLowest
                       .withOpacity(1.0);
-                  return MaterialTheme.lightHighContrastScheme()
-                      .surfaceContainerHighest
-                      .withOpacity(1.0);
                 } else if (flag) {
                   return MaterialTheme.lightHighContrastScheme()
                       .errorContainer
@@ -213,18 +219,28 @@ class ParticipantStats extends StatelessWidget {
               }),
               cells: List.generate(interest.length, (cellIndex) {
                 if (interest[cellIndex] == captainPoints) {
-                  return DataCell(captainViceCaptainName(
-                    playerName: captain[rowIndex]['info']['playerName'],
-                    playerPoint: capPoint,
-                    flag: flag && !miniFlag,
-                  ));
+                  return DataCell(
+                    Column(
+                      children: [
+                      captainViceCaptainName(
+                        playerName: captain[rowIndex]['info']['playerName'],
+                        playerPoint: capPoint,
+                        flag: flag && !miniFlag,
+                      ),
+                      Text("C", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
+                  ]));
                 }
                 if (interest[cellIndex] == viceCaptainPoints) {
-                  return DataCell(captainViceCaptainName(
+                  return DataCell(
+                      Column(
+                          children: [
+                            captainViceCaptainName(
                     playerName: viceCaptain[rowIndex]['info']['playerName'],
                     playerPoint: vcPoint,
                     flag: flag && !miniFlag,
-                  ));
+                  ),
+                            Text("VC", style: TextStyle(fontSize: 10, color: MaterialTheme.darkMediumContrastScheme().primary))
+                          ]));
                 }
                 if (interest[cellIndex] == highestScoringPlayer) {
                   return DataCell(captainViceCaptainName(
@@ -239,6 +255,7 @@ class ParticipantStats extends StatelessWidget {
                     Text(interest[cellIndex][rowIndex].toString(),
                         style: TextStyle(
                             fontSize: 10,
+                            fontWeight: FontWeight.bold,
                             color: flag && !miniFlag
                                 ? Colors.white
                                 : Colors.black)),
@@ -254,8 +271,8 @@ class ParticipantStats extends StatelessWidget {
                       ),
                   ]));
                 } else {
-                  return DataCell(Text(
-                    interest[cellIndex][rowIndex].toString(),
+                  return DataCell(
+                    Text("Gameweek ${interest[cellIndex][rowIndex].toString()}",
                     style: TextStyle(
                       fontSize: 10,
                       color: flag && !miniFlag ? Colors.white : Colors.black,
@@ -264,6 +281,7 @@ class ParticipantStats extends StatelessWidget {
                 }
               }));
         }));
+    // );
   }
 }
 

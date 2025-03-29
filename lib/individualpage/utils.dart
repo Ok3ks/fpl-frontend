@@ -19,9 +19,10 @@ class captainViceCaptainName extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      // height: 60,
+        child:
       TextButton(
-        child: Text(playerName.split(" ").last,
+        child: Text("${playerName.split(" ").last}, $playerPoint",
             textAlign: TextAlign.center,
             style: TextStyle(
                 color: flag
@@ -29,17 +30,14 @@ class captainViceCaptainName extends ConsumerWidget {
                     : MaterialTheme.lightHighContrastScheme().onSurface,
                 fontSize: 10)),
         onPressed: () {},
-      ),
-      TextButton(
-        child: Text("$playerPoint",
-            style: TextStyle(
-                color: flag
-                    ? MaterialTheme.lightHighContrastScheme().onErrorContainer
-                    : MaterialTheme.lightHighContrastScheme().onSurface,
-                fontSize: 12)),
-        onPressed: () {},
-      ),
-    ]));
+      ));
+      // Text("$playerPoint",
+      //       style: TextStyle(
+      //           color: flag
+      //               ? MaterialTheme.lightHighContrastScheme().onErrorContainer
+      //               : MaterialTheme.lightHighContrastScheme().onSurface,
+      //           fontSize: 12)),
+    // ]));
   }
 }
 
