@@ -126,9 +126,6 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                           double.tryParse(widget.leagueId ?? "0");
                       // print(currParticipant.toString());
                       final leagueId = ref.watch(leagueProvider);
-                      print(leagueId != 0 &&
-                          leagueId != null &&
-                          currParticipant != null);
                       if (leagueId != 0 &&
                           leagueId != null &&
                           currParticipant != null) {

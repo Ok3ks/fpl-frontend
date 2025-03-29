@@ -157,7 +157,6 @@ class expandedGameweekWidget extends ConsumerWidget {
     final gameweek = ref.watch(gameweekProvider);
     final enabled = ref.watch(expandGameweekProvider);
 
-    //TODO:Limit based on current gameweek
     if (enabled) {
       return Row(
           mainAxisAlignment: MainAxisAlignment.center,

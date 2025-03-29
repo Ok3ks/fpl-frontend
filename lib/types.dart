@@ -105,42 +105,31 @@ class Participant {
 
   Future<void> addLeague(double leagueId) async {
     """Adds user's associated leagueIds to Firestore""";
-
+    final app = await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
+            authDomain: 'fpl-frontend.firebaseapp.com',
+            projectId: 'fpl-frontend',
+            storageBucket: 'fpl-frontend.firebasestorage.app',
+            messagingSenderId: '249818130331',
+            appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
+            measurementId: 'G-RCXFD9EQ9E'));
     //Save to users firestore collection
     if (participantId != null) {
-      CollectionReference userLeagueDbRef =
-          FirebaseFirestore.instance.collection("users/");
+        CollectionReference userLeagueDbRef =
+        FirebaseFirestore.instance.collection("users");
 
-      DocumentReference temp = userLeagueDbRef.doc(participantId);
-      CollectionReference leagues = await temp.collection("leagues");
-      //refactor for updates - test TODO
-      temp = leagues.doc(leagueId.toString());
-      temp.set(
-          {"id": leagueId},
-          // {"name":
-          //"number_of_times_visited
-          SetOptions(merge: true));
+        DocumentReference temp = userLeagueDbRef.doc(participantId);
+        CollectionReference leagues = await temp.collection("leagues");
+        //refactor for updates - test TODO
+        temp = leagues.doc(leagueId.toString());
+        temp.set(
+            {"id": leagueId},
+            // {"name":
+            //"number_of_times_visited
+            SetOptions(merge: true));
     }
   }
-  // Future<UserCredential?> getHistory(String participantID) async {
-  //
-  //   final history = await Uri.parse(
-  //       "https://fantasy.premierleague.com/api/entry/$participantID/history/");
-  //   final response = await http.read(history,
-  //   headers: {
-  //     'Access-Control-Allow-Origin': '*',
-  //     'Access-Control-Allow-Methods': "OPTIONS, DELETE, GET, POST",
-  //     'Access-Control-Allow-Headers': "Content-Type",
-  //     'Access-Control-Allow-Credentials': "true"
-  //   });
-  //
-  //   CollectionReference userDbRef = FirebaseFirestore.instance.collection("users/$participantID/");
-  //   DocumentReference userId = await userDbRef.add({
-  //     "history": {
-  //       response
-  //     }
-  //   });
-  // }
 
 //TODO: Add LogOut
 
