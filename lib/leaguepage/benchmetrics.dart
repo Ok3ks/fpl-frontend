@@ -32,15 +32,6 @@ class BenchMetricsState extends State<BenchMetrics> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Align(
-                alignment: Alignment.bottomLeft,
-                child: Text("Bench Effect",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 11,
-                      decoration: TextDecoration.none,
-                    ))),
             Scrollbar(
                 thickness: 2,
                 trackVisibility: true,

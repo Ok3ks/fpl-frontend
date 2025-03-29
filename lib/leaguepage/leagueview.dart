@@ -359,11 +359,12 @@ class LeagueStats extends StatelessWidget {
                   .darkMediumContrastScheme()
                   .onSurface,
               child: Column(children: [
-                leagueName(data: data,
-                  hydrate: hydrate,),
+                leagueName(data: data, hydrate: hydrate,),
+                CustomDivider(),
                 PerformanceMetrics(data: data),
                 CaptainMetrics(data: data),
                 BenchMetrics(data: data),
+                CustomDivider(),
                 TransferMetrics(data: data, hydrate: hydrate),
                 if (data ==
                     null) //ToDo Add timeout here or just validate from entry?

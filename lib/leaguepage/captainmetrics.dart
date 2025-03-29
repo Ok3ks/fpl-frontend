@@ -21,14 +21,6 @@ class CaptainMetrics extends StatelessWidget {
       const SizedBox(
         height: 3,
       ),
-      const Align(
-          alignment: Alignment.bottomLeft,
-          child: Text("Captain Points",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 11,
-                decoration: TextDecoration.none,
-              ))),
         if (captain != null)
         Card(
           color: MaterialTheme.darkMediumContrastScheme().onSurface,
