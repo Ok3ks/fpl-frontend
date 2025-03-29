@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'constants.dart';
@@ -65,7 +66,7 @@ class GameweekWidget extends ConsumerWidget {
                               }
                             }),
                         SizedBox(
-                          width: 40,
+                          width: 50,
                           height: 50,
                           child: Card(
                               color: const Color.fromRGBO(100, 100, 100, 0),
@@ -77,12 +78,21 @@ class GameweekWidget extends ConsumerWidget {
                                           .primary),
                                   borderRadius: BorderRadius.circular(8)),
                               child: Center(
-                                child: Text(currGameweek.toString(),
-                                    style: TextStyle(
-                                        color: MaterialTheme
-                                                .darkMediumContrastScheme()
-                                            .onSurface,
-                                        fontSize: 15)),
+                                child: TextButton(
+                                  // onFocusChange: ,
+                                  // onHover: ,
+                                  child: Text(currGameweek.toString(),
+                                      style: TextStyle(
+                                          color: MaterialTheme
+                                                  .darkMediumContrastScheme()
+                                              .onSurface,
+                                          fontSize: 15)),
+                                  onPressed: () {
+                                    ref
+                                        .read(expandGameweekProvider.notifier)
+                                        .state = true;
+                                  },
+                                ),
                               )),
                         ),
                         IconButton(
@@ -101,6 +111,10 @@ class GameweekWidget extends ConsumerWidget {
         });
   }
 }
+
+final expandGameweekProvider = StateProvider<bool>((ref) {
+  return false;
+});
 
 class leagueIDWidget extends ConsumerWidget {
   leagueIDWidget({super.key});
@@ -132,6 +146,52 @@ class leagueIDWidget extends ConsumerWidget {
         )),
       ),
     );
+  }
+}
+
+class expandedGameweekWidget extends ConsumerWidget {
+  expandedGameweekWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameweek = ref.watch(gameweekProvider);
+    final enabled = ref.watch(expandGameweekProvider);
+
+    //TODO:Limit based on current gameweek
+    if (enabled) {
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(8, (index) {
+            double itemGw = max(gameweek - index, 0);
+            if (itemGw != 0) {
+              return SizedBox(
+                  height: 25,
+                  width: 50,
+                  child: Card(
+                      color: const Color.fromRGBO(100, 100, 100, 0),
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              width: 0,
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .primaryContainer),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: TextButton(
+                        onPressed: () {
+                          ref.read(gameweekProvider.notifier).state = itemGw;
+                        },
+                        child: Text(
+                          itemGw.toString(),
+                          style: const TextStyle(
+                              color: Colors.white54, fontSize: 10),
+                        ),
+                      )));
+            } else {
+              return SizedBox.shrink();
+            }
+          }));
+    } else {
+      return SizedBox.shrink();
+    }
   }
 }
 
@@ -185,74 +245,60 @@ class playerName extends ConsumerWidget {
             // return ParticipantStats(data: obj);
             if (vertical ?? true) {
               return SizedBox(
-                // width: 60,
-                // height: 50,
+                  // width: 60,
+                  // height: 50,
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        SizedBox(
-                          // width: 75,
-                            child: TextButton(
-                              child: Text(
-                                  "${obj.data?['player']['info']['playerName']
-                                      .toString()
-                                      .split(" ")
-                                      .last}",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: MaterialTheme
-                                          .darkMediumContrastScheme()
-                                          .onSurface,
-                                      fontSize: 10)),
-                              onPressed: () {},
-                            )),
-                        Text("${obj
-                            .data?['player']['gameweekScore']['totalPoints']}",
-                            style: TextStyle(
-                                color:
-                                MaterialTheme
-                                    .darkMediumContrastScheme()
-                                    .primary,
-                                fontSize: 12)),
-                      ]));
+                    SizedBox(
+                        // width: 75,
+                        child: TextButton(
+                      child: Text(
+                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10)),
+                      onPressed: () {},
+                    )),
+                    Text(
+                        "${obj.data?['player']['gameweekScore']['totalPoints']}",
+                        style: TextStyle(
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary,
+                            fontSize: 12)),
+                  ]));
             } else {
               return SizedBox(
-                // width: 60,
-                // height: 50,
-                  child:
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  // width: 60,
+                  // height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
                     SizedBox(
-                      // width: 75,
+                        // width: 75,
                         child: TextButton(
-                          child: Text(
-                              "${obj.data?['player']['info']['playerName']
-                                  .toString()
-                                  .split(" ")
-                                  .last}",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color:
-                                  MaterialTheme
-                                      .darkMediumContrastScheme()
-                                      .onSurface,
-                                  fontSize: 10)),
-                          onPressed: () {},
-                        )),
-                    Text("${obj
-                        .data?['player']['gameweekScore']['totalPoints']}",
+                      child: Text(
+                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10)),
+                      onPressed: () {},
+                    )),
+                    Text(
+                        "${obj.data?['player']['gameweekScore']['totalPoints']}",
                         style: TextStyle(
-                            color: MaterialTheme
-                                .darkMediumContrastScheme()
+                            color: MaterialTheme.darkMediumContrastScheme()
                                 .primary,
                             fontSize: 12)),
                   ]));
             }
-          }
-          else if (snapshot.connectionState ==
-              ConnectionState.waiting) {
-                return CircularProgressIndicator();
-          }
-          else {
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else {
             return Text("No Data");
           }
         });
@@ -284,22 +330,20 @@ String parseParticipantIdFromUrl(String url) {
 }
 
 class CustomDivider extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     final double width = size.width;
-      return SizedBox(
-                        width: width,
-                        height: 15,
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                    width: 1.5,
-                                    color: MaterialTheme.darkMediumContrastScheme().primary),
-                                borderRadius: BorderRadius.circular(8)),
-                            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                            child: Text("")
-                    ));
-                  }
+    return SizedBox(
+        width: width,
+        height: 15,
+        child: Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    width: 1.5,
+                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                borderRadius: BorderRadius.circular(8)),
+            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+            child: Text("")));
   }
+}

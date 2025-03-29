@@ -48,7 +48,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
     String password = _passwordController.text;
     final box = GetStorage();
 
-
     Participant currentUser = Participant(
         email: _emailController.text, password: _passwordController.text);
     dynamic loggedInUser = await currentUser.retrieveUser(password);
@@ -97,7 +96,8 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         "username": userData['username'],
       });
 
-      Navigator.of(context).pushNamed('/home');
+      // Navigator.of(context).pushNamed('/home');
+      context.go('/home');
     }
   }
 

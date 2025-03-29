@@ -142,9 +142,10 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                   // crossAxisAlignment: CrossAxisAlignment.cen,
                   children: [
                     if (widget.leagueId != null) leagueIDWidget(),
-                    GameweekWidget()
+                    GameweekWidget(),
                   ],
                 ),
+                expandedGameweekWidget()
               ])
               // )
               ),
@@ -182,10 +183,10 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
               var obj = snapshot.data;
               print(snapshot.connectionState);
               if (snapshot.hasData) {
+                print(obj);
                 return LeagueStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                print(obj);
-                return LeagueStats(data: obj, hydrate:false);
+                return LeagueStats(data: obj, hydrate: false);
               } else {
                 return const Text("No Data");
               }
@@ -350,40 +351,42 @@ class LeagueStats extends StatelessWidget {
 
   LeagueStats({super.key, required this.data, this.hydrate = true});
 
-
   @override
   Widget build(BuildContext context) {
-        return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          Container(
-              color: MaterialTheme
-                  .darkMediumContrastScheme()
-                  .onSurface,
-              child: Column(children: [
-                leagueName(data: data, hydrate: hydrate,),
-                CustomDivider(),
-                PerformanceMetrics(data: data),
-                CaptainMetrics(data: data),
-                BenchMetrics(data: data),
-                CustomDivider(),
-                TransferMetrics(data: data, hydrate: hydrate),
-                if (data ==
-                    null) //ToDo Add timeout here or just validate from entry?
-                  Center(
-                      child: Container(
-                        // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                          color: Colors.white,
-                          child: Column(children: [
-                            const Text("Input is invalid",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w200,
-                                    color: Colors.red)),
-                            LandingPage(),
-                          ])))
-              ])),
-        ]);
-      }
+    return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+      Container(
+          color: MaterialTheme.darkMediumContrastScheme().onSurface,
+          child: Column(children: [
+            leagueName(
+              data: data,
+              hydrate: hydrate,
+            ),
+            CustomDivider(),
+            Text("League Stats"),
+            PerformanceMetrics(data: data),
+            Text("Captain Stats"),
+            CaptainMetrics(data: data),
+            BenchMetrics(data: data),
+            CustomDivider(),
+            TransferMetrics(data: data, hydrate: hydrate),
+            if (data ==
+                null) //ToDo Add timeout here or just validate from entry?
+              Center(
+                  child: Container(
+                      // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                      color: Colors.white,
+                      child: Column(children: [
+                        const Text("Input is invalid",
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w200,
+                                color: Colors.red)),
+                        LandingPage(),
+                      ])))
+          ])),
+    ]);
   }
+}
 
 class ChooseLeague extends StatelessWidget {
   const ChooseLeague({super.key});

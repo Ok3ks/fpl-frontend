@@ -62,9 +62,8 @@ class ParticipantStatsView extends ConsumerStatefulWidget {
       ParticipantStatsViewState();
 }
 
-
-class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> with SingleTickerProviderStateMixin
-{
+class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView>
+    with SingleTickerProviderStateMixin {
   String? leagueName;
   late AnimationController controller;
   late Animation<double> animation;
@@ -73,9 +72,9 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> with
   void initState() {
     super.initState();
     controller =
-    AnimationController(vsync: this, duration: const Duration(seconds: 2))
-      ..forward()
-      ..repeat(reverse: true);
+        AnimationController(vsync: this, duration: const Duration(seconds: 2))
+          ..forward()
+          ..repeat(reverse: true);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
   }
 
@@ -121,22 +120,20 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> with
                         rows: List.generate(10, (rowIndex) {
                           return DataRow(
                               color: WidgetStateProperty.resolveWith<Color?>(
-                                      (Set<WidgetState> states) {
-                                  }),
+                                  (Set<WidgetState> states) {}),
                               cells: List.generate(5, (cellIndex) {
-                                  return DataCell(
+                                return DataCell(
                                     //Maybe Add lottie here
                                     Opacity(
-                                      child: AnimatedIcon(
-                                      icon: AnimatedIcons.play_pause,
-                                      progress: animation,
-                                      size: 10.0,
-                                    ),
+                                  child: AnimatedIcon(
+                                    icon: AnimatedIcons.play_pause,
+                                    progress: animation,
+                                    size: 10.0,
+                                  ),
                                   opacity: 0.5,
                                   // ],
-                                  ));
-                                }
-                              ));
+                                ));
+                              }));
                         }));
                   } else {
                     return const Text("No Data");
@@ -148,7 +145,6 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> with
   }
 }
 
-
 class ParticipantStats extends StatelessWidget {
   dynamic data;
   ParticipantStats({super.key, required this.data});
@@ -159,8 +155,7 @@ class ParticipantStats extends StatelessWidget {
     List<Object?> totalPoints = data['participantReport']['totalPoints'];
     dynamic captain = data['participantReport']['captain'];
     dynamic viceCaptain = data['participantReport']['viceCaptain'];
-    List<Object?> captainPoints =
-        data['participantReport']['captainPoints'];
+    List<Object?> captainPoints = data['participantReport']['captainPoints'];
     List<Object?> viceCaptainPoints =
         data['participantReport']['viceCaptainPoints'];
     List<Object?> activeChip = data['participantReport']['activeChip'];

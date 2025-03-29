@@ -28,23 +28,23 @@ void main() async {
 
   await GetStorage.init();
 
-  if (await dotenv.env['DEVELOPMENT'] == 'true') {
-    var app = await Firebase.initializeApp(
-        name: 'fpl-frontend',
-        options: FirebaseOptions(
-            apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
-            authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
-            projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
-            storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
-            messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
-            appId: dotenv.env['appId'] ?? "<APP_ID>",
-            measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
+  // if (await dotenv.env['DEVELOPMENT'] == 'True') {
+  var app = await Firebase.initializeApp(
+      name: 'fpl-frontend',
+      options: FirebaseOptions(
+          apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
+          authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
+          projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
+          storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
+          messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
+          appId: dotenv.env['appId'] ?? "<APP_ID>",
+          measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
-    var auth = FirebaseAuth.instanceFor(
-      app: app,
-    );
-    auth.setPersistence(Persistence.LOCAL);
-  }
+  var auth = FirebaseAuth.instanceFor(
+    app: app,
+  );
+  auth.setPersistence(Persistence.LOCAL);
+  // }
   runApp(const FplApp());
 }
 

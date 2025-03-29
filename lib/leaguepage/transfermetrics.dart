@@ -7,7 +7,7 @@ import '../dataprovider.dart';
 
 class TransferMetrics extends StatefulWidget {
   // final String title;
-  Map<String,dynamic>? data;
+  Map<String, dynamic>? data;
   bool hydrate;
   TransferMetrics({super.key, required this.data, this.hydrate = true});
 
@@ -15,7 +15,8 @@ class TransferMetrics extends StatefulWidget {
   State<TransferMetrics> createState() => TransferMetricsState();
 }
 
-class TransferMetricsState extends State<TransferMetrics> with SingleTickerProviderStateMixin{
+class TransferMetricsState extends State<TransferMetrics>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
 
@@ -23,16 +24,17 @@ class TransferMetricsState extends State<TransferMetrics> with SingleTickerProvi
   void initState() {
     super.initState();
     controller =
-    AnimationController(vsync: this, duration: const Duration(seconds: 2))
-      ..forward()
-      ..repeat(reverse: true);
+        AnimationController(vsync: this, duration: const Duration(seconds: 2))
+          ..forward()
+          ..repeat(reverse: true);
     animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
   }
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-    bool hasItems = widget.data?['leagueWeeklyReport']['bestTransferIn'].length > 0;
+    bool hasItems =
+        widget.data?['leagueWeeklyReport']['bestTransferIn'].length > 0;
 
     if (widget.hydrate && hasItems) {
       return SizedBox(
@@ -40,84 +42,85 @@ class TransferMetricsState extends State<TransferMetrics> with SingleTickerProvi
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                const Text("Transfer Impact",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      decoration: TextDecoration.none,
-                    )),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(2, (index) {
-                        return TransferTile(
-                            data: widget
-                                .data?['leagueWeeklyReport']['bestTransferIn'],
-                            index: index);
-                      })),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(2, (index) {
-                        return TransferTile(
-                            data: widget
-                                .data?['leagueWeeklyReport']['worstTransferIn'],
-                            index: index);
-                      }))
-              ]));
-    }
-    else {
+            const Text("Transfer Impact",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  decoration: TextDecoration.none,
+                )),
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(2, (index) {
+                  return TransferTile(
+                      data: widget.data?['leagueWeeklyReport']
+                          ['bestTransferIn'],
+                      index: index);
+                })),
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(2, (index) {
+                  return TransferTile(
+                      data: widget.data?['leagueWeeklyReport']
+                          ['worstTransferIn'],
+                      index: index);
+                }))
+          ]));
+    } else {
       return SizedBox(
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(2, (index) {
-                        return SizedBox(
-                            width: 600,
-                            child: Card(
-                            shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                            width: 1.5,
-                            color: MaterialTheme.darkMediumContrastScheme().primary),
-                            borderRadius: BorderRadius.circular(8)),
-                            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                            child: Opacity(
-                              child: AnimatedIcon(
-                                icon: AnimatedIcons.play_pause,
-                                progress: animation,
-                                size: 10.0,
-                              ),
-                              opacity: 0.5,
-                            )
-                            )
-                        );
-                      })),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: List.generate(2, (index) {
-                         return SizedBox(
-                            width: 600,
-                            child: Card(
-                            shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                            width: 1.5,
-                            color: MaterialTheme.darkMediumContrastScheme().primary),
-                        borderRadius: BorderRadius.circular(8)),
-                        color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                        child: Opacity(
-                          child: AnimatedIcon(
-                            icon: AnimatedIcons.play_pause,
-                            progress: animation,
-                            size: 10.0,
-                          ),
-                          opacity: 0.5,
-                        )
-                            )
-                         );
-                      }))
-              ]));
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(2, (index) {
+                  return SizedBox(
+                      width: 600,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  width: 1.5,
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .primary),
+                              borderRadius: BorderRadius.circular(8)),
+                          color: MaterialTheme.darkMediumContrastScheme()
+                              .primaryContainer,
+                          child: Opacity(
+                            child: AnimatedIcon(
+                              icon: AnimatedIcons.play_pause,
+                              progress: animation,
+                              size: 10.0,
+                            ),
+                            opacity: 0.5,
+                          )));
+                })),
+            Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(2, (index) {
+                  return SizedBox(
+                      width: 600,
+                      child: Card(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  width: 1.5,
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .primary),
+                              borderRadius: BorderRadius.circular(8)),
+                          color: MaterialTheme.darkMediumContrastScheme()
+                              .primaryContainer,
+                          child: Opacity(
+                            child: AnimatedIcon(
+                              icon: AnimatedIcons.play_pause,
+                              progress: animation,
+                              size: 10.0,
+                            ),
+                            opacity: 0.5,
+                          )));
+                }))
+          ]));
     }
   }
 }
@@ -166,14 +169,14 @@ class TransferTile extends ConsumerWidget {
                             },
                           )),
                       if (playerOutIds.isNotEmpty)
-                      Column(
-                          children: List.generate(playerOutIds.length, (i) {
-                        return playerName(
-                          playerId:
-                              int.parse(playerOutIds[i].toString() ?? "0"),
-                          vertical: false,
-                        );
-                      })),
+                        Column(
+                            children: List.generate(playerOutIds.length, (i) {
+                          return playerName(
+                            playerId:
+                                int.parse(playerOutIds[i].toString() ?? "0"),
+                            vertical: false,
+                          );
+                        })),
                       const SizedBox(
                           width: 100,
                           child: Row(
@@ -190,13 +193,14 @@ class TransferTile extends ConsumerWidget {
                             ],
                           )),
                       if (playerInIds.isNotEmpty)
-                      Column(
-                          children: List.generate(playerInIds.length, (i) {
-                        return playerName(
-                          playerId: int.parse(playerInIds[i].toString() ?? "0"),
-                          vertical: false,
-                        );
-                      })),
+                        Column(
+                            children: List.generate(playerInIds.length, (i) {
+                          return playerName(
+                            playerId:
+                                int.parse(playerInIds[i].toString() ?? "0"),
+                            vertical: false,
+                          );
+                        })),
                       SizedBox(
                           child: Center(
                         child: Text(
