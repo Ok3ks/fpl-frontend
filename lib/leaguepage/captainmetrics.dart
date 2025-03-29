@@ -21,28 +21,25 @@ class CaptainMetrics extends StatelessWidget {
       const SizedBox(
         height: 3,
       ),
-        if (captain != null)
+      if (captain != null)
         Card(
-          color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          elevation: 5,
-          child: Scrollbar(
-              thickness: 2,
-              trackVisibility: true,
-              controller: yourScrollController,
-              radius: const Radius.circular(3),
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-
-              children: List.generate(
-              captain.length,
-              (index) {
-              return CaptainMetricsCard(
-              data: data?['leagueWeeklyReport']['captain']
-              [index]);
-              }),
-                  ))))
+            color: MaterialTheme.darkMediumContrastScheme().onSurface,
+            elevation: 5,
+            child: Scrollbar(
+                thickness: 2,
+                trackVisibility: true,
+                controller: yourScrollController,
+                radius: const Radius.circular(3),
+                child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(captain.length, (index) {
+                        return CaptainMetricsCard(
+                            data: data?['leagueWeeklyReport']['captain']
+                                [index]);
+                      }),
+                    ))))
     ]));
     // ],
     // ),);

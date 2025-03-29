@@ -12,11 +12,9 @@ class BenchMetrics extends StatefulWidget {
 
   @override
   State<BenchMetrics> createState() => BenchMetricsState();
-
 }
 
 class BenchMetricsState extends State<BenchMetrics> {
-
   final yourScrollController = ScrollController(
     onAttach: (position) {},
     onDetach: (position) {},
@@ -24,9 +22,7 @@ class BenchMetricsState extends State<BenchMetrics> {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery
-        .of(context)
-        .orientation;
+    Orientation orientation = MediaQuery.of(context).orientation;
     if (widget.data != null) {
       return Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,12 +35,13 @@ class BenchMetricsState extends State<BenchMetrics> {
                 radius: const Radius.circular(3),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child:
-                  Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                    JammyPointsCard(data: widget.data),
-                    HighestPointsBenched(data: widget.data),
-                    PlayMeInstead(data: widget.data),
-                  ]),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        JammyPointsCard(data: widget.data),
+                        HighestPointsBenched(data: widget.data),
+                        PlayMeInstead(data: widget.data),
+                      ]),
                   // Text("Bench Points")
                 ))
             // )
@@ -52,9 +49,9 @@ class BenchMetricsState extends State<BenchMetrics> {
     } else {
       //replace with animation maybe
       return CircularProgressIndicator();
-
-    }}}
-
+    }
+  }
+}
 
 class JammyPointsCard extends ConsumerWidget {
   Map<String, dynamic>? data;
@@ -69,7 +66,6 @@ class JammyPointsCard extends ConsumerWidget {
     int points = obj[0]['points'];
     print(points);
 
-
     if (points != 0) {
       // print(obj[0]);
       List<dynamic> playersSubIn = obj[0]['subIn'];
@@ -81,16 +77,12 @@ class JammyPointsCard extends ConsumerWidget {
               shape: RoundedRectangleBorder(
                   side: BorderSide(
                       width: 1.5,
-                      color: MaterialTheme
-                          .darkMediumContrastScheme()
-                          .primary),
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
                   borderRadius: BorderRadius.circular(18)),
-              color: MaterialTheme
-                  .darkMediumContrastScheme()
-                  .primaryContainer,
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -98,39 +90,36 @@ class JammyPointsCard extends ConsumerWidget {
                     Center(
                         child: Text("Jammy Points ",
                             style: TextStyle(
-                                color: MaterialTheme
-                                    .darkMediumContrastScheme()
+                                color: MaterialTheme.darkMediumContrastScheme()
                                     .onSurface,
                                 fontSize: 10))),
                     const SizedBox(height: 3),
                     Column(
-                        children:
-                        List.generate(playersSubIn.length, (index) {
-                          return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Icon(Icons.swipe_down_alt_sharp,
-                                    color: Colors.red[400], size: 12),
-                                playerName(
-                                    playerId: int.parse(
+                        children: List.generate(playersSubIn.length, (index) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.swipe_down_alt_sharp,
+                                color: Colors.red[400], size: 12),
+                            playerName(
+                                playerId: int.parse(
                                         playersSubOut[index].toString() ??
                                             "0") ??
-                                        0),
-                                Icon(Icons.swipe_up_alt_sharp,
-                                    color: Colors.green[400], size: 12),
-                                playerName(
-                                    playerId: int.parse(
+                                    0),
+                            Icon(Icons.swipe_up_alt_sharp,
+                                color: Colors.green[400], size: 12),
+                            playerName(
+                                playerId: int.parse(
                                         playersSubIn[index].toString() ??
                                             "0") ??
-                                        0),
-                              ]);
-                        })),
+                                    0),
+                          ]);
+                    })),
                     const SizedBox(height: 9),
                     Center(
                         child: Text("$teamName",
                             style: TextStyle(
-                                color: MaterialTheme
-                                    .darkMediumContrastScheme()
+                                color: MaterialTheme.darkMediumContrastScheme()
                                     .onSurface,
                                 fontSize: 10))),
                   ],
@@ -139,11 +128,10 @@ class JammyPointsCard extends ConsumerWidget {
         )
       ]);
       // });
-    }
-    else {
+    } else {
       return SizedBox.shrink();
     }
-    }
+  }
 }
 
 class HighestPointsBenched extends ConsumerWidget {
@@ -212,18 +200,18 @@ class PlayMeInstead extends StatelessWidget {
 
     return Column(children: [
       SizedBox(
-        // width: 270,
-        // height: 100,
-        child: Card(
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: 1.5,
-                    color: MaterialTheme.darkMediumContrastScheme().primary),
-                borderRadius: BorderRadius.circular(18)),
-            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-              child: Column(
+          // width: 270,
+          // height: 100,
+          child: Card(
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                width: 1.5,
+                color: MaterialTheme.darkMediumContrastScheme().primary),
+            borderRadius: BorderRadius.circular(18)),
+        color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 3),
@@ -246,17 +234,16 @@ class PlayMeInstead extends StatelessWidget {
                   // )),
                   const SizedBox(height: 5),
                   Center(
-                      child:Text("$teamName",
-                            style: TextStyle(
-                              color:
-                              MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface,
-                              fontSize: 10,
-                            )),
-                        ),
-            ])),
-      )
-      )]);
+                    child: Text("$teamName",
+                        style: TextStyle(
+                          color: MaterialTheme.darkMediumContrastScheme()
+                              .onSurface,
+                          fontSize: 10,
+                        )),
+                  ),
+                ])),
+      ))
+    ]);
     // ]);
   }
 }

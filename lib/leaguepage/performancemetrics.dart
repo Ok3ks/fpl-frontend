@@ -19,8 +19,7 @@ class PerformanceMetrics extends StatelessWidget {
                 title: "Exceptional ",
                 data: data?['leagueWeeklyReport']['exceptional']),
             LeagueAverageCard(
-                title: "League Average",
-                data: data?['leagueWeeklyReport']),
+                title: "League Average", data: data?['leagueWeeklyReport']),
             if ((data != null) &&
                 (data?['leagueWeeklyReport']['abysmal']['score'] != null))
               MetricsCard(

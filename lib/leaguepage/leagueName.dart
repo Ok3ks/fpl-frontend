@@ -30,5 +30,3 @@ class leagueName extends StatelessWidget {
     }
   }
 }
-
-

@@ -23,23 +23,25 @@ Future<void> addLeagueGlobal(
 }
 
 Future<Object?> getLeagueGlobal(double? leagueId) async {
-
   //Try individually, before downloading whole blob onto machine.
 
-  CollectionReference LeagueDbRef = FirebaseFirestore.instance.collection("leagues/");
+  CollectionReference LeagueDbRef =
+      FirebaseFirestore.instance.collection("leagues/");
   final snapshot = await LeagueDbRef.doc(leagueId.toString()).get();
   final temp = snapshot.data();
   return temp;
 }
 
-
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
- //First check firebase store, otherwise check backend
+  //First check firebase store, otherwise check backend
 
-  Map<String, dynamic> leagueRefResults = await getLeagueGlobal(leagueId) as Map<String, dynamic>;
+  Map<String, dynamic> leagueRefResults =
+      await getLeagueGlobal(leagueId) as Map<String, dynamic>;
   dynamic response = leagueRefResults[gameweek.toString()];
+  print('response');
+  print(response);
 
-  if ( response != null) {
+  if (response != null) {
     return Future.value(leagueRefResults[gameweek.toString()]);
   } else {
     try {
@@ -53,11 +55,9 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
           }));
       if (gameweek != null && leagueId != null) {
         //add to global firestore cache
-        await addLeagueGlobal(
-            leagueId, gameweek, results.data);
+        await addLeagueGlobal(leagueId, gameweek, results.data);
       }
       return results.data;
-      // }
     } catch (e) {
       print(e);
       // Log.logger.e("Error during synchronization: $e");
@@ -163,7 +163,6 @@ final gameweekProvider = StateProvider<double>((ref) {
 });
 
 var currentUserProvider = StateProvider<Participant?>((ref) {
-
   final local = GetStorage();
   final userData = local.read('participant');
   if (userData != null) {
@@ -175,6 +174,6 @@ var currentUserProvider = StateProvider<Participant?>((ref) {
       username: userData['username'],
     );
     return currentParticipant;
-}
+  }
   return null;
 });
