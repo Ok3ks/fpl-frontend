@@ -223,8 +223,7 @@ class TransferTile extends ConsumerWidget {
                         })),
                       SizedBox(
                           child: Center(
-                        child: Column(
-                        children: [
+                              child: Column(children: [
                         Text(
                           "${data[index]['pointsDelta']}pts",
                           style: TextStyle(
@@ -233,15 +232,14 @@ class TransferTile extends ConsumerWidget {
                                   : Colors.red,
                               fontWeight: FontWeight.bold),
                         ),
-                              if (data[index]['pointHit'] > 0)
-                              Text(
-                                  "( - ${data[index]['pointHit'] ?? 0}pts )",
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.w200,
-                                    fontSize: 10
-                                  ),
-                              ),
+                        if (data[index]['pointHit'] > 0)
+                          Text(
+                            "( - ${data[index]['pointHit'] ?? 0}pts )",
+                            style: const TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w200,
+                                fontSize: 10),
+                          ),
                       ])))
                     ]))));
   }
