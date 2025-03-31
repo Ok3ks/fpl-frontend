@@ -116,18 +116,18 @@ class Participant {
             measurementId: 'G-RCXFD9EQ9E'));
     //Save to users firestore collection
     if (participantId != null) {
-        CollectionReference userLeagueDbRef =
-        FirebaseFirestore.instance.collection("users");
+      CollectionReference userLeagueDbRef =
+          FirebaseFirestore.instance.collection("users");
 
-        DocumentReference temp = userLeagueDbRef.doc(participantId);
-        CollectionReference leagues = await temp.collection("leagues");
-        //refactor for updates - test TODO
-        temp = leagues.doc(leagueId.toString());
-        temp.set(
-            {"id": leagueId},
-            // {"name":
-            //"number_of_times_visited
-            SetOptions(merge: true));
+      DocumentReference temp = userLeagueDbRef.doc(participantId);
+      CollectionReference leagues = await temp.collection("leagues");
+      //refactor for updates - test TODO
+      temp = leagues.doc(leagueId.toString());
+      temp.set(
+          {"id": leagueId},
+          // {"name":
+          //"number_of_times_visited
+          SetOptions(merge: true));
     }
   }
 
