@@ -103,6 +103,31 @@ class Participant {
     return null;
   }
 
+  Future<bool?> sendEmailLink() async {
+    final app = await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
+            authDomain: 'fpl-frontend.firebaseapp.com',
+            projectId: 'fpl-frontend',
+            storageBucket: 'fpl-frontend.firebasestorage.app',
+            messagingSenderId: '249818130331',
+            appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
+            measurementId: 'G-RCXFD9EQ9E'));
+
+    final auth = FirebaseAuth.instanceFor(
+      app: app,
+    );
+    auth.setPersistence(Persistence.LOCAL);
+
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      return true;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   Future<void> addLeague(double leagueId) async {
     """Adds user's associated leagueIds to Firestore""";
     final app = await Firebase.initializeApp(

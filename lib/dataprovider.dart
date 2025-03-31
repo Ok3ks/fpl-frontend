@@ -35,35 +35,35 @@ Future<Object?> getLeagueGlobal(double? leagueId) async {
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
   //First check firebase store, otherwise check backend
 
-  Map<String, dynamic> leagueRefResults =
-      await getLeagueGlobal(leagueId) as Map<String, dynamic>;
-  dynamic response = leagueRefResults[gameweek.toString()];
-  print('response');
-  print(response);
-
-  if (response != null) {
-    return Future.value(leagueRefResults[gameweek.toString()]);
-  } else {
-    try {
-      QueryResult results = await client.value.query(QueryOptions(
-          document: gql(AllQueries.getLeagueStats), //
-          fetchPolicy: null,
-          cacheRereadPolicy: null,
-          variables: {
-            "leagueId": leagueId, //538731,
-            "gameweek": gameweek, //3
-          }));
-      if (gameweek != null && leagueId != null) {
-        //add to global firestore cache
-        await addLeagueGlobal(leagueId, gameweek, results.data);
-      }
-      return results.data;
-    } catch (e) {
-      print(e);
-      // Log.logger.e("Error during synchronization: $e");
-      return false;
+  // Map<String, dynamic> leagueRefResults =
+  //     await getLeagueGlobal(leagueId) as Map<String, dynamic>;
+  // dynamic response = leagueRefResults[gameweek.toString()];
+  // print('response');
+  // print(response);
+  //
+  // if (response != null) {
+  //   return Future.value(leagueRefResults[gameweek.toString()]);
+  // } else {
+  try {
+    QueryResult results = await client.value.query(QueryOptions(
+        document: gql(AllQueries.getLeagueStats), //
+        fetchPolicy: null,
+        cacheRereadPolicy: null,
+        variables: {
+          "leagueId": leagueId, //538731,
+          "gameweek": gameweek, //3
+        }));
+    if (gameweek != null && leagueId != null) {
+      //add to global firestore cache
+      await addLeagueGlobal(leagueId, gameweek, results.data);
     }
+    return results.data;
+  } catch (e) {
+    print(e);
+    // Log.logger.e("Error during synchronization: $e");
+    return false;
   }
+  // }
 }
 
 Future<dynamic> pullPlayerStats(int? playerId, double? gameweek) async {
