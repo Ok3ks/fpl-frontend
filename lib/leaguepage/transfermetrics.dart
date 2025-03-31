@@ -49,6 +49,26 @@ class TransferMetricsState extends State<TransferMetrics>
                   fontSize: 12,
                   decoration: TextDecoration.none,
                 )),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: List.generate(1, (index) {
+                  return TransferIn(
+                    data: widget.data?['leagueWeeklyReport']
+                        ['mostTransferredIn'],
+                    index: index,
+                  );
+                })),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: List.generate(1, (index) {
+                  return TransferOut(
+                    data: widget.data?['leagueWeeklyReport']
+                        ['mostTransferredOut'],
+                    index: index,
+                  );
+                })),
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(2, (index) {
@@ -212,6 +232,104 @@ class TransferTile extends ConsumerWidget {
                               fontWeight: FontWeight.bold),
                         ),
                       ))
+                    ]))));
+  }
+}
+
+class TransferOut extends StatelessWidget {
+  dynamic data;
+  int index;
+
+  TransferOut({super.key, required this.data, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    //TODO: Find an elegant way
+    List<dynamic> playerOutIds = data ?? [];
+    print("---transfer out");
+    print(playerOutIds);
+
+    return SizedBox(
+        width: 200,
+        child: Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    width: 1.5,
+                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                borderRadius: BorderRadius.circular(8)),
+            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+            child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(children: [
+                        Text("${playerOutIds[index]?['out'] ?? 0}",
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 12)),
+                        Icon(
+                          Icons.people,
+                          color: Colors.white,
+                        ),
+                      ]),
+                      Icon(
+                        Icons.arrow_circle_right_sharp,
+                        color: Colors.red,
+                      ),
+                      if (playerOutIds.isNotEmpty)
+                        playerName(
+                          playerId: int.parse(
+                              playerOutIds[index]?['player'].toString() ?? "0"),
+                          vertical: false,
+                        ),
+                    ]))));
+  }
+}
+
+class TransferIn extends StatelessWidget {
+  dynamic data;
+  int index;
+
+  TransferIn({super.key, required this.data, required this.index});
+
+  @override
+  Widget build(BuildContext context) {
+    //TODO: Find an elegant way
+    List<dynamic> playerInIds = data ?? [];
+
+    return SizedBox(
+        width: 200,
+        child: Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    width: 1.5,
+                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                borderRadius: BorderRadius.circular(8)),
+            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+            child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(children: [
+                        Text("${playerInIds[index]?['in']}",
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 12)),
+                        const Icon(
+                          Icons.people,
+                          color: Colors.white,
+                        ),
+                      ]),
+                      const Icon(
+                        Icons.arrow_circle_left_sharp,
+                        color: Colors.green,
+                      ),
+                      if (playerInIds.isNotEmpty)
+                        playerName(
+                          playerId: int.parse(
+                              playerInIds[index]?['player'].toString() ?? "0"),
+                          vertical: false,
+                        ),
                     ]))));
   }
 }
