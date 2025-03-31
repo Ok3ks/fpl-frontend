@@ -64,6 +64,7 @@ class AllQueries {
         playerIn
         playerOut
         pointsDelta
+        pointHit
       }
       worstTransferIn{
         entryId
@@ -71,6 +72,7 @@ class AllQueries {
         playerIn
         playerOut
         pointsDelta
+        pointHit
       }
       mostPointsOnBench{
         teamName
