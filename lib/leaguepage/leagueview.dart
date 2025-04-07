@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
+import 'package:fpl/leaguepage/differential.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
 import 'package:fpl/leaguepage/benchmetrics.dart';
@@ -363,7 +364,10 @@ class LeagueStats extends StatelessWidget {
             PerformanceMetrics(data: data),
             const Text("Captain Stats"),
             CaptainMetrics(data: data),
+            CustomDivider(),
             BenchMetrics(data: data),
+            SizedBox(width: 300,child:
+            Differentials(data: data)),
             CustomDivider(),
             TransferMetrics(data: data, hydrate: hydrate),
             if (data ==
