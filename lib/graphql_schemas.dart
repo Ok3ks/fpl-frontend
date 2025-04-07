@@ -79,6 +79,9 @@ class AllQueries {
         players
         pointOnBench
       }
+      differential {
+      players
+      }
       jammyPoints{
         teamName
         subIn
