@@ -39,7 +39,7 @@ class GameweekWidget extends ConsumerWidget {
         future: getCurrentGameweek(),
         builder: (BuildContext, snapshot) {
           return SizedBox(
-              height: 50,
+              // height: 50,
               // width: 180,
               child: Card(
                   color: const Color.fromRGBO(100, 100, 100, 0),
@@ -52,22 +52,9 @@ class GameweekWidget extends ConsumerWidget {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.keyboard_arrow_left,
-                              size: 15,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              final prevGameweek = ref.watch(gameweekProvider);
-                              if (prevGameweek - 1 >= 1) {
-                                ref.watch(gameweekProvider.notifier).state =
-                                    prevGameweek - 1;
-                              }
-                            }),
                         SizedBox(
-                          width: 50,
-                          height: 50,
+                          // width: 50,
+                          // height: 50,
                           child: Card(
                               color: const Color.fromRGBO(100, 100, 100, 0),
                               shape: RoundedRectangleBorder(
@@ -95,10 +82,14 @@ class GameweekWidget extends ConsumerWidget {
                                 ),
                               )),
                         ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
                         IconButton(
                             icon: const Icon(
-                              Icons.keyboard_arrow_right,
-                              size: 15,
+                              Icons.keyboard_arrow_up,
+                              size: 12,
                               color: Colors.white,
                             ),
                             onPressed: () {
@@ -107,7 +98,20 @@ class GameweekWidget extends ConsumerWidget {
                                     currGameweek + 1;
                               }
                             }),
-                      ])));
+                            IconButton(
+                                icon: const Icon(
+                                  Icons.keyboard_arrow_down,
+                                  size: 12,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  final prevGameweek = ref.watch(gameweekProvider);
+                                  if (prevGameweek - 1 >= 1) {
+                                    ref.watch(gameweekProvider.notifier).state =
+                                        prevGameweek - 1;
+                                  }
+                                }),
+                      ])])));
         });
   }
 }
