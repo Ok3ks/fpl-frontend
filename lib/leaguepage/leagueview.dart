@@ -242,7 +242,7 @@ class LandingPage extends StatelessWidget {
                           vertical: 10, horizontal: 30),
                       children: [
                         const Text(
-                          "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
+                          "Dontsuckatfpl is a web-based application for die hard fantasy premier league fans. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                           style: TextStyle(fontSize: 10),
                           textAlign: TextAlign.justify,
                           textWidthBasis: TextWidthBasis.longestLine,

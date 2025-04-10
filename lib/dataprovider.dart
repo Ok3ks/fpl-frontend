@@ -159,7 +159,7 @@ final leagueProvider = StateProvider<double?>((ref) {
 });
 
 final gameweekProvider = StateProvider<double>((ref) {
-  return 28; //Should start from current gameweek
+  return 30; //Should start from current gameweek
 });
 
 var currentUserProvider = StateProvider<Participant?>((ref) {

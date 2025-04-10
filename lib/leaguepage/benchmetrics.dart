@@ -120,7 +120,7 @@ class JammyPointsCard extends ConsumerWidget {
                         child: Text("$teamName",
                             style: TextStyle(
                                 color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
+                                    .primary,
                                 fontSize: 10))),
                   ],
                 ),
@@ -237,7 +237,7 @@ class PlayMeInstead extends StatelessWidget {
                     child: Text("$teamName",
                         style: TextStyle(
                           color: MaterialTheme.darkMediumContrastScheme()
-                              .onSurface,
+                              .primary,
                           fontSize: 10,
                         )),
                   ),
