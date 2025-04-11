@@ -18,13 +18,6 @@ dynamic getCurrentGameweek() async {
   } finally {
     client.close();
   }
-  // var url =  Uri.https(Constants.fplUrl);
-  // print(url);
-  // var response = await http.post(url, body: {});
-  // print('Response status: ${response.statusCode}');
-  // print('Response body: ${response.body}');
-  //
-  // print(await http.read(Uri.https('example.com', 'foobar.txt')));
 }
 
 class GameweekWidget extends ConsumerWidget {
@@ -39,8 +32,6 @@ class GameweekWidget extends ConsumerWidget {
         future: getCurrentGameweek(),
         builder: (BuildContext, snapshot) {
           return SizedBox(
-              // height: 50,
-              // width: 180,
               child: Card(
                   color: const Color.fromRGBO(100, 100, 100, 0),
                   shape: RoundedRectangleBorder(
@@ -83,35 +74,39 @@ class GameweekWidget extends ConsumerWidget {
                               )),
                         ),
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.keyboard_arrow_up,
-                              size: 12,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              if (currGameweek + 1 <= 38) {
-                                ref.watch(gameweekProvider.notifier).state =
-                                    currGameweek + 1;
-                              }
-                            }),
-                            IconButton(
-                                icon: const Icon(
-                                  Icons.keyboard_arrow_down,
-                                  size: 12,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  final prevGameweek = ref.watch(gameweekProvider);
-                                  if (prevGameweek - 1 >= 1) {
-                                    ref.watch(gameweekProvider.notifier).state =
-                                        prevGameweek - 1;
-                                  }
-                                }),
-                      ])])));
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_up,
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    if (currGameweek + 1 <= 38) {
+                                      ref
+                                          .watch(gameweekProvider.notifier)
+                                          .state = currGameweek + 1;
+                                    }
+                                  }),
+                              IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    final prevGameweek =
+                                        ref.watch(gameweekProvider);
+                                    if (prevGameweek - 1 >= 1) {
+                                      ref
+                                          .watch(gameweekProvider.notifier)
+                                          .state = prevGameweek - 1;
+                                    }
+                                  }),
+                            ])
+                      ])));
         });
   }
 }
