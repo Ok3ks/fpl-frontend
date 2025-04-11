@@ -1,11 +1,11 @@
 {
-    "name": "fpl",
-    "short_name": "fpl",
+    "name": "Wrapped fpl",
+    "short_name": "FPL",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Wrapped FPL",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
