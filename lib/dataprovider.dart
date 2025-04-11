@@ -39,8 +39,8 @@ Future<List<League>> getParticipantLeagues(String? participantId) async {
   //     dynamic>;
 
 //set Leagues
-  QuerySnapshot userLeagues = await userDbRef.doc(
-      participantId).collection('leagues').get();
+  QuerySnapshot userLeagues =
+      await userDbRef.doc(participantId).collection('leagues').get();
   List<League> temp2 = [];
   for (var obj in userLeagues.docs) {
     Map<String, dynamic> temp = obj.data() as Map<String, dynamic>;
@@ -54,9 +54,9 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
 
   Map<String, dynamic> leagueRefResults =
       await getLeagueGlobal(leagueId) as Map<String, dynamic>;
-      dynamic results = leagueRefResults[gameweek.toString()];
-      print('response');
-      print(results);
+  dynamic results = leagueRefResults[gameweek.toString()];
+  print('response');
+  print(results);
 
   if (results == null) {
     try {
