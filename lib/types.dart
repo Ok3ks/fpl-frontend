@@ -11,8 +11,7 @@ class League {
   String? name;
   double? leagueId;
 
-  League({
-    this.name, required this.leagueId});
+  League({this.name, required this.leagueId});
 }
 
 class Participant {
@@ -26,17 +25,16 @@ class Participant {
   String? error;
   Map<String, dynamic>? history;
 
-  Participant(
-      {required this.email,
-      this.favoriteTeam,
-      this.username,
-      this.participantId,
-      this.yearsPlayingFpl,
-      this.location,
-      this.password,
-      this.history,
-      });
-
+  Participant({
+    required this.email,
+    this.favoriteTeam,
+    this.username,
+    this.participantId,
+    this.yearsPlayingFpl,
+    this.location,
+    this.password,
+    this.history,
+  });
 
   Future<UserCredential?> registerUser() async {
     await dotenv.load(fileName: ".env");
@@ -108,9 +106,6 @@ class Participant {
           .signInWithEmailAndPassword(email: email, password: password);
       error = '';
 
-
-
-
       return loggedInFirebaseUser;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email' ||
@@ -122,7 +117,6 @@ class Participant {
     }
     return "Error with Firebase Auth";
   }
-
 
   Future<bool?> sendEmailLink() async {
     var app = await Firebase.initializeApp(
@@ -172,11 +166,10 @@ class Participant {
       CollectionReference leagues = await temp.collection("leagues");
 
       temp = leagues.doc(userLeague.leagueId.toString());
-      temp.set({"id": userLeague.leagueId}, SetOptions(merge: true)); // SetOptions caters to updates
+      temp.set({"id": userLeague.leagueId},
+          SetOptions(merge: true)); // SetOptions caters to updates
     }
   }
-
-
 
 //TODO: Add LogOut
 
