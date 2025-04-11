@@ -44,7 +44,6 @@ void main() async {
     app: app,
   );
   auth.setPersistence(Persistence.LOCAL);
-  // }
   runApp(const FplApp());
 }
 
@@ -99,7 +98,7 @@ class FplApp extends StatelessWidget {
     const fplTheme = FplTheme();
     return MaterialApp.router(
       routerConfig: router,
-      title: 'League Analysis',
+      title: 'FPL Wrapped',
       theme: fplTheme.toThemeData(),
     );
   }

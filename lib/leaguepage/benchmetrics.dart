@@ -236,8 +236,8 @@ class PlayMeInstead extends StatelessWidget {
                   Center(
                     child: Text("$teamName",
                         style: TextStyle(
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .primary,
+                          color:
+                              MaterialTheme.darkMediumContrastScheme().primary,
                           fontSize: 10,
                         )),
                   ),
@@ -247,4 +247,3 @@ class PlayMeInstead extends StatelessWidget {
     // ]);
   }
 }
-

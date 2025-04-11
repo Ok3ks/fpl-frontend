@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:fpl/dataprovider.dart";
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 
 class Participant {
@@ -26,25 +27,29 @@ class Participant {
       this.history});
 
   Future<UserCredential?> registerUser() async {
+    await dotenv.load(fileName: ".env");
     var app = await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: '249818130331',
-            appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
-            measurementId: 'G-RCXFD9EQ9E'));
+        name: 'fpl-frontend',
+        options: FirebaseOptions(
+            apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
+            authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
+            projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
+            storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
+            messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
+            appId: dotenv.env['appId'] ?? "<APP_ID>",
+            measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
     );
     auth.setPersistence(Persistence.LOCAL);
+
     try {
       UserCredential firebaseUser = await auth.createUserWithEmailAndPassword(
           email: email, password: password ?? "VRBWX6k3gZ");
       //TODO: Opportunity to add more information as drawn from FPL, into Firestore
       DocumentReference temp = userDbRef.doc(participantId);
+
       await temp.set({
         "email": email,
         "status": "onboarding",
@@ -70,22 +75,22 @@ class Participant {
     }
   }
 
-  Future<UserCredential?> retrieveUser(String password) async {
-    final app = await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: '249818130331',
-            appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
-            measurementId: 'G-RCXFD9EQ9E'));
+  Future<dynamic> retrieveUser(String password) async {
+    await dotenv.load(fileName: ".env");
+    var app = await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
+            authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
+            projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
+            storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
+            messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
+            appId: dotenv.env['appId'] ?? "<APP_ID>",
+            measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
-    final auth = FirebaseAuth.instanceFor(
+    var auth = FirebaseAuth.instanceFor(
       app: app,
     );
     auth.setPersistence(Persistence.LOCAL);
-
     try {
       UserCredential loggedInFirebaseUser = await auth
           .signInWithEmailAndPassword(email: email, password: password);
@@ -96,49 +101,51 @@ class Participant {
           e.code == 'user-not-found' ||
           e.code == 'wrong-password') {
         error = e.code;
-        return null;
+        return error;
       }
     }
-
-    return null;
+    return "Error with Firebase Auth";
   }
 
   Future<bool?> sendEmailLink() async {
-    final app = await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: '249818130331',
-            appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
-            measurementId: 'G-RCXFD9EQ9E'));
+    var app = await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
+            authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
+            projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
+            storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
+            messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
+            appId: dotenv.env['appId'] ?? "<APP_ID>",
+            measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
-    final auth = FirebaseAuth.instanceFor(
+    var auth = FirebaseAuth.instanceFor(
       app: app,
     );
     auth.setPersistence(Persistence.LOCAL);
-
     try {
       await auth.sendPasswordResetEmail(email: email);
       return true;
     } catch (e) {
-      print(e);
       return null;
     }
   }
 
   Future<void> addLeague(double leagueId) async {
     """Adds user's associated leagueIds to Firestore""";
-    final app = await Firebase.initializeApp(
-        options: const FirebaseOptions(
-            apiKey: "AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU",
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: '249818130331',
-            appId: '1:249818130331:web:ce0ad28a94d06607d7a33e',
-            measurementId: 'G-RCXFD9EQ9E'));
+    var app = await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
+            authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
+            projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
+            storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
+            messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
+            appId: dotenv.env['appId'] ?? "<APP_ID>",
+            measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
+
+    var auth = FirebaseAuth.instanceFor(
+      app: app,
+    );
+    auth.setPersistence(Persistence.LOCAL);
     //Save to users firestore collection
     if (participantId != null) {
       CollectionReference userLeagueDbRef =
@@ -148,11 +155,7 @@ class Participant {
       CollectionReference leagues = await temp.collection("leagues");
       //refactor for updates - test TODO
       temp = leagues.doc(leagueId.toString());
-      temp.set(
-          {"id": leagueId},
-          // {"name":
-          //"number_of_times_visited
-          SetOptions(merge: true));
+      temp.set({"id": leagueId}, SetOptions(merge: true));
     }
   }
 
