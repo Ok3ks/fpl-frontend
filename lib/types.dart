@@ -1,9 +1,19 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:fpl/dataprovider.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+
+class League {
+  String? name;
+  double? leagueId;
+
+  League({
+    this.name, required this.leagueId});
+}
 
 class Participant {
   String email;
@@ -24,7 +34,9 @@ class Participant {
       this.yearsPlayingFpl,
       this.location,
       this.password,
-      this.history});
+      this.history,
+      });
+
 
   Future<UserCredential?> registerUser() async {
     await dotenv.load(fileName: ".env");
@@ -95,6 +107,10 @@ class Participant {
       UserCredential loggedInFirebaseUser = await auth
           .signInWithEmailAndPassword(email: email, password: password);
       error = '';
+
+
+
+
       return loggedInFirebaseUser;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email' ||
@@ -106,6 +122,7 @@ class Participant {
     }
     return "Error with Firebase Auth";
   }
+
 
   Future<bool?> sendEmailLink() async {
     var app = await Firebase.initializeApp(
@@ -130,8 +147,8 @@ class Participant {
     }
   }
 
-  Future<void> addLeague(double leagueId) async {
-    """Adds user's associated leagueIds to Firestore""";
+  Future<void> addLeague(League userLeague) async {
+    """Adds user's associated leagueIds to Firestore and during session""";
     var app = await Firebase.initializeApp(
         options: FirebaseOptions(
             apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
@@ -153,11 +170,13 @@ class Participant {
 
       DocumentReference temp = userLeagueDbRef.doc(participantId);
       CollectionReference leagues = await temp.collection("leagues");
-      //refactor for updates - test TODO
-      temp = leagues.doc(leagueId.toString());
-      temp.set({"id": leagueId}, SetOptions(merge: true));
+
+      temp = leagues.doc(userLeague.leagueId.toString());
+      temp.set({"id": userLeague.leagueId}, SetOptions(merge: true)); // SetOptions caters to updates
     }
   }
+
+
 
 //TODO: Add LogOut
 

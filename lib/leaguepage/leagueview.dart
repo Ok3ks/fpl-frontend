@@ -9,6 +9,7 @@ import 'package:fpl/leaguepage/captainmetrics.dart';
 import 'package:fpl/leaguepage/transfermetrics.dart';
 import 'package:fpl/leaguepage/performancemetrics.dart';
 import 'package:fpl/leaguepage/leagueName.dart';
+import 'package:fpl/types.dart';
 
 import 'dart:convert';
 
@@ -17,7 +18,7 @@ class LeagueView extends ConsumerStatefulWidget {
     super.key,
   });
 
-  String? leagueId;
+  League? userLeague;
 
   @override
   ConsumerState<LeagueView> createState() => LeagueViewState();
@@ -50,7 +51,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
         Stack(alignment: AlignmentDirectional.center, children: [
           Image.asset("assets/images/pexels-mike-1171084.webp"),
           SizedBox(
-              width: width,
+              // width: width,
               //height: (height/3) - 30,
               // child: Card(
               child: Column(children: [
@@ -116,16 +117,15 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                         color:
                             MaterialTheme.darkMediumContrastScheme().primary),
                     onPressed: () async {
-                      if (leagueIdController.text.length > 1) {
+                      if (leagueIdController.text.length > 1 && parseLeagueCodeFromUrl(leagueIdController.text) != '0') {
                         setState(() {
-                          widget.leagueId =
-                              parseLeagueCodeFromUrl(leagueIdController.text);
+                          widget.userLeague = League(leagueId: double.tryParse(parseLeagueCodeFromUrl(leagueIdController.text)));
+                              // parseLeagueCodeFromUrl(leagueIdController.text);
                         });
                       }
 
                       ref.read(leagueProvider.notifier).state =
-                          double.tryParse(widget.leagueId ?? "0");
-                      // print(currParticipant.toString());
+                          widget.userLeague;
                       final leagueId = ref.watch(leagueProvider);
                       if (leagueId != 0 &&
                           leagueId != null &&
@@ -139,7 +139,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   // crossAxisAlignment: CrossAxisAlignment.cen,
                   children: [
-                    if (widget.leagueId != null) leagueIDWidget(),
+                    if (widget.userLeague != null) leagueIDWidget(),
                     GameweekWidget(),
                   ],
                 ),
@@ -169,7 +169,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 
   @override
   Widget build(BuildContext context) {
-    final leagueId = ref.watch(leagueProvider);
+    final leagueId = ref.watch(leagueProvider)?.leagueId;
     final gameweek = ref.watch(gameweekProvider);
 
     if (leagueId != null) {
