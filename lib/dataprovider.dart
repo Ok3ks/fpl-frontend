@@ -37,13 +37,11 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
 
   Map<String, dynamic> leagueRefResults =
       await getLeagueGlobal(leagueId) as Map<String, dynamic>;
-  dynamic response = leagueRefResults[gameweek.toString()];
-  print('response');
-  print(response);
+      dynamic results = leagueRefResults[gameweek.toString()];
+      print('response');
+      print(results);
 
-  if (response != null) {
-    return Future.value(leagueRefResults[gameweek.toString()]);
-  } else {
+  if (results == null) {
     try {
       QueryResult results = await client.value.query(QueryOptions(
           document: gql(AllQueries.getLeagueStats), //
@@ -53,17 +51,16 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
             "leagueId": leagueId, //538731,
             "gameweek": gameweek, //3
           }));
-      if (gameweek != null && leagueId != null) {
+      if (gameweek != null && leagueId != null && results.data != null) {
         //add to global firestore cache
         await addLeagueGlobal(leagueId, gameweek, results.data);
       }
       return results.data;
     } catch (e) {
       print(e);
-      // Log.logger.e("Error during synchronization: $e");
-      return false;
     }
   }
+  return results;
 }
 
 Future<dynamic> pullPlayerStats(int? playerId, double? gameweek) async {
