@@ -138,7 +138,7 @@ class leagueIDWidget extends ConsumerWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("League Id : ${currleague.toString()}",
+          child: Text("League Id : ${currleague?.leagueId.toString() ?? ""}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),
@@ -303,19 +303,19 @@ class playerName extends ConsumerWidget {
   }
 }
 
-String? parseLeagueCodeFromUrl(String url) {
+String parseLeagueCodeFromUrl(String url) {
   try {
     final uri = Uri.parse(url); // Parse the URL to handle it more reliably
     final RegExp regExp = RegExp(r'leagues/(\d+)/standings');
     final match = regExp.firstMatch(uri.path);
 
     if (match != null && match.groupCount >= 1) {
-      return match.group(1); // group(1) will contain the league code
+      return match.group(1) ?? '0'; // group(1) will contain the league code
     }
-    return null; // Return null if no league code is found
+    return '0'; // Return null if no league code is found
   } on FormatException {
     // Handle invalid URL
-    return null;
+    return '0';
   }
 }
 

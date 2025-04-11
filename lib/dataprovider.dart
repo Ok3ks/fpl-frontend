@@ -24,12 +24,29 @@ Future<void> addLeagueGlobal(
 
 Future<Object?> getLeagueGlobal(double? leagueId) async {
   //Try individually, before downloading whole blob onto machine.
-
   CollectionReference LeagueDbRef =
       FirebaseFirestore.instance.collection("leagues/");
   final snapshot = await LeagueDbRef.doc(leagueId.toString()).get();
   final temp = snapshot.data();
   return temp;
+}
+
+Future<List<League>> getParticipantLeagues(String? participantId) async {
+  // QuerySnapshot<Object?> currentUser = await userDbRef.where(
+  //     'email', isEqualTo: email).get();
+  // Map<String, dynamic> currentUserData = currentUser.docs[0].data() as Map<
+  //     String,
+  //     dynamic>;
+
+//set Leagues
+  QuerySnapshot userLeagues = await userDbRef.doc(
+      participantId).collection('leagues').get();
+  List<League> temp2 = [];
+  for (var obj in userLeagues.docs) {
+    Map<String, dynamic> temp = obj.data() as Map<String, dynamic>;
+    temp2.add(League(leagueId: temp['id']));
+  }
+  return temp2;
 }
 
 Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
@@ -150,7 +167,7 @@ Future<dynamic> pullPlayersStats(
   }
 }
 
-final leagueProvider = StateProvider<double?>((ref) {
+final leagueProvider = StateProvider<League?>((ref) {
   return null;
 });
 
