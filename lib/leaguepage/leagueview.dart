@@ -49,16 +49,23 @@ class LeagueViewState extends ConsumerState<LeagueView> {
       return SingleChildScrollView(
           child: Column(children: [
         Stack(alignment: AlignmentDirectional.center, children: [
-          Image.asset("assets/images/pexels-mike-1171084.webp"),
+          Image.asset(
+              "assets/images/pexels-mike-1171084.webp",
+            // width: 1474/3,
+            // height: 534/3
+          ),
           SizedBox(
-              // width: width,
-              //height: (height/3) - 30,
+              // width: 1474,
+              // height: 500,
               // child: Card(
               child: Column(children: [
             const SizedBox(height: 20),
+            if ( width > 300)
             LandingPageTitle(),
             const SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              if (width > 300)
+
               SizedBox(
                   width: 250,
                   height: 50,
@@ -111,6 +118,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                     ),
                   )),
               // ),
+              if (width > 300)
               IconButton(
                 icon: Icon(Icons.keyboard_return,
                     color: MaterialTheme.darkMediumContrastScheme().primary),
@@ -140,6 +148,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
               // crossAxisAlignment: CrossAxisAlignment.cen,
               children: [
                 if (widget.userLeague != null) leagueIDWidget(),
+                if (width > 300)
                 GameweekWidget(),
               ],
             ),
