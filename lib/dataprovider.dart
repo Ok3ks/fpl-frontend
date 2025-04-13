@@ -101,12 +101,12 @@ Future<dynamic> pullPlayerStats(int? playerId, double? gameweek) async {
 
 Future<dynamic> pullParticipantStats(double? participantId) async {
   // final box
-  final local = GetStorage();
-  final results = local.read("participantStats");
+  // final local = GetStorage();
+  // final results = local.read("participantStats");
 
-  if (results != null) {
-    return results;
-  } else {
+  // if (results != null) {
+  //   return results;
+  // } else {
     try {
       QueryResult results = await client.value.query(QueryOptions(
           document: gql(AllQueries.getParticipantStats), //
@@ -115,7 +115,7 @@ Future<dynamic> pullParticipantStats(double? participantId) async {
           variables: {
             "entryId": participantId, //4,
           }));
-      local.write("participantStats", results.data);
+      // local.write("participantStats", results.data);
       return results.data;
     } catch (e) {
       print(e);
@@ -123,7 +123,7 @@ Future<dynamic> pullParticipantStats(double? participantId) async {
       // Log.logger.e("Error during synchronization: $e");
     }
   }
-}
+// }
 
 Future<dynamic> pullGameViewStats(
   bool useGameweek,

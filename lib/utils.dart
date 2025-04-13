@@ -39,6 +39,7 @@ class GameweekWidget extends ConsumerWidget {
         future: getCurrentGameweek(),
         builder: (BuildContext, snapshot) {
           return SizedBox(
+              // width: 100,
               height: width < 500 ? 40 : 50 ,
               child: Card(
                   color: const Color.fromRGBO(100, 100, 100, 0),
