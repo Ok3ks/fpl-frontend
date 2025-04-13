@@ -39,7 +39,6 @@ class GameweekWidget extends ConsumerWidget {
         future: getCurrentGameweek(),
         builder: (BuildContext, snapshot) {
           return SizedBox(
-              // width: 100,
               height: width < 500 ? 40 : 50 ,
               child: Card(
                   color: const Color.fromRGBO(100, 100, 100, 0),
@@ -53,8 +52,6 @@ class GameweekWidget extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                          // width: 50,
-                          // height: 50,
                           child: Card(
                               color: const Color.fromRGBO(100, 100, 100, 0),
                               shape: RoundedRectangleBorder(
@@ -66,14 +63,12 @@ class GameweekWidget extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(8)),
                               child: Center(
                                 child: TextButton(
-                                  // onFocusChange: ,
-                                  // onHover: ,
                                   child: Text(currGameweek.toString(),
                                       style: TextStyle(
                                           color: MaterialTheme
                                                   .darkMediumContrastScheme()
                                               .onSurface,
-                                          fontSize: width < 500 ? 13 : 10)),
+                                          fontSize: 10)),
                                   onPressed: () {
                                     ref
                                         .read(expandGameweekProvider.notifier)
@@ -191,15 +186,15 @@ class expandedGameweekWidget extends ConsumerWidget {
                         child: Text(
                           itemGw.toString(),
                           style: const TextStyle(
-                              color: Colors.white54, fontSize: 10),
+                              color: Colors.white, fontSize: 10),
                         ),
                       )));
             } else {
-              return SizedBox.shrink();
+              return const SizedBox.shrink();
             }
           }));
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 }
