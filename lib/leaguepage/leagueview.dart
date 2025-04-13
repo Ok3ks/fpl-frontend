@@ -12,7 +12,6 @@ import 'package:fpl/leaguepage/transfermetrics.dart';
 import 'package:fpl/leaguepage/performancemetrics.dart';
 import 'package:fpl/leaguepage/leagueName.dart';
 import 'package:fpl/types.dart';
-
 import 'dart:convert';
 
 class LeagueView extends ConsumerStatefulWidget {
@@ -61,16 +60,16 @@ class LeagueViewState extends ConsumerState<LeagueView> {
               // height: 500,
               // child: Card(
               child: Column(children: [
-            const SizedBox(height: 20),
-            if ( width > 300)
-            LandingPageTitle(),
-            const SizedBox(height: 20),
+            // const SizedBox(height: 20),
+            // if ( width > 300)
+            // LandingPageTitle(),
+            const SizedBox(height: 10),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               if (width > 300)
 
               SizedBox(
-                  width: 250,
-                  height: 50,
+                  width: 200,
+                  height: 40,
                   child: Card(
                     shape: RoundedRectangleBorder(
                         side: BorderSide(
@@ -88,7 +87,8 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                       decoration: InputDecoration(
                           hintText: 'Provide your FPL league URL',
                           hintStyle: const TextStyle(
-                              color: Colors.white,
+                              color: Colors.grey,
+                              fontSize: 10,
                               fontWeight: FontWeight.w100,
                               fontStyle: FontStyle.italic),
                           focusedBorder: UnderlineInputBorder(
@@ -424,6 +424,7 @@ class ChooseLeague extends StatelessWidget {
           // const TextField(autocorrect: false, cursorHeight: 5,)),
           IconButton(
             icon: const Icon(Icons.keyboard_return),
+            iconSize: 5,
             onPressed: () {},
           )
         ])));
