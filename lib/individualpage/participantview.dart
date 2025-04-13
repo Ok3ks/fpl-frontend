@@ -33,25 +33,6 @@ class ParticipantView extends StatelessWidget {
   }
 }
 
-//Test animated widget
-class AnimatedStar extends AnimatedWidget {
-  const AnimatedStar({super.key, required Animation<double> animation})
-      : super(listenable: animation);
-
-  @override
-  Widget build(BuildContext context) {
-    final animation = listenable as Animation<double>;
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 10),
-        height: animation.value,
-        width: animation.value,
-        child: const Icon(Icons.star),
-      ),
-    );
-  }
-}
-
 class ParticipantStatsView extends ConsumerStatefulWidget {
   ParticipantStatsView({
     super.key,
@@ -176,7 +157,6 @@ class ParticipantStats extends StatelessWidget {
     ];
 
     return
-        // width: 500,
         DataTable(
             sortColumnIndex: 4,
             dataRowMinHeight: 40,
