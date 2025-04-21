@@ -39,7 +39,7 @@ class Participant {
   Future<UserCredential?> registerUser() async {
     await dotenv.load(fileName: ".env");
     var app = await Firebase.initializeApp(
-        name: 'fpl-frontend',
+        // name: 'fpl-frontend',
         options: const FirebaseOptions(
             apiKey: 'AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU',
             authDomain: 'fpl-frontend.firebaseapp.com',
