@@ -160,7 +160,7 @@ class TransferTile extends ConsumerWidget {
     List<Object?> playerOutIds = data[index]['playerOut'] ?? [];
 
     return SizedBox(
-        width: 600,
+        // width: 600,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -174,7 +174,6 @@ class TransferTile extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                          width: 100,
                           child: TextButton(
                             child: Text("${data[index]['teamName']}",
                                 style: TextStyle(
