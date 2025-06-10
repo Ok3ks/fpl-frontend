@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,16 +137,16 @@ class LeagueViewState extends ConsumerState<LeagueView> {
             mainAxisAlignment: MainAxisAlignment.center,
             // crossAxisAlignment: CrossAxisAlignment.cen,
             children: [
-              if (widget.userLeague != null) leagueIDWidget(),
-              if (width > 300) GameweekWidget(),
+              if (widget.userLeague != null) const leagueIDWidget(),
+              if (width > 300) const GameweekWidget(),
             ],
           ),
-          expandedGameweekWidget()
+          const expandedGameweekWidget()
         ])
             // )
             ),
       ]),
-      LeagueStatsView()
+      const LeagueStatsView()
     ]));
     // );
   }
@@ -155,7 +154,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
 // }
 
 class LeagueStatsView extends ConsumerStatefulWidget {
-  LeagueStatsView({
+  const LeagueStatsView({
     super.key,
   });
 
@@ -194,6 +193,8 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 }
 
 class LandingPageTitle extends StatelessWidget {
+  const LandingPageTitle({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Text(
@@ -209,6 +210,8 @@ class LandingPageTitle extends StatelessWidget {
 
 class LandingPage extends StatelessWidget {
   ExpansionTileController expansionTileController = ExpansionTileController();
+
+  LandingPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -238,8 +241,8 @@ class LandingPage extends StatelessWidget {
                       title: const Text('What is this?'),
                       childrenPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 30),
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           "Dontsuckatfpl is a web-based application for die hard fantasy premier league fans. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                           style: TextStyle(fontSize: 10),
                           textAlign: TextAlign.justify,
@@ -333,7 +336,7 @@ class LandingPage extends StatelessWidget {
                             MaterialTheme.darkMediumContrastScheme().primary,
                         title:
                             const Text('What should we expect in the future?'),
-                        children: []),
+                        children: const []),
                   ]),
             ],
           ),
@@ -358,15 +361,15 @@ class LeagueStats extends StatelessWidget {
             data: data,
             hydrate: hydrate,
           ),
-          CustomDivider(),
+          const CustomDivider(),
           const Text("League Stats"),
           PerformanceMetrics(data: data),
           const Text("Captain Stats"),
           CaptainMetrics(data: data),
-          CustomDivider(),
+          const CustomDivider(),
           BenchMetrics(data: data),
           SizedBox(width: 300, child: Differentials(data: data)),
-          CustomDivider(),
+          const CustomDivider(),
           TransferMetrics(data: data, hydrate: hydrate),
           if (data == null) //ToDo Add timeout here or just validate from entry?
             Center(

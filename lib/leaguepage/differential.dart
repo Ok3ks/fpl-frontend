@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
-import 'dart:html' as html;
 
 class Differentials extends StatelessWidget {
   Map<String, dynamic>? data;

@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import "package:fpl/dataprovider.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
 
 class League {
   String? name;
@@ -200,7 +198,7 @@ class Participant {
           FirebaseFirestore.instance.collection("users");
 
       DocumentReference temp = userLeagueDbRef.doc(participantId);
-      CollectionReference leagues = await temp.collection("leagues");
+      CollectionReference leagues = temp.collection("leagues");
 
       temp = leagues.doc(userLeague.leagueId.toString());
       temp.set({"id": userLeague.leagueId},

@@ -4,9 +4,9 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/home/login.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
-import 'package:fpl/main.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
+import 'package:fpl/themes.dart';
 
 void main() {
   runApp(const Home());
@@ -33,27 +33,31 @@ class Home extends ConsumerWidget {
                 children: [
                   // Drawer header containing user profile infos.
                   UserAccountsDrawerHeader(
-                    accountName: Text(user?.username ?? ""),
-                    accountEmail: Text(user?.email ?? ""),
+                    accountName: Text(user?.username ?? "",
+                      style: TextStyle(
+                        color: MaterialTheme.darkMediumContrastScheme().primary)
+                    ),
+                    accountEmail: Text(user?.email ?? "", style: TextStyle(
+                        color: MaterialTheme.darkMediumContrastScheme().primary)),
                     currentAccountPicture: const CircleAvatar(
                       backgroundImage:  AssetImage("images/pexels-mike-1171084.webp"),
                     ),
-                    decoration: const BoxDecoration(
-                      color: Colors.blue,
+                    decoration: BoxDecoration(
+                      color: MaterialTheme.darkMediumContrastScheme().primaryContainer //Customize
                     ),
                   ),
                   // Add any other drawer items you want.
                   ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Settings'),
                     onTap: () {
                       //TODO: Handle settings tap
                     },
                   ),
-                  Divider(),
+                  const Divider(),
                   ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text('Logout'),
+                    leading: const Icon(Icons.logout),
+                    title: const Text('Logout'),
                     onTap: ()  async {
                       context.go("/login");
                       await user?.logOut();
@@ -87,7 +91,7 @@ class Home extends ConsumerWidget {
             ),
             body: TabBarView(
               children: [
-                ProviderScope(child: ParticipantView()),
+                const ProviderScope(child: ParticipantView()),
                 ProviderScope(child: LeagueView()),
                 const Icon(Icons.sports_soccer),
               ],
@@ -96,6 +100,6 @@ class Home extends ConsumerWidget {
         ),
       );
     }
-    return LoginView();
+    return const LoginView();
   }
 }
