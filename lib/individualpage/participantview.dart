@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
@@ -10,20 +9,20 @@ import 'package:fpl/individualpage/utils.dart';
 //TODO: Adjust Wording
 
 class ParticipantView extends StatelessWidget {
-  ParticipantView({
+  const ParticipantView({
     super.key,
   });
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    return ParticipantStatsView();
+    return const ParticipantStatsView();
   }
 }
 // }
 
 class ParticipantStatsView extends ConsumerStatefulWidget {
-  ParticipantStatsView({
+  const ParticipantStatsView({
     super.key,
   });
 
@@ -63,7 +62,7 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView>
               // width: width,
               child: Column(children: [
             const SizedBox(height: 20),
-            LandingPageTitle(),
+            const LandingPageTitle(),
             const SizedBox(height: 20),
             participantIDWidget(currParticipant: currParticipant)
           ])),
@@ -94,17 +93,19 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView>
                         rows: List.generate(10, (rowIndex) {
                           return DataRow(
                               color: WidgetStateProperty.resolveWith<Color?>(
-                                  (Set<WidgetState> states) {}),
+                                  (Set<WidgetState> states) {
+                                    return null;
+                                  }),
                               cells: List.generate(5, (cellIndex) {
                                 return DataCell(
                                     //Maybe Add lottie here
                                     Opacity(
+                                  opacity: 0.5,
                                   child: AnimatedIcon(
                                     icon: AnimatedIcons.play_pause,
                                     progress: animation,
                                     size: 10.0,
                                   ),
-                                  opacity: 0.5,
                                   // ],
                                 ));
                               }));
@@ -263,6 +264,8 @@ class ParticipantStats extends StatelessWidget {
 
 class LandingPage extends StatelessWidget {
   ExpansionTileController expansionTileController = ExpansionTileController();
+
+  LandingPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -292,8 +295,8 @@ class LandingPage extends StatelessWidget {
                       title: const Text('What is this?'),
                       childrenPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 30),
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                           style: TextStyle(fontSize: 10),
                           textAlign: TextAlign.justify,
@@ -387,7 +390,7 @@ class LandingPage extends StatelessWidget {
                             MaterialTheme.darkMediumContrastScheme().primary,
                         title:
                             const Text('What should we expect in the future?'),
-                        children: []),
+                        children: const []),
                   ]),
             ],
           ),
@@ -396,6 +399,8 @@ class LandingPage extends StatelessWidget {
 }
 
 class LandingPageTitle extends StatelessWidget {
+  const LandingPageTitle({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Text(

@@ -105,12 +105,12 @@ class TransferMetricsState extends State<TransferMetrics>
                           color: MaterialTheme.darkMediumContrastScheme()
                               .primaryContainer,
                           child: Opacity(
+                            opacity: 0.5,
                             child: AnimatedIcon(
                               icon: AnimatedIcons.play_pause,
                               progress: animation,
                               size: 10.0,
                             ),
-                            opacity: 0.5,
                           )));
                 })),
             Column(
@@ -129,12 +129,12 @@ class TransferMetricsState extends State<TransferMetrics>
                           color: MaterialTheme.darkMediumContrastScheme()
                               .primaryContainer,
                           child: Opacity(
+                            opacity: 0.5,
                             child: AnimatedIcon(
                               icon: AnimatedIcons.play_pause,
                               progress: animation,
                               size: 10.0,
                             ),
-                            opacity: 0.5,
                           )));
                 }))
           ]));
@@ -270,13 +270,13 @@ class TransferOut extends StatelessWidget {
                       Row(children: [
                         Text("${playerOutIds[index]?['out'] ?? 0}",
                             style:
-                                TextStyle(color: Colors.white, fontSize: 12)),
-                        Icon(
+                                const TextStyle(color: Colors.white, fontSize: 12)),
+                        const Icon(
                           Icons.people,
                           color: Colors.white,
                         ),
                       ]),
-                      Icon(
+                      const Icon(
                         Icons.arrow_circle_right_sharp,
                         color: Colors.red,
                       ),

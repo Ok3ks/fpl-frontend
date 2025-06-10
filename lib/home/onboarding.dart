@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/dataprovider.dart';
 import 'package:fpl/individualpage/utils.dart';
 import 'dart:math';
 
@@ -319,7 +318,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             decoration: InputDecoration(
               labelText: 'password',
               errorText: _error,
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
             ),
             onChanged: (String? value) {
               setState(() {

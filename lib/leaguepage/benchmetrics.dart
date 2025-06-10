@@ -3,12 +3,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
-import 'dart:html' as html;
 
 class BenchMetrics extends StatefulWidget {
   final Map<String, dynamic>? data;
 
-  BenchMetrics({super.key, required this.data});
+  const BenchMetrics({super.key, required this.data});
 
   @override
   State<BenchMetrics> createState() => BenchMetricsState();
@@ -57,7 +56,7 @@ class BenchMetricsState extends State<BenchMetrics> {
           ]);
     } else {
       //replace with animation maybe
-      return CircularProgressIndicator();
+      return const CircularProgressIndicator();
     }
   }
 }
@@ -126,7 +125,7 @@ class JammyPointsCard extends ConsumerWidget {
                     })),
                     const SizedBox(height: 9),
                     Center(
-                        child: Text("$teamName",
+                        child: Text(teamName,
                             style: TextStyle(
                                 color: MaterialTheme.darkMediumContrastScheme()
                                     .primary,
@@ -138,7 +137,7 @@ class JammyPointsCard extends ConsumerWidget {
       ]);
       // });
     } else {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
   }
 }

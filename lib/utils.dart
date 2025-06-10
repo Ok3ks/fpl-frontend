@@ -21,7 +21,7 @@ dynamic getCurrentGameweek() async {
 }
 
 class GameweekWidget extends ConsumerWidget {
-  GameweekWidget({super.key});
+  const GameweekWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -117,7 +117,7 @@ final expandGameweekProvider = StateProvider<bool>((ref) {
 });
 
 class leagueIDWidget extends ConsumerWidget {
-  leagueIDWidget({super.key});
+  const leagueIDWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -150,7 +150,7 @@ class leagueIDWidget extends ConsumerWidget {
 }
 
 class expandedGameweekWidget extends ConsumerWidget {
-  expandedGameweekWidget({super.key});
+  const expandedGameweekWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -195,7 +195,7 @@ class expandedGameweekWidget extends ConsumerWidget {
 }
 
 class participantIdWidget extends ConsumerWidget {
-  participantIdWidget({super.key});
+  const participantIdWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -296,9 +296,9 @@ class playerName extends ConsumerWidget {
                   ]));
             }
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else {
-            return Text("No Data");
+            return const Text("No Data");
           }
         });
   }
@@ -329,6 +329,8 @@ String parseParticipantIdFromUrl(String url) {
 }
 
 class CustomDivider extends StatelessWidget {
+  const CustomDivider({super.key});
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
@@ -343,6 +345,6 @@ class CustomDivider extends StatelessWidget {
                     color: MaterialTheme.darkMediumContrastScheme().primary),
                 borderRadius: BorderRadius.circular(8)),
             color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-            child: Text("")));
+            child: const Text("")));
   }
 }

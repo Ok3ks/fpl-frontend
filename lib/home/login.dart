@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
-import 'package:fpl/individualpage/utils.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:fpl/home/home.dart';
 
 import '../types.dart';
 
 void main() {
-  runApp(LoginView());
+  runApp(const LoginView());
 }
 
 class LoginView extends StatelessWidget {
+  const LoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,12 +21,14 @@ class LoginView extends StatelessWidget {
         useMaterial3: true, // Enable Material 3
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: LoginBox(),
+      home: const LoginBox(),
     );
   }
 }
 
 class LoginBox extends ConsumerStatefulWidget {
+  const LoginBox({super.key});
+
   @override
   _LoginBoxState createState() => _LoginBoxState();
 }
@@ -135,7 +137,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                                 children: [
                                   TextField(
                                     controller: _emailController,
-                                    decoration: InputDecoration(
+                                    decoration: const InputDecoration(
                                       labelText: 'Email',
                                     ),
                                   ),
@@ -177,12 +179,12 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                                                 }
                                               }
                                             },
+                                            style: signInWithPassWord
+                                                ? const ButtonStyle()
+                                                : const ButtonStyle(),
                                             child: const Text(
                                               'Sign In',
-                                            ),
-                                            style: signInWithPassWord
-                                                ? ButtonStyle()
-                                                : ButtonStyle()),
+                                            )),
                                         const SizedBox(width: 20),
                                         if (signInWithPassWord)
                                           ElevatedButton(
@@ -196,7 +198,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                                                 const Text('Forgot Password'),
                                           ),
                                       ]),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 15,
                                   ),
                                   ElevatedButton(
@@ -213,7 +215,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                             child: SizedBox(
                               height: 60,
                               child: Column(children: [
-                                Text(
+                                const Text(
                                     "A link to reset your password has been sent. Check your inbox"),
                                 Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
