@@ -34,17 +34,26 @@ class BenchMetricsState extends State<BenchMetrics> {
                 controller: yourScrollController,
                 radius: const Radius.circular(3),
                 child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
                       children: [
-                        JammyPointsCard(data: widget.data),
-                        HighestPointsBenched(data: widget.data),
-                        PlayMeInstead(data: widget.data),
-                      ]),
-                  // Text("Bench Points")
-                ))
-            // )
+                        const Text("Bench Points",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              decoration: TextDecoration.none,
+                            )),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              JammyPointsCard(data: widget.data),
+                              HighestPointsBenched(data: widget.data),
+                              PlayMeInstead(data: widget.data),
+                            ])
+                      ],
+                    ))
+                // )
+                )
           ]);
     } else {
       //replace with animation maybe
