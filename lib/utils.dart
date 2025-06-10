@@ -23,13 +23,10 @@ dynamic getCurrentGameweek() async {
 class GameweekWidget extends ConsumerWidget {
   GameweekWidget({super.key});
 
-
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currGameweek = ref.watch(gameweekProvider);
     final Size size = MediaQuery.sizeOf(context);
-
 
     final double width = size.width;
     final double height = size.height;
@@ -39,7 +36,7 @@ class GameweekWidget extends ConsumerWidget {
         future: getCurrentGameweek(),
         builder: (BuildContext, snapshot) {
           return SizedBox(
-              height: 50 ,
+              height: 50,
               child: Card(
                   color: const Color.fromRGBO(100, 100, 100, 0),
                   shape: RoundedRectangleBorder(
@@ -154,8 +151,6 @@ class leagueIDWidget extends ConsumerWidget {
 
 class expandedGameweekWidget extends ConsumerWidget {
   expandedGameweekWidget({super.key});
-
-
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

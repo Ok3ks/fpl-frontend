@@ -17,21 +17,10 @@ class ParticipantView extends StatelessWidget {
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    if (orientation == Orientation.landscape) {
-      return const Center(
-          child: Text("Adjust your device into a portrait orientation",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30)));
-    }
-    //Left becomes top
-    else {
-      return ParticipantStatsView();
-      // );
-    }
+    return ParticipantStatsView();
   }
 }
+// }
 
 class ParticipantStatsView extends ConsumerStatefulWidget {
   ParticipantStatsView({
@@ -156,121 +145,118 @@ class ParticipantStats extends StatelessWidget {
       totalPoints,
     ];
 
-    return
-        DataTable(
-            sortColumnIndex: 4,
-            dataRowMinHeight: 40,
-            columnSpacing: 4,
-            columns: const [
-              DataColumn(label: Text("")),
-              DataColumn(
-                  label: Text(
-                "",
-                style: TextStyle(fontSize: 10),
-              )),
-              DataColumn(label: Text("")),
-              // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
-              DataColumn(label: Text("Best Player")),
-              DataColumn(label: Text("Points"), numeric: true),
-              //league average
-            ],
-            rows: List.generate(gameweek.length, (rowIndex) {
-              var vcPoint =
-                  double.tryParse(viceCaptainPoints[rowIndex].toString()) ?? 0;
-              var capPoint =
-                  double.tryParse(captainPoints[rowIndex].toString()) ?? 0;
-              var hpPoints = double.tryParse(
-                      highestScoringPlayerPoints[rowIndex].toString()) ??
-                  0;
-              bool flag = hpPoints > vcPoint * 2 && hpPoints > capPoint + 6;
-              bool miniFlag = vcPoint * 2 > capPoint;
-              return DataRow(
-                  color: WidgetStateProperty.resolveWith<Color?>(
-                      (Set<WidgetState> states) {
-                    if (miniFlag) {
-                      return MaterialTheme.lightHighContrastScheme()
-                          .surfaceContainerLowest
-                          .withOpacity(1.0);
-                    } else if (flag) {
-                      return MaterialTheme.lightHighContrastScheme()
-                          .errorContainer
-                          .withOpacity(1.0);
-                    } else {
-                      return MaterialTheme.lightHighContrastScheme()
-                          .surfaceContainerHighest
-                          .withOpacity(1.0); // Use the default value.
-                    }
-                  }),
-                  cells: List.generate(interest.length, (cellIndex) {
-                    if (interest[cellIndex] == captainPoints) {
-                      return DataCell(Column(children: [
-                        captainViceCaptainName(
-                          playerName: captain[rowIndex]['info']['playerName'],
-                          playerPoint: capPoint,
-                          flag: flag && !miniFlag,
-                        ),
-                        Text("C",
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primary))
-                      ]));
-                    }
-                    if (interest[cellIndex] == viceCaptainPoints) {
-                      return DataCell(Column(children: [
-                        captainViceCaptainName(
-                          playerName: viceCaptain[rowIndex]['info']
-                              ['playerName'],
-                          playerPoint: vcPoint,
-                          flag: flag && !miniFlag,
-                        ),
-                        Text("VC",
-                            style: TextStyle(
-                                fontSize: 10,
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primary))
-                      ]));
-                    }
-                    if (interest[cellIndex] == highestScoringPlayer) {
-                      return DataCell(captainViceCaptainName(
-                        playerName: highestScoringPlayer[rowIndex]['info']
-                            ['playerName'],
-                        playerPoint: hpPoints,
-                        flag: flag && !miniFlag,
-                      ));
-                    }
-                    if (interest[cellIndex] == totalPoints) {
-                      return DataCell(Row(children: [
-                        Text(interest[cellIndex][rowIndex].toString(),
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: flag && !miniFlag
-                                    ? Colors.white
-                                    : Colors.black)),
-                        if (activeChip[rowIndex] != null)
-                          Text(
-                            activeChip[rowIndex].toString(),
-                            style: TextStyle(
-                                fontSize: 10,
-                                fontStyle: FontStyle.italic,
-                                color: flag && !miniFlag
-                                    ? Colors.white
-                                    : Colors.black),
-                          ),
-                      ]));
-                    } else {
-                      return DataCell(Text(
-                        "Gameweek ${interest[cellIndex][rowIndex].toString()}",
+    return DataTable(
+        sortColumnIndex: 4,
+        dataRowMinHeight: 40,
+        columnSpacing: 4,
+        columns: const [
+          DataColumn(label: Text("")),
+          DataColumn(
+              label: Text(
+            "",
+            style: TextStyle(fontSize: 10),
+          )),
+          DataColumn(label: Text("")),
+          // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
+          DataColumn(label: Text("Best Player")),
+          DataColumn(label: Text("Points"), numeric: true),
+          //league average
+        ],
+        rows: List.generate(gameweek.length, (rowIndex) {
+          var vcPoint =
+              double.tryParse(viceCaptainPoints[rowIndex].toString()) ?? 0;
+          var capPoint =
+              double.tryParse(captainPoints[rowIndex].toString()) ?? 0;
+          var hpPoints = double.tryParse(
+                  highestScoringPlayerPoints[rowIndex].toString()) ??
+              0;
+          bool flag = hpPoints > vcPoint * 2 && hpPoints > capPoint + 6;
+          bool miniFlag = vcPoint * 2 > capPoint;
+          return DataRow(
+              color: WidgetStateProperty.resolveWith<Color?>(
+                  (Set<WidgetState> states) {
+                if (miniFlag) {
+                  return MaterialTheme.lightHighContrastScheme()
+                      .surfaceContainerLowest
+                      .withOpacity(1.0);
+                } else if (flag) {
+                  return MaterialTheme.lightHighContrastScheme()
+                      .errorContainer
+                      .withOpacity(1.0);
+                } else {
+                  return MaterialTheme.lightHighContrastScheme()
+                      .surfaceContainerHighest
+                      .withOpacity(1.0); // Use the default value.
+                }
+              }),
+              cells: List.generate(interest.length, (cellIndex) {
+                if (interest[cellIndex] == captainPoints) {
+                  return DataCell(Column(children: [
+                    captainViceCaptainName(
+                      playerName: captain[rowIndex]['info']['playerName'],
+                      playerPoint: capPoint,
+                      flag: flag && !miniFlag,
+                    ),
+                    Text("C",
                         style: TextStyle(
-                          fontSize: 10,
-                          color:
-                              flag && !miniFlag ? Colors.white : Colors.black,
-                        ),
-                      ));
-                    }
-                  }));
-            }));
+                            fontSize: 10,
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary))
+                  ]));
+                }
+                if (interest[cellIndex] == viceCaptainPoints) {
+                  return DataCell(Column(children: [
+                    captainViceCaptainName(
+                      playerName: viceCaptain[rowIndex]['info']['playerName'],
+                      playerPoint: vcPoint,
+                      flag: flag && !miniFlag,
+                    ),
+                    Text("VC",
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary))
+                  ]));
+                }
+                if (interest[cellIndex] == highestScoringPlayer) {
+                  return DataCell(captainViceCaptainName(
+                    playerName: highestScoringPlayer[rowIndex]['info']
+                        ['playerName'],
+                    playerPoint: hpPoints,
+                    flag: flag && !miniFlag,
+                  ));
+                }
+                if (interest[cellIndex] == totalPoints) {
+                  return DataCell(Row(children: [
+                    Text(interest[cellIndex][rowIndex].toString(),
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: flag && !miniFlag
+                                ? Colors.white
+                                : Colors.black)),
+                    if (activeChip[rowIndex] != null)
+                      Text(
+                        activeChip[rowIndex].toString(),
+                        style: TextStyle(
+                            fontSize: 10,
+                            fontStyle: FontStyle.italic,
+                            color: flag && !miniFlag
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                  ]));
+                } else {
+                  return DataCell(Text(
+                    "Gameweek ${interest[cellIndex][rowIndex].toString()}",
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: flag && !miniFlag ? Colors.white : Colors.black,
+                    ),
+                  ));
+                }
+              }));
+        }));
     // );
   }
 }

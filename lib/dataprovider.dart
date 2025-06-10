@@ -107,22 +107,22 @@ Future<dynamic> pullParticipantStats(double? participantId) async {
   // if (results != null) {
   //   return results;
   // } else {
-    try {
-      QueryResult results = await client.value.query(QueryOptions(
-          document: gql(AllQueries.getParticipantStats), //
-          fetchPolicy: null,
-          cacheRereadPolicy: null,
-          variables: {
-            "entryId": participantId, //4,
-          }));
-      // local.write("participantStats", results.data);
-      return results.data;
-    } catch (e) {
-      print(e);
-      return false;
-      // Log.logger.e("Error during synchronization: $e");
-    }
+  try {
+    QueryResult results = await client.value.query(QueryOptions(
+        document: gql(AllQueries.getParticipantStats), //
+        fetchPolicy: null,
+        cacheRereadPolicy: null,
+        variables: {
+          "entryId": participantId, //4,
+        }));
+    // local.write("participantStats", results.data);
+    return results.data;
+  } catch (e) {
+    print(e);
+    return false;
+    // Log.logger.e("Error during synchronization: $e");
   }
+}
 // }
 
 Future<dynamic> pullGameViewStats(
