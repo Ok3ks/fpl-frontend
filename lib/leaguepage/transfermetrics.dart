@@ -42,32 +42,29 @@ class TransferMetricsState extends State<TransferMetrics>
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-            const Text("Transfer Impact",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                  decoration: TextDecoration.none,
-                )),
+            const Center(
+                child: Text("Transfer Impact",
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
+                      decoration: TextDecoration.none,
+                    ))),
             Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: List.generate(1, (index) {
-                  return TransferIn(
-                    data: widget.data?['leagueWeeklyReport']
-                        ['mostTransferredIn'],
-                    index: index,
-                  );
-                })),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: List.generate(1, (index) {
-                  return TransferOut(
-                    data: widget.data?['leagueWeeklyReport']
-                        ['mostTransferredOut'],
-                    index: index,
-                  );
+                  return Row(children: [
+                    TransferOut(
+                      data: widget.data?['leagueWeeklyReport']
+                          ['mostTransferredOut'],
+                      index: index,
+                    ),
+                    TransferIn(
+                      data: widget.data?['leagueWeeklyReport']
+                          ['mostTransferredIn'],
+                      index: index,
+                    )
+                  ]);
                 })),
             Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,18 +172,17 @@ class TransferTile extends ConsumerWidget {
                     children: [
                       SizedBox(
                           child: TextButton(
-                            child: Text("${data[index]['teamName']}",
-                                style: TextStyle(
-                                  color:
-                                      MaterialTheme.darkMediumContrastScheme()
-                                          .primary,
-                                  fontSize: 10,
-                                )),
-                            onPressed: () {
-                              html.window.location.assign(
-                                  "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
-                            },
-                          )),
+                        child: Text("${data[index]['teamName']}",
+                            style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .primary,
+                              fontSize: 10,
+                            )),
+                        onPressed: () {
+                          html.window.location.assign(
+                              "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                        },
+                      )),
                       if (playerOutIds.isNotEmpty)
                         Column(
                             children: List.generate(playerOutIds.length, (i) {

@@ -37,36 +37,25 @@ class LeagueViewState extends ConsumerState<LeagueView> {
 
     final currParticipant = ref.watch(currentUserProvider);
 
-    if (orientation == Orientation.landscape) {
-      return const Center(
-          child: Text("Adjust your device into a portrait orientation",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30)));
-    }
-    //Left becomes top
-    else {
-      return SingleChildScrollView(
-          child: Column(children: [
-        Stack(alignment: AlignmentDirectional.center, children: [
-          Image.asset(
-              "assets/images/pexels-mike-1171084.webp",
-            // width: 1474/3,
-            // height: 534/3
-          ),
-          SizedBox(
-              // width: 1474,
-              // height: 500,
-              // child: Card(
-              child: Column(children: [
-            // const SizedBox(height: 20),
-            // if ( width > 300)
-            // LandingPageTitle(),
-            const SizedBox(height: 10),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              if (width > 300)
-
+    return SingleChildScrollView(
+        child: Column(children: [
+      Stack(alignment: AlignmentDirectional.center, children: [
+        Image.asset(
+          "assets/images/pexels-mike-1171084.webp",
+          // width: 1474/3,
+          // height: 534/3
+        ),
+        SizedBox(
+            // width: 1474,
+            // height: 500,
+            // child: Card(
+            child: Column(children: [
+          // const SizedBox(height: 20),
+          // if ( width > 300)
+          // LandingPageTitle(),
+          const SizedBox(height: 10),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            if (width > 300)
               SizedBox(
                   width: 200,
                   height: 40,
@@ -119,8 +108,8 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                       autocorrect: false,
                     ),
                   )),
-              // ),
-              if (width > 300)
+            // ),
+            if (width > 300)
               IconButton(
                 icon: Icon(Icons.keyboard_return,
                     color: MaterialTheme.darkMediumContrastScheme().primary),
@@ -144,27 +133,26 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                   }
                 },
               )
-            ]),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              // crossAxisAlignment: CrossAxisAlignment.cen,
-              children: [
-                if (widget.userLeague != null) leagueIDWidget(),
-                if (width > 300)
-                GameweekWidget(),
-              ],
+          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.cen,
+            children: [
+              if (widget.userLeague != null) leagueIDWidget(),
+              if (width > 300) GameweekWidget(),
+            ],
+          ),
+          expandedGameweekWidget()
+        ])
+            // )
             ),
-            expandedGameweekWidget()
-          ])
-              // )
-              ),
-        ]),
-        LeagueStatsView()
-      ]));
-      // );
-    }
+      ]),
+      LeagueStatsView()
+    ]));
+    // );
   }
 }
+// }
 
 class LeagueStatsView extends ConsumerStatefulWidget {
   LeagueStatsView({
@@ -192,7 +180,6 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
               var obj = snapshot.data;
               print(snapshot.connectionState);
               if (snapshot.hasData) {
-                print(obj);
                 return LeagueStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LeagueStats(data: obj, hydrate: false);
@@ -364,37 +351,38 @@ class LeagueStats extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Container(
-          color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          child: Column(children: [
-            leagueName(
-              data: data,
-              hydrate: hydrate,
-            ),
-            CustomDivider(),
-            const Text("League Stats"),
-            PerformanceMetrics(data: data),
-            const Text("Captain Stats"),
-            CaptainMetrics(data: data),
-            CustomDivider(),
-            BenchMetrics(data: data),
-            SizedBox(width: 300, child: Differentials(data: data)),
-            CustomDivider(),
-            TransferMetrics(data: data, hydrate: hydrate),
-            if (data ==
-                null) //ToDo Add timeout here or just validate from entry?
-              Center(
-                  child: Container(
-                      // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                      color: Colors.white,
-                      child: Column(children: [
-                        const Text("Input is invalid",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.red)),
-                        LandingPage(),
-                      ])))
-          ])),
+        color: MaterialTheme.darkMediumContrastScheme().onSurface,
+        child: SizedBox(
+            child: Column(children: [
+          leagueName(
+            data: data,
+            hydrate: hydrate,
+          ),
+          CustomDivider(),
+          const Text("League Stats"),
+          PerformanceMetrics(data: data),
+          const Text("Captain Stats"),
+          CaptainMetrics(data: data),
+          CustomDivider(),
+          BenchMetrics(data: data),
+          SizedBox(width: 300, child: Differentials(data: data)),
+          CustomDivider(),
+          TransferMetrics(data: data, hydrate: hydrate),
+          if (data == null) //ToDo Add timeout here or just validate from entry?
+            Center(
+                child: Container(
+                    // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                    color: Colors.white,
+                    child: Column(children: [
+                      const Text("Input is invalid",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.red)),
+                      LandingPage(),
+                    ])))
+        ])),
+      )
     ]);
   }
 }
