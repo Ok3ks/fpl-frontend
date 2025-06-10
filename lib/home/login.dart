@@ -189,7 +189,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                                               setState(() {
                                                 forgotPassword = true;
                                               });
-                                              // _resetPassword();
+                                              _resetPassword();
                                             },
                                             child:
                                                 const Text('Forgot Password'),
