@@ -48,10 +48,7 @@ class Participant {
             messagingSenderId: "249818130331",
             appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
             measurementId: "G-RCXFD9EQ9E",
-            databaseURL: "https://default.firebaseio.com")
-
-    );
-
+            databaseURL: "https://default.firebaseio.com"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
@@ -133,8 +130,7 @@ class Participant {
             messagingSenderId: "249818130331",
             appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
             measurementId: "G-RCXFD9EQ9E",
-            databaseURL: "https://default.firebaseio.com")
-    );
+            databaseURL: "https://default.firebaseio.com"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
