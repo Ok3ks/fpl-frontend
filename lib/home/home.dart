@@ -15,19 +15,11 @@ void main() {
 class Home extends ConsumerWidget {
   const Home({super.key});
 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final local = GetStorage();
     final user = ref.read(currentUserProvider);
-
-    void _logout(BuildContext context) {
-      // Here you would typically clear user data and navigate to the login screen.
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('User logged out.')),
-      );
-      // For example:
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
-    }
 
     if (local.read("isLoggedIn") == true) {
       return MaterialApp(
@@ -55,19 +47,21 @@ class Home extends ConsumerWidget {
                     leading: Icon(Icons.settings),
                     title: Text('Settings'),
                     onTap: () {
-                      // Handle settings tap
-                      Navigator.pop(context);
+                      //TODO: Handle settings tap
                     },
                   ),
                   Divider(),
                   ListTile(
                     leading: Icon(Icons.logout),
                     title: Text('Logout'),
-                    onTap: () {
-                      _logout(context);
-                      Navigator.pop(context);
+                    onTap: ()  async {
+                      context.go("/login");
+                      await user?.logOut();
+
                     },
+
                   ),
+
                 ],
               ),
             ),

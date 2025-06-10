@@ -39,6 +39,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   bool signIn = false;
   bool signInWithPassWord = false;
   bool forgotPassword = false;
+  late bool loggedIn;
 
   void toggleObscurePassword() {
     setState(() {
@@ -59,7 +60,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
 
     Participant currentUser = Participant(
         email: _emailController.text, password: _passwordController.text);
-    dynamic loggedInUser = await currentUser.retrieveUser(password);
+    dynamic LoggedInUser = await currentUser.retrieveUser(password);
 
     // Mock logic for demonstration
     if (email.isEmpty || password.isEmpty) {
@@ -80,13 +81,12 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       // Proceed with login
       setState(() {
         _errorMessage = '';
+        loggedIn = true;
       });
       //Update field with userHistory
 
-      //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
-      final local = GetStorage();
       // await currentUser.getHistory(participantID ?? "null");
       box.write('isLoggedIn', true);
       ref.read(currentUserProvider.notifier).state = Participant(
@@ -97,7 +97,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           username: userData['username'],
           history: userData['history']);
 
-      local.write("participant", {
+      box.write("participant", {
         "email": userData['email'],
         "favoriteTeam": userData['favoriteTeam'],
         "participantId": userData['participantId'],
@@ -105,7 +105,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         "username": userData['username'],
       });
 
-      // Navigator.of(context).pushNamed('/home');
       context.go('/home');
     }
   }
@@ -118,8 +117,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   //TODO: Adjust Styling
   @override
   Widget build(BuildContext context) {
-    final currentUser = ref.watch(currentUserProvider);
-    if (currentUser == null) {
+
       return Scaffold(
           appBar: AppBar(
             title: const Text('Login'),
@@ -174,6 +172,9 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                                                 });
                                               } else {
                                                 _login();
+                                                if (loggedIn) {
+                                                  context.go("/home");
+                                                }
                                               }
                                             },
                                             child: const Text(
@@ -236,9 +237,5 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                               ]),
                             ),
                           )))));
-    } else {
-      //TODO: Persist Login Session
-      return const Home();
-    }
   }
 }
