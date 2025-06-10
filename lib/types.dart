@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import "package:fpl/dataprovider.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 
 class League {
@@ -138,6 +139,38 @@ class Participant {
     auth.setPersistence(Persistence.LOCAL);
     try {
       await auth.sendPasswordResetEmail(email: email);
+      return true;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Future<bool?> logOut() async {
+    final local = GetStorage();
+
+    var app = await Firebase.initializeApp(
+        options: const FirebaseOptions(
+            apiKey: 'AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU',
+            authDomain: 'fpl-frontend.firebaseapp.com',
+            projectId: 'fpl-frontend',
+            storageBucket: 'fpl-frontend.firebasestorage.app',
+            messagingSenderId: "249818130331",
+            appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
+            measurementId: "G-RCXFD9EQ9E",
+            databaseURL: "https://default.firebaseio.com"));
+
+    var auth = FirebaseAuth.instanceFor(
+      app: app,
+    );
+    auth.setPersistence(Persistence.LOCAL);
+    try {
+      await auth.signOut();
+      local.write("isLoggedIn", false);
+      local.write("participant", {"email": "",
+        "favoriteTeam": "",
+        "participantId": "",
+        "yearsPlayingFpl": "",
+        "username": "",});
       return true;
     } catch (e) {
       return null;
