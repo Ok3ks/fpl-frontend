@@ -59,7 +59,7 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/gameview',
         builder: (BuildContext context, GoRouterState state) {
-          return const GameView();
+          return const BarChartSample3();
         }),
     GoRoute(
         path: '/leagueview',

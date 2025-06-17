@@ -8,6 +8,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/themes.dart';
 
+import '../gamepage/gameview.dart';
+
 void main() {
   runApp(const Home());
 }
@@ -93,8 +95,14 @@ class Home extends ConsumerWidget {
               children: [
                 const ProviderScope(child: ParticipantView()),
                 ProviderScope(child: LeagueView()),
-                const Icon(Icons.sports_soccer),
-              ],
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                    BarChartSample3(),
+                    PieChartSample2()
+                  ],
+                ),
+                )],
             ),
           ),
         ),
