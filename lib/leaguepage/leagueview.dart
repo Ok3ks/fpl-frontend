@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
@@ -11,7 +10,6 @@ import 'package:fpl/leaguepage/transfermetrics.dart';
 import 'package:fpl/leaguepage/performancemetrics.dart';
 
 import 'dart:convert';
-import 'package:fpl/auth.dart';
 
 class LeagueView extends ConsumerStatefulWidget {
   LeagueView({
@@ -35,7 +33,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     final double height = size.height;
 
     if (orientation == Orientation.landscape) {
-      return Center(
+      return const Center(
           child: Text("Adjust your device into a portrait orientation",
               style: TextStyle(
                   color: Colors.black,
@@ -67,9 +65,10 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                                 color: MaterialTheme.darkMediumContrastScheme()
                                     .primary),
                             borderRadius: BorderRadius.circular(12)),
-                        color: Color.fromRGBO(100, 100, 100, 0),
+                        color: const Color.fromRGBO(100, 100, 100, 0),
                         child: TextField(
-                          style: TextStyle(fontSize: 10, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 10, color: Colors.white),
                           cursorColor:
                               MaterialTheme.darkMediumContrastScheme().primary,
                           controller: leagueIdController,
@@ -212,7 +211,7 @@ class LandingPage extends StatelessWidget {
           Column(
             children: [
               ExpansionTile(
-                  title: Text('Frequently Asked Questions'),
+                  title: const Text('Frequently Asked Questions'),
                   initiallyExpanded: true,
                   backgroundColor: Colors.white,
                   collapsedBackgroundColor: Colors.white,
@@ -223,16 +222,16 @@ class LandingPage extends StatelessWidget {
                   iconColor: MaterialTheme.darkMediumContrastScheme().primary,
                   children: [
                     ExpansionTile(
-                      leading: Icon(Icons.sports_soccer),
+                      leading: const Icon(Icons.sports_soccer),
                       iconColor:
                           MaterialTheme.darkMediumContrastScheme().primary,
                       collapsedIconColor:
                           MaterialTheme.darkMediumContrastScheme().primary,
-                      title: Text('What is this?'),
+                      title: const Text('What is this?'),
                       childrenPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 30),
                       children: [
-                        Text(
+                        const Text(
                           "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                           style: TextStyle(fontSize: 10),
                           textAlign: TextAlign.justify,
@@ -241,7 +240,7 @@ class LandingPage extends StatelessWidget {
                       ],
                     ),
                     ExpansionTile(
-                        leading: Icon(Icons.sports_soccer),
+                        leading: const Icon(Icons.sports_soccer),
                         iconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
                         collapsedIconColor:
@@ -249,7 +248,7 @@ class LandingPage extends StatelessWidget {
                         childrenPadding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 30),
                         maintainState: true,
-                        title: Text('How can i find my FPL league URL'),
+                        title: const Text('How can i find my FPL league URL'),
                         children: [
                           Column(
                               // mainAxisAlignment: MainAxisAlignment.start,
@@ -263,12 +262,12 @@ class LandingPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Image.asset(
                                     "assets/images/useApp - Step 1.png"),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 const Text(
@@ -279,14 +278,14 @@ class LandingPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Image.asset(
                                     "assets/images/useApp - Step 2.png"),
                                 Image.asset(
                                     "assets/images/useApp - Step 3.png"),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 const Text(
@@ -297,15 +296,15 @@ class LandingPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
                                 Image.asset(
                                     "assets/images/useApp - Step 4.png"),
-                                SizedBox(
+                                const SizedBox(
                                   height: 5,
                                 ),
-                                Align(
+                                const Align(
                                     alignment: Alignment.center,
                                     child: Text(
                                       "Now you have a mini league report to view.",
@@ -319,12 +318,13 @@ class LandingPage extends StatelessWidget {
                               ]),
                         ]),
                     ExpansionTile(
-                        leading: Icon(Icons.sports_soccer),
+                        leading: const Icon(Icons.sports_soccer),
                         iconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
                         collapsedIconColor:
                             MaterialTheme.darkMediumContrastScheme().primary,
-                        title: Text('What should we expect in the future?'),
+                        title:
+                            const Text('What should we expect in the future?'),
                         children: []),
                   ]),
             ],
@@ -400,10 +400,10 @@ class ChooseLeague extends StatelessWidget {
                       color: MaterialTheme.darkMediumContrastScheme().primary),
                   borderRadius: BorderRadius.circular(18)),
               color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-              child: Text("Man")),
+              child: const Text("Man")),
           // const TextField(autocorrect: false, cursorHeight: 5,)),
           IconButton(
-            icon: Icon(Icons.keyboard_return),
+            icon: const Icon(Icons.keyboard_return),
             onPressed: () {},
           )
         ])));
@@ -449,8 +449,8 @@ class LeagueAverageCard extends StatelessWidget {
                 //mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 7.5),
+                  Text(title, style: const TextStyle(color: Colors.white)),
+                  const SizedBox(height: 7.5),
                   Center(
                       child: Text(
                     "${data.ceilToDouble()}",
@@ -495,10 +495,11 @@ class MetricsCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: TextStyle(color: Colors.white, fontSize: 11)),
-                  SizedBox(height: 7.5),
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 11)),
+                  const SizedBox(height: 7.5),
                   Text(
-                    "${data.toString()}",
+                    data.toString(),
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
@@ -540,8 +541,8 @@ class PointsMetrics extends StatelessWidget {
                 //mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: TextStyle(color: Colors.white)),
-                  SizedBox(height: 7.5),
+                  Text(title, style: const TextStyle(color: Colors.white)),
+                  const SizedBox(height: 7.5),
                   Text(
                     "${leagueAverage.ceilToDouble()}",
                     style: TextStyle(

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/themes.dart';
 import '../utils.dart';
+import 'dart:html' as html;
 
 import '../dataprovider.dart';
 
@@ -14,18 +14,13 @@ class TransferMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
-    // List<String> transferImpactKeys = ["bestTransferIn", "worstTransferIn", ""];
+    print(data.data?['leagueWeeklyReport']['bestTransferIn']);
 
     return SizedBox(
-        child:
-            // Card(
-            // color: MaterialTheme.darkMediumContrastScheme().onSurface,
-            // elevation: 2,
-            // child:
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
           const Text("Transfer Impact",
               style: TextStyle(
                 color: Colors.black,
@@ -65,13 +60,12 @@ class TransferTile extends ConsumerWidget {
     final gameweek = ref.watch(gameweekProvider);
 
     //TODO: Find an elegant way
-    List<double> playerIds = List.from([
-      double.tryParse(data[index]['playerIn']) ?? 0,
-      double.tryParse(data[index]['playerOut']) ?? 0,
-    ]);
+    List<Object?> playerInIds = data[index]['playerIn'] ?? [];
+    List<Object?> playerOutIds = data[index]['playerOut'] ?? [];
+
     return SizedBox(
         width: 600,
-        height: 45,
+        // height: 45,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -84,66 +78,65 @@ class TransferTile extends ConsumerWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ParticipantName(
-                          participantName: data[index]['teamName'],
-                          participantId: data[index]['entryId']),
-                      playerName(
-                        playerId: playerIds[1],
-                        notTransfer: false,
-                      ),
-                      const Icon(
-                        Icons.arrow_circle_right_sharp,
-                        color: Colors.red,
-                      ),
-                      const Icon(
-                        Icons.arrow_circle_left_sharp,
-                        color: Colors.green,
-                      ),
-                      playerName(
-                        playerId: playerIds[0],
-                        notTransfer: false,
-                      ),
+                      SizedBox(
+                          width: 100,
+                          child: TextButton(
+                            child: Text("${data[index]['teamName']}",
+                                style: TextStyle(
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .onSurface,
+                                  fontSize: 10,
+                                )),
+                            onPressed: () {
+                              html.window.location.assign(
+                                  "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                            },
+                          )),
+                      Column(
+                          children: List.generate(playerOutIds.length, (i) {
+                        return playerName(
+                          playerId:
+                              int.parse(playerOutIds[i].toString() ?? "0"),
+                          notTransfer: false,
+                        );
+                      })),
+                      const SizedBox(
+                          width: 100,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Icon(
+                                Icons.arrow_circle_right_sharp,
+                                color: Colors.red,
+                              ),
+                              Icon(
+                                Icons.arrow_circle_left_sharp,
+                                color: Colors.green,
+                              )
+                            ],
+                          )),
+                      Column(
+                          children: List.generate(playerInIds.length, (i) {
+                        return playerName(
+                          playerId: int.parse(playerInIds[i].toString() ?? "0"),
+                          notTransfer: false,
+                        );
+                      })),
                       SizedBox(
                           // clipBehavior: Clip.hardEdge,
-                          height: 40,
-                          width: 50,
+                          // height: 40,
+                          // width: 50,
                           child: Center(
-                            child: Text(
-                              "${data[index]['pointsDelta']}pts",
-                              style: TextStyle(
-                                  color: data[index]['pointsDelta'] > 0
-                                      ? Colors.green
-                                      : Colors.red,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ))
+                        child: Text(
+                          "${data[index]['pointsDelta']}pts",
+                          style: TextStyle(
+                              color: data[index]['pointsDelta'] > 0
+                                  ? Colors.green
+                                  : Colors.red,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ))
                     ]))));
-  }
-}
-
-class ParticipantName extends StatelessWidget {
-  String participantName;
-  double participantId;
-
-  ParticipantName(
-      {super.key, required this.participantName, required this.participantId});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      child: Text(
-        "{$participantName}",
-        style: TextStyle(
-          color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          fontSize: 10,
-        ),
-      ),
-      onPressed: () async {
-        print(participantId);
-        // await pullParticipantStats(participantId);
-        // route.go('participant view', /id/)
-        // localhistory.cache('web page')
-      },
-    );
   }
 }

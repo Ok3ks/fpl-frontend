@@ -1,13 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/gamepage/gameview.dart';
 import 'package:fpl/dataprovider.dart';
 import 'dart:math';
 
 import 'package:go_router/go_router.dart';
 import 'package:fpl/types.dart';
-
-import '../individualpage/utils.dart';
 
 void main() {
   runApp(const Onboarding());
@@ -46,6 +44,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   String? fplUrl;
   String? favoriteTeam;
   String? yearsPlaying;
+  String? password;
+  String? _error;
 
   final List<Map<String, String>> steps = [
     {
@@ -58,6 +58,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       'title': 'Tell us about yourself',
       'description': 'Help us personalize your experience'
     },
+    {'title': 'Secure your account', 'description': ''},
     {
       'title': 'Get Started',
       'description': "You're all set to begin your journey to FPL mastery",
@@ -85,7 +86,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     'West Ham United',
     'Wolves'
   ];
-
   Widget _buildWelcomeStep() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -101,7 +101,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
         _buildFeatureItem(Icons.people,
             'League Analysis, keep an eye on your mini league, all in one view'),
         _buildFeatureItem(Icons.trending_up, 'Game View Dashboard'),
-        _buildFeatureItem(Icons.price_check_rounded, 'Price Changes'),
       ],
     );
   }
@@ -119,6 +118,82 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
+  Widget _buildStepContent() {
+    switch (currentStep) {
+      case 0:
+        return _buildWelcomeStep();
+      case 1:
+        return _buildFormStep();
+      case 2:
+        return _addPassword();
+      case 3:
+        return _buildCompletionStep();
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  void _handleBack() {
+    setState(() {
+      currentStep = max(currentStep - 1, 0);
+    });
+  }
+
+  void _handleNext() async {
+    if (currentStep == 3) {
+      context.go('/login');
+    } else if (currentStep == 2) {
+      if (_formKey.currentState?.validate() ?? false) {
+        _formKey.currentState?.save();
+        print(
+            "$favoriteTeam, $username, $email, $fplUrl, $yearsPlaying, $password");
+        if (favoriteTeam != null &&
+            username != null &&
+            email != null &&
+            fplUrl != null &&
+            yearsPlaying != null &&
+            password != null) {
+          Participant registeringParticipant = Participant(
+              favoriteTeam: favoriteTeam!,
+              username: username!,
+              password: password!,
+              email: email!,
+              fplUrl: fplUrl!,
+              yearsPlayingFpl: yearsPlaying!);
+
+          UserCredential? currentUser =
+              await registeringParticipant.registerUser();
+          setState(() {
+            _error =registeringParticipant.error;
+          });
+
+          if (currentUser != null) {
+            //update current user for remaining part of the application
+            ref.read(currentUserProvider.notifier).state = Participant(
+                email: currentUser.user?.email ?? "default@gmail.com",
+                favoriteTeam: favoriteTeam,
+                fplUrl: fplUrl,
+                yearsPlayingFpl: yearsPlaying,
+                username: username);
+            setState(() {
+              currentStep++;
+            });
+          }
+        }
+      }
+    } else if (currentStep == 1) {
+      if (_formKey.currentState?.validate() ?? false) {
+        setState(() {
+          currentStep = min(currentStep + 1, steps.length - 1);
+        });
+      }
+    } else {
+      setState(() {
+        currentStep = min(currentStep + 1, steps.length - 1);
+      });
+    }
+  }
+
   Widget _buildFormStep() {
     return Form(
       key: _formKey,
@@ -130,13 +205,17 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               labelText: 'username',
               border: OutlineInputBorder(),
             ),
+            onChanged: (String? value) {
+              setState(() {
+                username = value;
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter a username';
               }
               return null;
             },
-            onSaved: (value) => username = value,
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -145,6 +224,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               border: OutlineInputBorder(),
             ),
             keyboardType: TextInputType.emailAddress,
+            onChanged: (String? value) {
+              setState(() {
+                email = value;
+              });
+            },
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter your email';
@@ -154,7 +238,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               }
               return null;
             },
-            onSaved: (value) => email = value,
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -168,6 +251,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                     "https://fantasy.premierleague.com/entry/*****/event/**",
               ),
               keyboardType: TextInputType.url,
+              onChanged: (String? value) {
+                setState(() {
+                  fplUrl = value;
+                });
+              },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your Fantasy Premier League URL';
@@ -176,8 +264,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                   return 'Please enter a valid Fantasy Premier League URL';
                 }
                 return null;
-              },
-              ),
+              }),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
@@ -231,6 +318,35 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
+  Widget _addPassword() {
+    return Form(
+        key: _formKey,
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          _buildFeatureItem(Icons.key, 'Please enter a password'),
+          TextFormField(
+            obscureText: true,
+            decoration:  InputDecoration(
+              labelText: 'password',
+              errorText: _error,
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (String? value) {
+              setState(() {
+                password = value;
+              });
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty || value.length < 4) {
+                return 'Please enter a password with 4+ characters';
+              }
+              return null;
+            },
+            onSaved: (value) => password = value,
+          ),
+        ]));
+    // )]);
+  }
+
   Widget _buildCompletionStep() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -248,70 +364,12 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           onPressed: () {
             // Navigate to dashboard
             debugPrint('Navigating to dashboard');
-            context.go("/participantview");
+            context.go('/login');
           },
-          child: const Text('Go to Dashboard'),
+          child: const Text('Now login to view your Dashboard'),
         ),
       ],
     );
-  }
-
-  Widget _buildStepContent() {
-    switch (currentStep) {
-      case 0:
-        return _buildWelcomeStep();
-      case 1:
-        return _buildFormStep();
-      case 2:
-        return _buildCompletionStep();
-      default:
-        return const SizedBox.shrink();
-    }
-  }
-
-  void _handleNext() async {
-    if (currentStep == 1) {
-      if (_formKey.currentState?.validate() ?? false) {
-        _formKey.currentState?.save();
-
-        if (favoriteTeam != null &&
-            username != null &&
-            email != null &&
-            fplUrl != null &&
-            yearsPlaying != null) {
-          var currentUser = await User(
-                  favoriteTeam: favoriteTeam!,
-                  username: username!,
-                  email: email!,
-                  fplUrl: fplUrl!,
-                  yearsPlayingFpl: yearsPlaying!)
-              .registerUser();
-
-          if (currentUser != null) {
-            //update current user for remaining part of the application
-            ref.read(currentUserProvider.notifier).state = User(
-                email: currentUser.user?.email ?? "default@gmail.com",
-                favoriteTeam: favoriteTeam,
-                fplUrl: fplUrl,
-                yearsPlayingFpl: yearsPlaying,
-                username: username);
-            setState(() {
-              currentStep++;
-            });
-          }
-        }
-      }
-    } else {
-      setState(() {
-        currentStep = min(currentStep + 1, steps.length - 1);
-      });
-    }
-  }
-
-  void _handleBack() {
-    setState(() {
-      currentStep = max(currentStep - 1, 0);
-    });
   }
 
   @override

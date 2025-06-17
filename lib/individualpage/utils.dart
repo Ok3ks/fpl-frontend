@@ -1,17 +1,20 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
+
+import '../types.dart';
 
 class captainViceCaptainName extends ConsumerWidget {
   String playerName;
   double playerPoint;
+  bool flag;
 
-  captainViceCaptainName(
-      {super.key, required this.playerName, required this.playerPoint});
+  captainViceCaptainName({
+    super.key,
+    required this.playerName,
+    required this.playerPoint,
+    required this.flag,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -21,15 +24,18 @@ class captainViceCaptainName extends ConsumerWidget {
         child: Text(playerName.split(" ").last,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: MaterialTheme.darkMediumContrastScheme()
-                    .onTertiaryContainer,
+                color: flag
+                    ? MaterialTheme.lightHighContrastScheme().onErrorContainer
+                    : MaterialTheme.lightHighContrastScheme().onSurface,
                 fontSize: 10)),
         onPressed: () {},
       ),
       TextButton(
-        child: Text("${playerPoint}",
+        child: Text("$playerPoint",
             style: TextStyle(
-                color: MaterialTheme.darkMediumContrastScheme().primary,
+                color: flag
+                    ? MaterialTheme.lightHighContrastScheme().onErrorContainer
+                    : MaterialTheme.lightHighContrastScheme().onSurface,
                 fontSize: 12)),
         onPressed: () {},
       ),
@@ -53,19 +59,18 @@ String? parseParticipantIdFromUrl(String url) {
   }
 }
 
-class participantIDWidget extends ConsumerWidget {
-  participantIDWidget({super.key});
+class participantIDWidget extends StatelessWidget {
+  Participant? currParticipant;
+  participantIDWidget({super.key, required this.currParticipant});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final currParticipant = ref.watch(currentUserProvider);
-
+  Widget build(BuildContext context) {
     //TODO:Limit based on current gameweek
     return SizedBox(
       height: 30,
       width: 180,
       child: Card(
-        color: Color.fromRGBO(100, 100, 100, 0),
+        color: const Color.fromRGBO(100, 100, 100, 0),
         shape: RoundedRectangleBorder(
             side: BorderSide(
                 width: 0,
@@ -76,7 +81,7 @@ class participantIDWidget extends ConsumerWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("Participant ID : ${parseParticipantIdFromUrl(currParticipant?.fplUrl ?? "")}",
+          child: Text("Participant ID : ${currParticipant?.fplUrl}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),

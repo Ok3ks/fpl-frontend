@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fpl/themes.dart';
 
 class PerformanceMetrics extends StatelessWidget {
@@ -17,7 +16,7 @@ class PerformanceMetrics extends StatelessWidget {
         children: [
           const Align(
               alignment: Alignment.bottomLeft,
-              child: const Text("Performance",
+              child: Text("Performance",
                   style: TextStyle(
                     fontSize: 11,
                     color: Colors.black,

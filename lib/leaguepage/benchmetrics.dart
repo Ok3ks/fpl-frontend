@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
@@ -73,6 +72,8 @@ class JammyPointsCard extends ConsumerWidget {
     List<Object?>? playersSubOut = obj[0]['subOut'];
     return Row(children: [
       SizedBox(
+        // width: 200,
+        // height: 200,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -102,14 +103,14 @@ class JammyPointsCard extends ConsumerWidget {
                           Icon(Icons.swipe_down_alt_sharp,
                               color: Colors.red[400], size: 12),
                           playerName(
-                              playerId: double.tryParse(
+                              playerId: int.parse(
                                       playersSubOut?[index].toString() ??
                                           "0") ??
                                   0),
                           Icon(Icons.swipe_up_alt_sharp,
                               color: Colors.green[400], size: 12),
                           playerName(
-                              playerId: double.tryParse(
+                              playerId: int.parse(
                                       playersSubIn?[index].toString() ?? "0") ??
                                   0),
                         ]);
@@ -166,9 +167,7 @@ class HighestPointsBenched extends ConsumerWidget {
                           textAlign: TextAlign.center,
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                   playerName(
-                    playerId: double.tryParse(highestBenchedPlayer ?? '0') ?? 0,
-                    // notTransfer: false,
-                  )
+                      playerId: int.parse(highestBenchedPlayer ?? '0') ?? 0),
                 ],
               ),
               // ],
@@ -224,15 +223,15 @@ class PlayMeInstead extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: List.generate(teams?.length ?? 0, (index) {
                         return playerName(
-                            playerId: double.tryParse(
-                                    teams?[index].toString() ?? "0") ??
-                                0);
+                            playerId:
+                                int.parse(teams?[index].toString() ?? "0") ??
+                                    0);
                       })),
                   // playerPoints(index: index, benchData:teams);}
                   // )),
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Center(
-                      child: Text("${teamName}",
+                      child: Text("$teamName",
                           style: TextStyle(
                               color: MaterialTheme.darkMediumContrastScheme()
                                   .primary,

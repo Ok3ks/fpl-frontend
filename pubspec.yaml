@@ -43,10 +43,12 @@ dependencies:
   logger: ^2.4.0
   path_provider: ^2.1.4
   firebase_core: ^3.6.0
-  firebase_auth: ^5.3.1
   flutter_dotenv: ^5.2.1
   cloud_firestore: ^5.6.5
 
+  http: any
+  firebase_auth_web: ^5.14.1
+  firebase_auth: ^5.5.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
