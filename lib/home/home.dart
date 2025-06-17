@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/dataprovider.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
-
-import '../themes.dart';
 
 void main() {
   runApp(const Home());
@@ -17,13 +14,14 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: DefaultTabController(
-        initialIndex: 1,
+        initialIndex: 0,
         length: 3,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color.fromRGBO(80, 100, 80,
+            backgroundColor: const Color.fromRGBO(80, 100, 80,
                 0), // MaterialTheme.darkMediumContrastScheme().onSurface,
             bottom: const TabBar(
+              indicatorColor: Colors.blue,
               tabs: [
                 Tab(text: "individual view", icon: Icon(Icons.person)),
                 Tab(text: "league view", icon: Icon(Icons.leaderboard)),
@@ -43,7 +41,7 @@ class Home extends StatelessWidget {
             children: [
               ProviderScope(child: ParticipantView()),
               ProviderScope(child: LeagueView()),
-              Icon(Icons.sports_soccer),
+              const Icon(Icons.sports_soccer),
             ],
           ),
         ),

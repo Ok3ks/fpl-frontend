@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 Future<UserCredential> signInWithGoogle() async {
@@ -20,7 +19,7 @@ class accountWidget extends StatelessWidget {
         onPressed: () async {
           await signInWithGoogle();
         },
-        icon: Icon(Icons.account_circle_sharp, color: Colors.black));
+        icon: const Icon(Icons.account_circle_sharp, color: Colors.black));
   }
 }
 
@@ -32,6 +31,6 @@ class verificationWidget extends StatelessWidget {
         onPressed: () async {
           await user?.sendEmailVerification();
         },
-        icon: Icon(Icons.verified_user, color: Colors.black));
+        icon: const Icon(Icons.verified_user, color: Colors.black));
   }
 }

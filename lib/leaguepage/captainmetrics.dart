@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
@@ -115,13 +114,12 @@ class CaptainMetricsCard extends ConsumerWidget {
                                   // crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     const SizedBox(width: 4),
-                                    Text(
-                                        "${data?['count'].toString() ?? "null"}",
+                                    Text(data?['count'].toString() ?? "null",
                                         style: const TextStyle(
                                           color: Colors.grey,
                                           fontSize: 11,
                                         )),
-                                    SizedBox(width: 2),
+                                    const SizedBox(width: 2),
                                     const Icon(
                                       Icons.people,
                                       size: 11,

@@ -1,10 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/logging.dart';
 import "package:fpl/graphql_schemas.dart";
 import "package:fpl/types.dart";
-import "dart:js_interop";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
@@ -20,15 +18,6 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
           "leagueId": leagueId, //538731,
           "gameweek": gameweek, //3
         }));
-    // Log.logger.i("Pulling Events Exception: ${results.exception}");
-    // print(results.exception);
-    // print(results.data?['captain']);
-    // for (var data in results.data?['captain']) {
-    // print(data);
-    // Log.logger.i(data);
-
-    // print(results.data);
-
     return results;
     // }
   } catch (e) {
@@ -38,7 +27,7 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
   }
 }
 
-Future<dynamic> pullPlayerStats(double? playerId, double? gameweek) async {
+Future<dynamic> pullPlayerStats(int? playerId, double? gameweek) async {
   try {
     QueryResult results = await client.value.query(QueryOptions(
         document: gql(AllQueries.getPlayerStats), //
@@ -123,9 +112,11 @@ final leagueProvider = StateProvider<double?>((ref) {
 });
 
 final gameweekProvider = StateProvider<double>((ref) {
-  return 9; //Should start from current gameweek
+  return 28; //Should start from current gameweek
 });
 
-final currentUserProvider = StateProvider<User?>((ref) {
+var currentUserProvider = StateProvider<Participant?>((ref) {
   return null;
 });
+
+
