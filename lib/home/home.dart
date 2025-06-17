@@ -15,7 +15,6 @@ void main() {
 class Home extends ConsumerWidget {
   const Home({super.key});
 
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final local = GetStorage();
@@ -34,17 +33,21 @@ class Home extends ConsumerWidget {
                   // Drawer header containing user profile infos.
                   UserAccountsDrawerHeader(
                     accountName: Text(user?.username ?? "",
-                      style: TextStyle(
-                        color: MaterialTheme.darkMediumContrastScheme().primary)
-                    ),
-                    accountEmail: Text(user?.email ?? "", style: TextStyle(
-                        color: MaterialTheme.darkMediumContrastScheme().primary)),
+                        style: TextStyle(
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary)),
+                    accountEmail: Text(user?.email ?? "",
+                        style: TextStyle(
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary)),
                     currentAccountPicture: const CircleAvatar(
-                      backgroundImage:  AssetImage("images/pexels-mike-1171084.webp"),
+                      backgroundImage:
+                          AssetImage("images/pexels-mike-1171084.webp"),
                     ),
                     decoration: BoxDecoration(
-                      color: MaterialTheme.darkMediumContrastScheme().primaryContainer //Customize
-                    ),
+                        color: MaterialTheme.darkMediumContrastScheme()
+                            .primaryContainer //Customize
+                        ),
                   ),
                   // Add any other drawer items you want.
                   ListTile(
@@ -58,14 +61,11 @@ class Home extends ConsumerWidget {
                   ListTile(
                     leading: const Icon(Icons.logout),
                     title: const Text('Logout'),
-                    onTap: ()  async {
+                    onTap: () async {
                       context.go("/login");
                       await user?.logOut();
-
                     },
-
                   ),
-
                 ],
               ),
             ),
