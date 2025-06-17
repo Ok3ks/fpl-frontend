@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -164,11 +163,13 @@ class Participant {
     try {
       await auth.signOut();
       local.write("isLoggedIn", false);
-      local.write("participant", {"email": "",
+      local.write("participant", {
+        "email": "",
         "favoriteTeam": "",
         "participantId": "",
         "yearsPlayingFpl": "",
-        "username": "",});
+        "username": "",
+      });
       return true;
     } catch (e) {
       return null;

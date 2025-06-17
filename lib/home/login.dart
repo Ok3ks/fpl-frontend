@@ -119,125 +119,120 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   //TODO: Adjust Styling
   @override
   Widget build(BuildContext context) {
-
-      return Scaffold(
-          appBar: AppBar(
-            title: const Text('Login'),
-          ),
-          body: Center(
-              child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: !forgotPassword
-                      ? Card(
-                          elevation: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  TextField(
-                                    controller: _emailController,
-                                    decoration: const InputDecoration(
-                                      labelText: 'Email',
-                                    ),
-                                  ),
-                                  if (signInWithPassWord)
-                                    // Row(
-                                    //   children: [
-                                    TextField(
-                                      controller: _passwordController,
-                                      obscureText: toggled ? true : false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Password',
-                                        errorText: _errorMessage.isNotEmpty
-                                            ? _errorMessage
-                                            : null,
-                                      ),
-                                    ),
-                                  if (signInWithPassWord)
-                                    IconButton(
-                                        onPressed: toggleObscurePassword,
-                                        icon: const Icon(Icons.remove_red_eye)),
-                                  // ]),
-
-                                  const SizedBox(height: 20),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              if (_passwordController
-                                                  .text.isEmpty) {
-                                                setState(() {
-                                                  signInWithPassWord = true;
-                                                });
-                                              } else {
-                                                _login();
-                                                if (loggedIn) {
-                                                  context.go("/home");
-                                                }
-                                              }
-                                            },
-                                            style: signInWithPassWord
-                                                ? const ButtonStyle()
-                                                : const ButtonStyle(),
-                                            child: const Text(
-                                              'Sign In',
-                                            )),
-                                        const SizedBox(width: 20),
-                                        if (signInWithPassWord)
-                                          ElevatedButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                forgotPassword = true;
-                                              });
-                                              _resetPassword();
-                                            },
-                                            child:
-                                                const Text('Forgot Password'),
-                                          ),
-                                      ]),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: _register,
-                                    child: const Text('Register'),
-                                  ),
-                                ]),
-                          ),
-                        )
-                      : Card(
-                          elevation: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: SizedBox(
-                              height: 60,
-                              child: Column(children: [
-                                const Text(
-                                    "A link to reset your password has been sent. Check your inbox"),
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.mail),
-                                        onPressed: () {
-                                          // context.go("/");
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.keyboard_return),
-                                        onPressed: () {
-                                          setState(() {
-                                            forgotPassword = false;
-                                          });
-                                          // context.go("/login");
-                                        },
-                                      )
-                                    ])
-                              ]),
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Login'),
+        ),
+        body: Center(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: !forgotPassword
+                    ? Card(
+                        elevation: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child:
+                              Column(mainAxisSize: MainAxisSize.min, children: [
+                            TextField(
+                              controller: _emailController,
+                              decoration: const InputDecoration(
+                                labelText: 'Email',
+                              ),
                             ),
-                          )))));
+                            if (signInWithPassWord)
+                              // Row(
+                              //   children: [
+                              TextField(
+                                controller: _passwordController,
+                                obscureText: toggled ? true : false,
+                                decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  errorText: _errorMessage.isNotEmpty
+                                      ? _errorMessage
+                                      : null,
+                                ),
+                              ),
+                            if (signInWithPassWord)
+                              IconButton(
+                                  onPressed: toggleObscurePassword,
+                                  icon: const Icon(Icons.remove_red_eye)),
+                            // ]),
+
+                            const SizedBox(height: 20),
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                      onPressed: () {
+                                        if (_passwordController.text.isEmpty) {
+                                          setState(() {
+                                            signInWithPassWord = true;
+                                          });
+                                        } else {
+                                          _login();
+                                          if (loggedIn) {
+                                            context.go("/home");
+                                          }
+                                        }
+                                      },
+                                      style: signInWithPassWord
+                                          ? const ButtonStyle()
+                                          : const ButtonStyle(),
+                                      child: const Text(
+                                        'Sign In',
+                                      )),
+                                  const SizedBox(width: 20),
+                                  if (signInWithPassWord)
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          forgotPassword = true;
+                                        });
+                                        _resetPassword();
+                                      },
+                                      child: const Text('Forgot Password'),
+                                    ),
+                                ]),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            ElevatedButton(
+                              onPressed: _register,
+                              child: const Text('Register'),
+                            ),
+                          ]),
+                        ),
+                      )
+                    : Card(
+                        elevation: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SizedBox(
+                            height: 60,
+                            child: Column(children: [
+                              const Text(
+                                  "A link to reset your password has been sent. Check your inbox"),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.mail),
+                                      onPressed: () {
+                                        // context.go("/");
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.keyboard_return),
+                                      onPressed: () {
+                                        setState(() {
+                                          forgotPassword = false;
+                                        });
+                                        // context.go("/login");
+                                      },
+                                    )
+                                  ])
+                            ]),
+                          ),
+                        )))));
   }
 }

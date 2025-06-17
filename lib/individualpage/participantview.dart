@@ -94,8 +94,8 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView>
                           return DataRow(
                               color: WidgetStateProperty.resolveWith<Color?>(
                                   (Set<WidgetState> states) {
-                                    return null;
-                                  }),
+                                return null;
+                              }),
                               cells: List.generate(5, (cellIndex) {
                                 return DataCell(
                                     //Maybe Add lottie here

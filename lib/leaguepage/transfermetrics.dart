@@ -269,8 +269,8 @@ class TransferOut extends StatelessWidget {
                     children: [
                       Row(children: [
                         Text("${playerOutIds[index]?['out'] ?? 0}",
-                            style:
-                                const TextStyle(color: Colors.white, fontSize: 12)),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 12)),
                         const Icon(
                           Icons.people,
                           color: Colors.white,
