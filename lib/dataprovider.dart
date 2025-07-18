@@ -123,12 +123,9 @@ Future<dynamic> pullParticipantStats(double? participantId) async {
     // Log.logger.e("Error during synchronization: $e");
   }
 }
-// }
 
 Future<dynamic> pullGameViewStats(
-  bool useGameweek,
-  bool usePosition,
-  bool useTeam,
+    List<int> gameweek
 ) async {
   try {
     QueryResult results = await client.value.query(QueryOptions(
@@ -136,9 +133,7 @@ Future<dynamic> pullGameViewStats(
         fetchPolicy: null,
         cacheRereadPolicy: null,
         variables: {
-          "useGameweek": useGameweek,
-          "usePosition": usePosition,
-          "useTeam": useTeam,
+          "gameweek": gameweek,
         }));
     print("${results.data}");
     return results;
