@@ -1,5 +1,14 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/dataprovider.dart';
+import 'package:fpl/utils.dart';
+
+void main() {
+  runApp(
+      MaterialApp(home: const GameView()
+  ));
+}
 
 class _BarChart extends StatelessWidget {
   const _BarChart();
@@ -325,5 +334,66 @@ class PieChart2State extends State {
           throw Error();
       }
     });
+  }
+}
+
+class GameView extends ConsumerStatefulWidget {
+  const GameView({
+    super.key,
+  });
+
+  @override
+  ConsumerState<GameView> createState() =>
+      GameViewState();
+}
+
+class GameViewState extends ConsumerState<GameView> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+      return SingleChildScrollView(
+          child: Column(
+          children: [
+            Stack(
+              alignment: AlignmentDirectional.center,
+              children: [
+                // Image.asset("assets/images/pexels-mike-1171084.webp"),
+                SizedBox(
+                  // width: width,
+                  child: Column(children: [
+                      SizedBox(
+                // width: width,
+                  child: FutureBuilder(
+                      future: pullGameViewStats([38]),
+                      builder: (context, snapshot) {
+                        var obj = snapshot.data;
+                        if (snapshot.hasData) {
+                          return GameViewStats(data: obj);
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          //optimistic U.I
+                        } else {
+                          return const Text("No Data");
+                        }
+                        return const Text("No Data");
+                      }))
+          ]
+    ))])
+          ]));
+  }
+}
+
+class GameViewStats extends StatelessWidget {
+  dynamic data;
+  GameViewStats({super.key, required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text("I have data thank you so much ");
   }
 }
