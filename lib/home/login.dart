@@ -72,7 +72,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       });
       //Update field with userHistory
 
-
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
@@ -86,8 +85,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
           yearsPlayingFpl: userData['yearsPlayingFpl'],
           username: userData['username'],
-          history: userData['history']
-      );
+          history: userData['history']);
 
       Navigator.of(context).pushNamed('/home');
     }
@@ -98,67 +96,86 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
     context.go('/onboarding');
   }
 
+  Widget loginBox() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextField(
+          controller: _emailController,
+          decoration: const InputDecoration(
+            labelText: 'Email',
+          ),
+        ),
+        TextField(
+          controller: _passwordController,
+          obscureText: toggled ? true : false,
+          decoration: InputDecoration(
+            labelText: 'Password',
+            errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
+          ),
+        ),
+        IconButton(
+            onPressed: toggleObscurePassword,
+            icon: const Icon(Icons.remove_red_eye)),
+        const SizedBox(height: 20),
+        ElevatedButton(
+          onPressed: _login,
+          child: const Text('Sign In'),
+        ),
+        TextButton(
+          onPressed: _register,
+          child: const Text('Register'),
+        ),
+        TextButton(
+          onPressed: () {
+            // Logic for sending email link for password reset
+            print('Send password reset email');
+          },
+          child: const Text('Forgot Password?'),
+        ),
+      ],
+    );
+  }
+
+  Widget slides() {
+    return const Card(
+        child: CarouselView(itemExtent: 4, children: [
+          Text("Copy"),
+          Text("Copy"),
+          Text("Copy"),
+          Text("Copy")
+        ]));
+  }
+
   //TODO: Adjust Styling
   @override
   Widget build(BuildContext context) {
     final currentUser = ref.watch(currentUserProvider);
+    Orientation orientation = MediaQuery.orientationOf(context);
+    Size size = MediaQuery.sizeOf(context);
+
     if (currentUser == null) {
       return Scaffold(
-        appBar: AppBar(
-          title: const Text('Login'),
-        ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Card(
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextField(
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                      ),
-                    ),
-                    TextField(
-                      controller: _passwordController,
-                      obscureText: toggled ? true : false,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        errorText:
-                            _errorMessage.isNotEmpty ? _errorMessage : null,
-                      ),
-                    ),
-                    IconButton(
-                        onPressed: toggleObscurePassword,
-                        icon: const Icon(Icons.remove_red_eye)),
-                    const SizedBox(height: 20),
-                    // SizedBox(height: 20, child : Text("This ")),
-                    ElevatedButton(
-                      onPressed: _login,
-                      child: const Text('Sign In'),
-                    ),
-                    TextButton(
-                      onPressed: _register,
-                      child: const Text('Register'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        // Logic for sending email link for password reset
-                        print('Send password reset email');
-                      },
-                      child: const Text('Forgot Password?'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+          appBar: AppBar(
+            title: const Text('Login'),
           ),
-        ),
-      );
+          body:
+          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+            SizedBox(
+                width: orientation == Orientation.portrait
+                    ? size.width
+                    : size.width * 0.6,
+                child: Card(
+                    elevation: 4,
+                    child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: loginBox()))),
+            if (orientation != Orientation.portrait)
+              SizedBox(
+                  width: size.width * 0.3,
+                  child: Padding(
+                      padding: const EdgeInsets.all(16.0), child: slides()))
+          ]));
     } else {
       //TODO: Persist Login Session
       return const Home();
