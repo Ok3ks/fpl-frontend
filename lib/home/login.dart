@@ -88,7 +88,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       });
       //Update field with userHistory
 
-
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
@@ -130,16 +129,14 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           ),
         ),
         if (signInWithPassWord)
-        // Row(
-        //   children: [
+          // Row(
+          //   children: [
           TextField(
             controller: _passwordController,
             obscureText: toggled ? true : false,
             decoration: InputDecoration(
               labelText: 'Password',
-              errorText: _errorMessage.isNotEmpty
-                  ? _errorMessage
-                  : null,
+              errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
             ),
           ),
         if (signInWithPassWord)
@@ -149,40 +146,38 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         // ]),
 
         const SizedBox(height: 20),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    if (_passwordController.text.isEmpty) {
-                      setState(() {
-                        signInWithPassWord = true;
-                      });
-                    } else {
-                      _login();
-                      if (loggedIn) {
-                        context.go("/home");
-                      }
-                    }
-                  },
-                  style: signInWithPassWord
-                      ? const ButtonStyle()
-                      : const ButtonStyle(),
-                  child: const Text(
-                    'Sign In',
-                  )),
-              const SizedBox(width: 20),
-              if (signInWithPassWord)
-                ElevatedButton(
-                  onPressed: () {
-                    setState(() {
-                      forgotPassword = true;
-                    });
-                    _resetPassword();
-                  },
-                  child: const Text('Forgot Password'),
-                ),
-            ]),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          ElevatedButton(
+              onPressed: () {
+                if (_passwordController.text.isEmpty) {
+                  setState(() {
+                    signInWithPassWord = true;
+                  });
+                } else {
+                  _login();
+                  if (loggedIn) {
+                    context.go("/home");
+                  }
+                }
+              },
+              style: signInWithPassWord
+                  ? const ButtonStyle()
+                  : const ButtonStyle(),
+              child: const Text(
+                'Sign In',
+              )),
+          const SizedBox(width: 20),
+          if (signInWithPassWord)
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  forgotPassword = true;
+                });
+                _resetPassword();
+              },
+              child: const Text('Forgot Password'),
+            ),
+        ]),
         const SizedBox(
           height: 15,
         ),
@@ -197,61 +192,72 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   Widget slides() {
     return const Card(
         child: CarouselView(itemExtent: 4, children: [
-          Text("Copy"),
-          Text("Copy"),
-          Text("Copy"),
-          Text("Copy")
-        ]));
+      Text("Copy"),
+      Text("Copy"),
+      Text("Copy"),
+      Text("Copy")
+    ]));
   }
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.orientationOf(context);
+    Size size = MediaQuery.sizeOf(context);
 
     return Scaffold(
         appBar: AppBar(
           title: const Text('Login'),
         ),
-        body: Center(
-            child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: !forgotPassword
-                    ? Card(
-                        elevation: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: loginBox()
-                        ),
-                      )
-                    : Card(
-                        elevation: 4,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: SizedBox(
-                            height: 60,
-                            child: Column(children: [
-                              const Text(
-                                  "A link to reset your password has been sent. Check your inbox"),
-                              Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.mail),
-                                      onPressed: () {
-                                        // context.go("/");
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.keyboard_return),
-                                      onPressed: () {
-                                        setState(() {
-                                          forgotPassword = false;
-                                        });
-                                        // context.go("/login");
-                                      },
-                                    )
-                                  ])
-                            ]),
-                          ),
-                        )))));
+        body: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          SizedBox(
+              width: orientation == Orientation.portrait
+                  ? size.width
+                  : size.width * 0.6,
+              child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: !forgotPassword
+                      ? Card(
+                          elevation: 4,
+                          child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: loginBox()),
+                        )
+                      : Card(
+                          elevation: 4,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: SizedBox(
+                              height: 60,
+                              child: Column(children: [
+                                const Text(
+                                    "A link to reset your password has been sent. Check your inbox"),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.mail),
+                                        onPressed: () {
+                                          // context.go("/");
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.keyboard_return),
+                                        onPressed: () {
+                                          setState(() {
+                                            forgotPassword = false;
+                                          });
+                                          // context.go("/login");
+                                        },
+                                      )
+                                    ])
+                              ]),
+                            ),
+                          )))),
+          if (orientation != Orientation.portrait)
+            SizedBox(
+                width: size.width * 0.3,
+                child: Padding(
+                    padding: const EdgeInsets.all(16.0), child: slides()))
+        ]));
   }
 }
