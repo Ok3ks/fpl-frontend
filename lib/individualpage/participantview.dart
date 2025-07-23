@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
@@ -10,31 +9,20 @@ import 'package:fpl/individualpage/utils.dart';
 //TODO: Adjust Wording
 
 class ParticipantView extends StatelessWidget {
-  ParticipantView({
+  const ParticipantView({
     super.key,
   });
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    if (orientation == Orientation.landscape) {
-      return const Center(
-          child: Text("Adjust your device into a portrait orientation",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30)));
-    }
-    //Left becomes top
-    else {
-      return ParticipantStatsView();
-      // );
-    }
+    return const ParticipantStatsView();
   }
 }
+// }
 
 class ParticipantStatsView extends ConsumerStatefulWidget {
-  ParticipantStatsView({
+  const ParticipantStatsView({
     super.key,
   });
 
@@ -43,14 +31,29 @@ class ParticipantStatsView extends ConsumerStatefulWidget {
       ParticipantStatsViewState();
 }
 
-class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
+class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView>
+    with SingleTickerProviderStateMixin {
   String? leagueName;
+  late AnimationController controller;
+  late Animation<double> animation;
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(vsync: this, duration: const Duration(seconds: 2))
+          ..forward()
+          ..repeat(reverse: true);
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+  }
 
   @override
   Widget build(BuildContext context) {
     final currParticipant = ref.watch(currentUserProvider);
+    final Size size = MediaQuery.sizeOf(context);
+    final double width = size.width;
 
-    if (currParticipant?.fplUrl != null) {
+    if (currParticipant?.participantId != null) {
       return SingleChildScrollView(
           child: Column(children: [
         Stack(alignment: AlignmentDirectional.center, children: [
@@ -59,7 +62,7 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
               // width: width,
               child: Column(children: [
             const SizedBox(height: 20),
-            LandingPageTitle(),
+            const LandingPageTitle(),
             const SizedBox(height: 20),
             participantIDWidget(currParticipant: currParticipant)
           ])),
@@ -68,14 +71,45 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
             // width: width,
             child: FutureBuilder(
                 future: pullParticipantStats(
-                    double.tryParse(currParticipant?.fplUrl ?? "")),
+                    double.tryParse(currParticipant?.participantId ?? "")),
                 builder: (context, snapshot) {
                   var obj = snapshot.data;
                   if (snapshot.hasData) {
                     return ParticipantStats(data: obj);
                   } else if (snapshot.connectionState ==
                       ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return DataTable(
+                        columns: const [
+                          DataColumn(
+                            label: Text(""),
+                          ),
+                          DataColumn(label: Text("")),
+                          DataColumn(label: Text("")),
+                          // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
+                          DataColumn(label: Text("Best Player")),
+                          DataColumn(label: Text("Points")),
+                          //league average
+                        ],
+                        rows: List.generate(10, (rowIndex) {
+                          return DataRow(
+                              color: WidgetStateProperty.resolveWith<Color?>(
+                                  (Set<WidgetState> states) {
+                                return null;
+                              }),
+                              cells: List.generate(5, (cellIndex) {
+                                return DataCell(
+                                    //Maybe Add lottie here
+                                    Opacity(
+                                  opacity: 0.5,
+                                  child: AnimatedIcon(
+                                    icon: AnimatedIcons.play_pause,
+                                    progress: animation,
+                                    size: 10.0,
+                                  ),
+                                  // ],
+                                ));
+                              }));
+                        }));
                   } else {
                     return const Text("No Data");
                   }
@@ -87,40 +121,46 @@ class ParticipantStatsViewState extends ConsumerState<ParticipantStatsView> {
 }
 
 class ParticipantStats extends StatelessWidget {
-  QueryResult data;
+  dynamic data;
   ParticipantStats({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    List<Object?> gameweek = data.data?['participantReport']['gw'];
-    List<Object?> totalPoints = data.data?['participantReport']['totalPoints'];
-    dynamic captain = data.data?['participantReport']['captain'];
-    dynamic viceCaptain = data.data?['participantReport']['viceCaptain'];
-    List<Object?> captainPoints =
-        data.data?['participantReport']['captainPoints'];
+    List<Object?> gameweek = data['participantReport']['gw'];
+    List<Object?> totalPoints = data['participantReport']['totalPoints'];
+    dynamic captain = data['participantReport']['captain'];
+    dynamic viceCaptain = data['participantReport']['viceCaptain'];
+    List<Object?> captainPoints = data['participantReport']['captainPoints'];
     List<Object?> viceCaptainPoints =
-        data.data?['participantReport']['viceCaptainPoints'];
-    List<Object?> activeChip = data.data?['participantReport']['activeChip'];
+        data['participantReport']['viceCaptainPoints'];
+    List<Object?> activeChip = data['participantReport']['activeChip'];
     dynamic highestScoringPlayer =
-        data.data?['participantReport']['highestScoringPlayer'];
+        data['participantReport']['highestScoringPlayer'];
     List<Object?> highestScoringPlayerPoints =
-        data.data?['participantReport']['highestScoringPlayerPoints'];
+        data['participantReport']['highestScoringPlayerPoints'];
     List<List<Object?>> interest = [
       gameweek,
-      totalPoints,
       captainPoints,
       viceCaptainPoints,
-      highestScoringPlayer
+      highestScoringPlayer,
+      totalPoints,
     ];
 
     return DataTable(
+        sortColumnIndex: 4,
+        dataRowMinHeight: 40,
+        columnSpacing: 4,
         columns: const [
-          DataColumn(label: Text("GW")),
-          DataColumn(label: Text("Points")),
-          DataColumn(label: Text("Captain")),
-          DataColumn(label: Text("Vice")),
+          DataColumn(label: Text("")),
+          DataColumn(
+              label: Text(
+            "",
+            style: TextStyle(fontSize: 10),
+          )),
+          DataColumn(label: Text("")),
           // DataColumn(label: Text("Event Transfer Cost")), //Maybe Transfers is better?
-          DataColumn(label: Text("Highest Scoring Player")),
+          DataColumn(label: Text("Best Player")),
+          DataColumn(label: Text("Points"), numeric: true),
           //league average
         ],
         rows: List.generate(gameweek.length, (rowIndex) {
@@ -140,9 +180,6 @@ class ParticipantStats extends StatelessWidget {
                   return MaterialTheme.lightHighContrastScheme()
                       .surfaceContainerLowest
                       .withOpacity(1.0);
-                  return MaterialTheme.lightHighContrastScheme()
-                      .surfaceContainerHighest
-                      .withOpacity(1.0);
                 } else if (flag) {
                   return MaterialTheme.lightHighContrastScheme()
                       .errorContainer
@@ -155,18 +192,32 @@ class ParticipantStats extends StatelessWidget {
               }),
               cells: List.generate(interest.length, (cellIndex) {
                 if (interest[cellIndex] == captainPoints) {
-                  return DataCell(captainViceCaptainName(
-                    playerName: captain[rowIndex]['info']['playerName'],
-                    playerPoint: capPoint,
-                    flag: flag && !miniFlag,
-                  ));
+                  return DataCell(Column(children: [
+                    captainViceCaptainName(
+                      playerName: captain[rowIndex]['info']['playerName'],
+                      playerPoint: capPoint,
+                      flag: flag && !miniFlag,
+                    ),
+                    Text("C",
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary))
+                  ]));
                 }
                 if (interest[cellIndex] == viceCaptainPoints) {
-                  return DataCell(captainViceCaptainName(
-                    playerName: viceCaptain[rowIndex]['info']['playerName'],
-                    playerPoint: vcPoint,
-                    flag: flag && !miniFlag,
-                  ));
+                  return DataCell(Column(children: [
+                    captainViceCaptainName(
+                      playerName: viceCaptain[rowIndex]['info']['playerName'],
+                      playerPoint: vcPoint,
+                      flag: flag && !miniFlag,
+                    ),
+                    Text("VC",
+                        style: TextStyle(
+                            fontSize: 10,
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary))
+                  ]));
                 }
                 if (interest[cellIndex] == highestScoringPlayer) {
                   return DataCell(captainViceCaptainName(
@@ -181,6 +232,7 @@ class ParticipantStats extends StatelessWidget {
                     Text(interest[cellIndex][rowIndex].toString(),
                         style: TextStyle(
                             fontSize: 10,
+                            fontWeight: FontWeight.bold,
                             color: flag && !miniFlag
                                 ? Colors.white
                                 : Colors.black)),
@@ -197,7 +249,7 @@ class ParticipantStats extends StatelessWidget {
                   ]));
                 } else {
                   return DataCell(Text(
-                    interest[cellIndex][rowIndex].toString(),
+                    "Gameweek ${interest[cellIndex][rowIndex].toString()}",
                     style: TextStyle(
                       fontSize: 10,
                       color: flag && !miniFlag ? Colors.white : Colors.black,
@@ -206,11 +258,14 @@ class ParticipantStats extends StatelessWidget {
                 }
               }));
         }));
+    // );
   }
 }
 
 class LandingPage extends StatelessWidget {
   ExpansionTileController expansionTileController = ExpansionTileController();
+
+  LandingPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -240,8 +295,8 @@ class LandingPage extends StatelessWidget {
                       title: const Text('What is this?'),
                       childrenPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 30),
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                           style: TextStyle(fontSize: 10),
                           textAlign: TextAlign.justify,
@@ -335,7 +390,7 @@ class LandingPage extends StatelessWidget {
                             MaterialTheme.darkMediumContrastScheme().primary,
                         title:
                             const Text('What should we expect in the future?'),
-                        children: []),
+                        children: const []),
                   ]),
             ],
           ),
@@ -344,6 +399,8 @@ class LandingPage extends StatelessWidget {
 }
 
 class LandingPageTitle extends StatelessWidget {
+  const LandingPageTitle({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Text(

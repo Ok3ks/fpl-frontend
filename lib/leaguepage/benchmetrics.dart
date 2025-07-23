@@ -4,10 +4,16 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
 
-class BenchMetrics extends StatelessWidget {
-  final dynamic data;
-  BenchMetrics({super.key, required this.data});
+class BenchMetrics extends StatefulWidget {
+  final Map<String, dynamic>? data;
 
+  const BenchMetrics({super.key, required this.data});
+
+  @override
+  State<BenchMetrics> createState() => BenchMetricsState();
+}
+
+class BenchMetricsState extends State<BenchMetrics> {
   final yourScrollController = ScrollController(
     onAttach: (position) {},
     onDetach: (position) {},
@@ -16,130 +22,135 @@ class BenchMetrics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Orientation orientation = MediaQuery.of(context).orientation;
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          const Align(
-              alignment: Alignment.bottomLeft,
-              child: Text("Bench Effect",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 11,
-                    decoration: TextDecoration.none,
-                  ))),
-          // Card(
-          //   shadowColor:
-          //   MaterialTheme.darkMediumContrastScheme().secondaryContainer,
-          //   color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          //   child:
-          Scrollbar(
-              thickness: 2,
-              trackVisibility: true,
-              controller: yourScrollController,
-              radius: const Radius.circular(3),
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child:
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  if (data
-                          .data?['leagueWeeklyReport']['jammyPoints'][0]
-                              ['subIn']
-                          .length >
-                      1)
-                    JammyPointsCard(data: data),
-                  HighestPointsBenched(data: data),
-                  PlayMeInstead(data: data),
-                ]),
-                // Text("Bench Points")
-              ))
-          // )
-        ]);
+    if (widget.data != null) {
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Scrollbar(
+                thickness: 2,
+                trackVisibility: true,
+                controller: yourScrollController,
+                radius: const Radius.circular(3),
+                child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        const Text("Bench Points",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              decoration: TextDecoration.none,
+                            )),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              JammyPointsCard(data: widget.data),
+                              HighestPointsBenched(data: widget.data),
+                              PlayMeInstead(data: widget.data),
+                            ])
+                      ],
+                    ))
+                // )
+                )
+          ]);
+    } else {
+      //replace with animation maybe
+      return const CircularProgressIndicator();
+    }
   }
 }
 
 class JammyPointsCard extends ConsumerWidget {
-  dynamic data;
+  Map<String, dynamic>? data;
   JammyPointsCard({super.key, required this.data});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Size size = MediaQuery.sizeOf(context);
-    var obj = data.data?['leagueWeeklyReport']['jammyPoints'];
-    final gameweek = ref.watch(gameweekProvider);
-    List<Object?>? playersSubIn = obj[0]['subIn'];
-    List<Object?>? playersSubOut = obj[0]['subOut'];
-    return Row(children: [
-      SizedBox(
-        // width: 200,
-        // height: 200,
-        child: Card(
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: 1.5,
-                    color: MaterialTheme.darkMediumContrastScheme().primary),
-                borderRadius: BorderRadius.circular(18)),
-            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 3),
-                  Center(
-                      child: Text("Jammy Points ",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface,
-                              fontSize: 10))),
-                  const SizedBox(height: 3),
-                  Column(
-                      children:
-                          List.generate(playersSubIn?.length ?? 0, (index) {
-                    return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.swipe_down_alt_sharp,
-                              color: Colors.red[400], size: 12),
-                          playerName(
-                              playerId: int.parse(
-                                      playersSubOut?[index].toString() ??
-                                          "0") ??
-                                  0),
-                          Icon(Icons.swipe_up_alt_sharp,
-                              color: Colors.green[400], size: 12),
-                          playerName(
-                              playerId: int.parse(
-                                      playersSubIn?[index].toString() ?? "0") ??
-                                  0),
-                        ]);
-                  })),
-                  const SizedBox(height: 9),
-                  Center(
-                      child: Text("${obj[0]['teamName']}",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .primary,
-                              fontSize: 10))),
-                ],
-              ),
-            )),
-      )
-    ]);
-    // });
+    // final Size size = MediaQuery.sizeOf(context);
+    var obj = data?['leagueWeeklyReport']['jammyPoints'];
+
+    String teamName = obj[0]['teamName'];
+    int points = obj[0]['points'];
+    print(points);
+
+    if (points != 0) {
+      // print(obj[0]);
+      List<dynamic> playersSubIn = obj[0]['subIn'];
+      List<dynamic> playersSubOut = obj[0]['subOut'];
+
+      return Row(children: [
+        SizedBox(
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
+                  borderRadius: BorderRadius.circular(18)),
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 3),
+                    Center(
+                        child: Text("Jammy Points ",
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .onSurface,
+                                fontSize: 10))),
+                    const SizedBox(height: 3),
+                    Column(
+                        children: List.generate(playersSubIn.length, (index) {
+                      return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.swipe_down_alt_sharp,
+                                color: Colors.red[400], size: 12),
+                            playerName(
+                                playerId: int.parse(
+                                        playersSubOut[index].toString() ??
+                                            "0") ??
+                                    0),
+                            Icon(Icons.swipe_up_alt_sharp,
+                                color: Colors.green[400], size: 12),
+                            playerName(
+                                playerId: int.parse(
+                                        playersSubIn[index].toString() ??
+                                            "0") ??
+                                    0),
+                          ]);
+                    })),
+                    const SizedBox(height: 9),
+                    Center(
+                        child: Text(teamName,
+                            style: TextStyle(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primary,
+                                fontSize: 10))),
+                  ],
+                ),
+              )),
+        )
+      ]);
+      // });
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 }
 
 class HighestPointsBenched extends ConsumerWidget {
-  dynamic data;
+  Map<String, dynamic>? data;
   HighestPointsBenched({super.key, required this.data});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final Size size = MediaQuery.sizeOf(context);
     final gameweek = ref.watch(gameweekProvider);
-    dynamic highestBenched = data?.data?['leagueWeeklyReport']['mostBenched'];
+    dynamic highestBenched = data?['leagueWeeklyReport']['mostBenched'];
 
     String? highestBenchedPlayer = highestBenched?['player'].first;
 
@@ -170,8 +181,6 @@ class HighestPointsBenched extends ConsumerWidget {
                       playerId: int.parse(highestBenchedPlayer ?? '0') ?? 0),
                 ],
               ),
-              // ],
-              // ),
             )),
       )
     ]);
@@ -183,7 +192,7 @@ class HighestPointsBenched extends ConsumerWidget {
 }
 
 class PlayMeInstead extends StatelessWidget {
-  dynamic data;
+  Map<String, dynamic>? data;
 
   PlayMeInstead({super.key, required this.data});
 
@@ -191,24 +200,26 @@ class PlayMeInstead extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.sizeOf(context);
     List<Object?>? teams =
-        data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['players'];
+        data?['leagueWeeklyReport']['mostPointsOnBench'].first['players'];
     String? teamName =
-        data.data?['leagueWeeklyReport']['mostPointsOnBench'].first['teamName'];
+        data?['leagueWeeklyReport']['mostPointsOnBench'].first['teamName'];
+
+    //ToDo: add entryId to graphqlschema, need to update django backend. Maybe Version and aggregate all changes
 
     return Column(children: [
       SizedBox(
-        // width: 270,
-        // height: 100,
-        child: Card(
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: 1.5,
-                    color: MaterialTheme.darkMediumContrastScheme().primary),
-                borderRadius: BorderRadius.circular(18)),
-            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-              child: Column(
+          // width: 270,
+          // height: 100,
+          child: Card(
+        shape: RoundedRectangleBorder(
+            side: BorderSide(
+                width: 1.5,
+                color: MaterialTheme.darkMediumContrastScheme().primary),
+            borderRadius: BorderRadius.circular(18)),
+        color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+        child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+            child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(height: 3),
@@ -231,15 +242,15 @@ class PlayMeInstead extends StatelessWidget {
                   // )),
                   const SizedBox(height: 5),
                   Center(
-                      child: Text("$teamName",
-                          style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .primary,
-                              fontSize: 10))),
-                ],
-              ),
-            )),
-      )
+                    child: Text("$teamName",
+                        style: TextStyle(
+                          color:
+                              MaterialTheme.darkMediumContrastScheme().primary,
+                          fontSize: 10,
+                        )),
+                  ),
+                ])),
+      ))
     ]);
     // ]);
   }
