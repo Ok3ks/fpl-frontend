@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
-import 'package:fpl/individualpage/utils.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/home/home.dart';
 
 import '../types.dart';
 
 void main() {
-  runApp(LoginView());
+  runApp(const LoginView());
 }
 
 class LoginView extends StatelessWidget {
+  const LoginView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,12 +22,14 @@ class LoginView extends StatelessWidget {
         useMaterial3: true, // Enable Material 3
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      home: LoginBox(),
+      home: const LoginBox(),
     );
   }
 }
 
 class LoginBox extends ConsumerStatefulWidget {
+  const LoginBox({super.key});
+
   @override
   _LoginBoxState createState() => _LoginBoxState();
 }
@@ -35,6 +39,10 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = '';
   bool toggled = true;
+  bool signIn = false;
+  bool signInWithPassWord = false;
+  bool forgotPassword = false;
+  late bool loggedIn;
 
   void toggleObscurePassword() {
     setState(() {
@@ -42,13 +50,20 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
     });
   }
 
+  void _resetPassword() async {
+    Participant currentUser = Participant(
+        email: _emailController.text, password: _passwordController.text);
+    await currentUser.sendEmailLink();
+  }
+
   void _login() async {
     String email = _emailController.text;
     String password = _passwordController.text;
+    final box = GetStorage();
 
     Participant currentUser = Participant(
         email: _emailController.text, password: _passwordController.text);
-    dynamic loggedInUser = await currentUser.retrieveUser(password);
+    dynamic LoggedInUser = await currentUser.retrieveUser(password);
 
     // Mock logic for demonstration
     if (email.isEmpty || password.isEmpty) {
@@ -69,25 +84,33 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       // Proceed with login
       setState(() {
         _errorMessage = '';
+        loggedIn = true;
       });
       //Update field with userHistory
+
 
       //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
-
-      final participantID = parseParticipantIdFromUrl(userData['fplUrl']);
-      await currentUser.getHistory(participantID ?? "null");
-
+      // await currentUser.getHistory(participantID ?? "null");
+      box.write('isLoggedIn', true);
       ref.read(currentUserProvider.notifier).state = Participant(
           email: userData['email'],
           favoriteTeam: userData['favoriteTeam'],
-          fplUrl: parseParticipantIdFromUrl(userData['fplUrl']),
+          participantId: userData['participantId'],
           yearsPlayingFpl: userData['yearsPlayingFpl'],
           username: userData['username'],
           history: userData['history']);
 
-      Navigator.of(context).pushNamed('/home');
+      box.write("participant", {
+        "email": userData['email'],
+        "favoriteTeam": userData['favoriteTeam'],
+        "participantId": userData['participantId'],
+        "yearsPlayingFpl": userData['yearsPlayingFpl'],
+        "username": userData['username'],
+      });
+
+      context.go('/home');
     }
   }
 
@@ -106,32 +129,66 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
             labelText: 'Email',
           ),
         ),
-        TextField(
-          controller: _passwordController,
-          obscureText: toggled ? true : false,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
+        if (signInWithPassWord)
+        // Row(
+        //   children: [
+          TextField(
+            controller: _passwordController,
+            obscureText: toggled ? true : false,
+            decoration: InputDecoration(
+              labelText: 'Password',
+              errorText: _errorMessage.isNotEmpty
+                  ? _errorMessage
+                  : null,
+            ),
           ),
-        ),
-        IconButton(
-            onPressed: toggleObscurePassword,
-            icon: const Icon(Icons.remove_red_eye)),
+        if (signInWithPassWord)
+          IconButton(
+              onPressed: toggleObscurePassword,
+              icon: const Icon(Icons.remove_red_eye)),
+        // ]),
+
         const SizedBox(height: 20),
-        ElevatedButton(
-          onPressed: _login,
-          child: const Text('Sign In'),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    if (_passwordController.text.isEmpty) {
+                      setState(() {
+                        signInWithPassWord = true;
+                      });
+                    } else {
+                      _login();
+                      if (loggedIn) {
+                        context.go("/home");
+                      }
+                    }
+                  },
+                  style: signInWithPassWord
+                      ? const ButtonStyle()
+                      : const ButtonStyle(),
+                  child: const Text(
+                    'Sign In',
+                  )),
+              const SizedBox(width: 20),
+              if (signInWithPassWord)
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      forgotPassword = true;
+                    });
+                    _resetPassword();
+                  },
+                  child: const Text('Forgot Password'),
+                ),
+            ]),
+        const SizedBox(
+          height: 15,
         ),
-        TextButton(
+        ElevatedButton(
           onPressed: _register,
           child: const Text('Register'),
-        ),
-        TextButton(
-          onPressed: () {
-            // Logic for sending email link for password reset
-            print('Send password reset email');
-          },
-          child: const Text('Forgot Password?'),
         ),
       ],
     );
@@ -147,38 +204,54 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         ]));
   }
 
-  //TODO: Adjust Styling
   @override
   Widget build(BuildContext context) {
-    final currentUser = ref.watch(currentUserProvider);
-    Orientation orientation = MediaQuery.orientationOf(context);
-    Size size = MediaQuery.sizeOf(context);
 
-    if (currentUser == null) {
-      return Scaffold(
-          appBar: AppBar(
-            title: const Text('Login'),
-          ),
-          body:
-          Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-            SizedBox(
-                width: orientation == Orientation.portrait
-                    ? size.width
-                    : size.width * 0.6,
-                child: Card(
-                    elevation: 4,
-                    child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: loginBox()))),
-            if (orientation != Orientation.portrait)
-              SizedBox(
-                  width: size.width * 0.3,
-                  child: Padding(
-                      padding: const EdgeInsets.all(16.0), child: slides()))
-          ]));
-    } else {
-      //TODO: Persist Login Session
-      return const Home();
-    }
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Login'),
+        ),
+        body: Center(
+            child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: !forgotPassword
+                    ? Card(
+                        elevation: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: loginBox()
+                        ),
+                      )
+                    : Card(
+                        elevation: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SizedBox(
+                            height: 60,
+                            child: Column(children: [
+                              const Text(
+                                  "A link to reset your password has been sent. Check your inbox"),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.mail),
+                                      onPressed: () {
+                                        // context.go("/");
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.keyboard_return),
+                                      onPressed: () {
+                                        setState(() {
+                                          forgotPassword = false;
+                                        });
+                                        // context.go("/login");
+                                      },
+                                    )
+                                  ])
+                            ]),
+                          ),
+                        )))));
   }
 }

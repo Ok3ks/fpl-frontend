@@ -12,7 +12,9 @@ Future<UserCredential> signInWithGoogle() async {
   return await FirebaseAuth.instance.signInWithPopup(googleProvider);
 }
 
-class accountWidget extends StatelessWidget {
+class AccountWidget extends StatelessWidget {
+  const AccountWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -23,7 +25,9 @@ class accountWidget extends StatelessWidget {
   }
 }
 
-class verificationWidget extends StatelessWidget {
+class VerificationWidget extends StatelessWidget {
+  const VerificationWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser;

@@ -49,6 +49,8 @@ dependencies:
   http: any
   firebase_auth_web: ^5.14.1
   firebase_auth: ^5.5.1
+  get_storage: ^2.1.1
+  fl_chart: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -78,7 +80,7 @@ flutter:
      - assets/images/useApp - Step 2.png
      - assets/images/useApp - Step 3.png
      - assets/images/useApp - Step 4.png
-     - .env
+     - assets/.env
 #     - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
