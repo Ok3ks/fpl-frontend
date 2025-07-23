@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:http/http.dart' as http;
 import 'constants.dart';
@@ -17,21 +18,18 @@ dynamic getCurrentGameweek() async {
   } finally {
     client.close();
   }
-  // var url =  Uri.https(Constants.fplUrl);
-  // print(url);
-  // var response = await http.post(url, body: {});
-  // print('Response status: ${response.statusCode}');
-  // print('Response body: ${response.body}');
-  //
-  // print(await http.read(Uri.https('example.com', 'foobar.txt')));
 }
 
 class GameweekWidget extends ConsumerWidget {
-  GameweekWidget({super.key});
+  const GameweekWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final currGameweek = ref.watch(gameweekProvider);
+    final Size size = MediaQuery.sizeOf(context);
+
+    final double width = size.width;
+    final double height = size.height;
 
     //TODO:Limit based on current gameweek
     return FutureBuilder(
@@ -39,7 +37,6 @@ class GameweekWidget extends ConsumerWidget {
         builder: (BuildContext, snapshot) {
           return SizedBox(
               height: 50,
-              // width: 180,
               child: Card(
                   color: const Color.fromRGBO(100, 100, 100, 0),
                   shape: RoundedRectangleBorder(
@@ -51,22 +48,7 @@ class GameweekWidget extends ConsumerWidget {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        IconButton(
-                            icon: const Icon(
-                              Icons.keyboard_arrow_left,
-                              size: 15,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              final prevGameweek = ref.watch(gameweekProvider);
-                              if (prevGameweek - 1 >= 1) {
-                                ref.watch(gameweekProvider.notifier).state =
-                                    prevGameweek - 1;
-                              }
-                            }),
                         SizedBox(
-                          width: 40,
-                          height: 50,
                           child: Card(
                               color: const Color.fromRGBO(100, 100, 100, 0),
                               shape: RoundedRectangleBorder(
@@ -77,33 +59,65 @@ class GameweekWidget extends ConsumerWidget {
                                           .primary),
                                   borderRadius: BorderRadius.circular(8)),
                               child: Center(
-                                child: Text(currGameweek.toString(),
-                                    style: TextStyle(
-                                        color: MaterialTheme
-                                                .darkMediumContrastScheme()
-                                            .onSurface,
-                                        fontSize: 15)),
+                                child: TextButton(
+                                  child: Text(currGameweek.toString(),
+                                      style: TextStyle(
+                                          color: MaterialTheme
+                                                  .darkMediumContrastScheme()
+                                              .onSurface,
+                                          fontSize: 10)),
+                                  onPressed: () {
+                                    ref
+                                        .read(expandGameweekProvider.notifier)
+                                        .state = true;
+                                  },
+                                ),
                               )),
                         ),
-                        IconButton(
-                            icon: const Icon(
-                              Icons.keyboard_arrow_right,
-                              size: 15,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              if (currGameweek + 1 <= 38) {
-                                ref.watch(gameweekProvider.notifier).state =
-                                    currGameweek + 1;
-                              }
-                            }),
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_up,
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    if (currGameweek + 1 <= 38) {
+                                      ref
+                                          .watch(gameweekProvider.notifier)
+                                          .state = currGameweek + 1;
+                                    }
+                                  }),
+                              IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    final prevGameweek =
+                                        ref.watch(gameweekProvider);
+                                    if (prevGameweek - 1 >= 1) {
+                                      ref
+                                          .watch(gameweekProvider.notifier)
+                                          .state = prevGameweek - 1;
+                                    }
+                                  }),
+                            ])
                       ])));
         });
   }
 }
 
+final expandGameweekProvider = StateProvider<bool>((ref) {
+  return false;
+});
+
 class leagueIDWidget extends ConsumerWidget {
-  leagueIDWidget({super.key});
+  const leagueIDWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -125,7 +139,7 @@ class leagueIDWidget extends ConsumerWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("League Id : ${currleague.toString()}",
+          child: Text("League Id : ${currleague?.leagueId.toString() ?? ""}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),
@@ -135,8 +149,53 @@ class leagueIDWidget extends ConsumerWidget {
   }
 }
 
+class expandedGameweekWidget extends ConsumerWidget {
+  const expandedGameweekWidget({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gameweek = ref.watch(gameweekProvider);
+    final enabled = ref.watch(expandGameweekProvider);
+
+    if (enabled) {
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(8, (index) {
+            double itemGw = max(gameweek - index, 0);
+            if (itemGw != 0) {
+              return SizedBox(
+                  height: 25,
+                  width: 50,
+                  child: Card(
+                      color: const Color.fromRGBO(100, 100, 100, 0),
+                      shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              width: 0,
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .primaryContainer),
+                          borderRadius: BorderRadius.circular(4)),
+                      child: TextButton(
+                        onPressed: () {
+                          ref.read(gameweekProvider.notifier).state = itemGw;
+                        },
+                        child: Text(
+                          itemGw.toString(),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 10),
+                        ),
+                      )));
+            } else {
+              return const SizedBox.shrink();
+            }
+          }));
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}
+
 class participantIdWidget extends ConsumerWidget {
-  participantIdWidget({super.key});
+  const participantIdWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -158,7 +217,7 @@ class participantIdWidget extends ConsumerWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("Current User: ${currUser?.fplUrl.toString()}",
+          child: Text("Current User: ${currUser?.participantId.toString()}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),
@@ -170,9 +229,9 @@ class participantIdWidget extends ConsumerWidget {
 
 class playerName extends ConsumerWidget {
   int playerId;
-  bool? notTransfer;
+  bool? vertical;
 
-  playerName({super.key, this.notTransfer, required this.playerId});
+  playerName({super.key, this.vertical, required this.playerId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -181,45 +240,83 @@ class playerName extends ConsumerWidget {
         future: pullPlayerStats(playerId, gameweek),
         builder: (context, snapshot) {
           var obj = snapshot.data;
-          return SizedBox(
-              // width: 60,
-              // height: 50,
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-            SizedBox(
-                // width: 75,
-                child: TextButton(
-              child: Text(
-                  "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().onSurface,
-                      fontSize: 10)),
-              onPressed: () {},
-            )),
-            if (notTransfer ?? true)
-              Text("${obj.data?['player']['gameweekScore']['totalPoints']}",
-                  style: TextStyle(
-                      color: MaterialTheme.darkMediumContrastScheme().primary,
-                      fontSize: 12)),
-          ]));
+          if (snapshot.hasData) {
+            // return ParticipantStats(data: obj);
+            if (vertical ?? true) {
+              return SizedBox(
+                  // width: 60,
+                  // height: 50,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                    SizedBox(
+                        // width: 75,
+                        child: TextButton(
+                      child: Text(
+                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10)),
+                      onPressed: () {},
+                    )),
+                    Text(
+                        "${obj.data?['player']['gameweekScore']['totalPoints']}",
+                        style: TextStyle(
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary,
+                            fontSize: 12)),
+                  ]));
+            } else {
+              return SizedBox(
+                  // width: 60,
+                  // height: 50,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                    SizedBox(
+                        // width: 75,
+                        child: TextButton(
+                      child: Text(
+                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: MaterialTheme.darkMediumContrastScheme()
+                                  .onSurface,
+                              fontSize: 10)),
+                      onPressed: () {},
+                    )),
+                    Text(
+                        "${obj.data?['player']['gameweekScore']['totalPoints']}",
+                        style: TextStyle(
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary,
+                            fontSize: 12)),
+                  ]));
+            }
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else {
+            return const Text("No Data");
+          }
         });
   }
 }
 
-String? parseLeagueCodeFromUrl(String url) {
+String parseLeagueCodeFromUrl(String url) {
   try {
     final uri = Uri.parse(url); // Parse the URL to handle it more reliably
     final RegExp regExp = RegExp(r'leagues/(\d+)/standings');
     final match = regExp.firstMatch(uri.path);
 
     if (match != null && match.groupCount >= 1) {
-      return match.group(1); // group(1) will contain the league code
+      return match.group(1) ?? '0'; // group(1) will contain the league code
     }
-    return null; // Return null if no league code is found
+    return '0'; // Return null if no league code is found
   } on FormatException {
     // Handle invalid URL
-    return null;
+    return '0';
   }
 }
 
@@ -229,4 +326,25 @@ String parseParticipantIdFromUrl(String url) {
   final match = regExp.firstMatch(uri.path);
   return match?.group(1) ??
       "No participant ID"; // group(1) will contain the participant code
+}
+
+class CustomDivider extends StatelessWidget {
+  const CustomDivider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.sizeOf(context);
+    final double width = size.width;
+    return SizedBox(
+        width: width,
+        height: 15,
+        child: Card(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    width: 1.5,
+                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                borderRadius: BorderRadius.circular(8)),
+            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+            child: const Text("")));
+  }
 }

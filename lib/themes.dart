@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class MaterialTheme {
-  //final textTheme = GoogleFonts.lektonTextTheme();
+  // final textTheme = GoogleFonts.lektonTextTheme();
   // final secondaryTextTheme = GoogleFonts.montserratTextTheme();
   // final textTheme = primaryTextTheme.copyWith(
-  //   displaySmall: secondaryTextTheme.displaySmall);
+  // displaySmall: secondaryTextTheme.displaySmall);
 
   //final TextTheme textTheme ;
-
   //MaterialTheme();
 
   static ColorScheme lightScheme() {
@@ -288,83 +286,22 @@ class MaterialTheme {
 
   TextTheme get textTheme {
     return TextTheme(
-      bodySmall: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 12,
-          letterSpacing: 0.4,
-          height: 16),
-      bodyMedium: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 14,
-          letterSpacing: 0.25,
-          height: 20),
-      bodyLarge: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 16,
-          letterSpacing: 0.5,
-          height: 24),
-      labelSmall: GoogleFonts.roboto(
-          fontWeight: FontWeight.w500,
-          fontSize: 11,
-          letterSpacing: 0.5,
-          height: 16),
-      labelMedium: GoogleFonts.roboto(
-          fontWeight: FontWeight.w500,
-          fontSize: 12,
-          letterSpacing: 0.5,
-          height: 16),
-      labelLarge: GoogleFonts.roboto(
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-          letterSpacing: 0.1,
-          height: 20),
-      titleSmall: GoogleFonts.roboto(
-          fontWeight: FontWeight.w500,
-          fontSize: 14,
-          letterSpacing: 0.1,
-          height: 20),
-      titleMedium: GoogleFonts.roboto(
-          fontWeight: FontWeight.w500,
-          fontSize: 16,
-          letterSpacing: 0.15,
-          height: 24),
-      titleLarge: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 22,
-          letterSpacing: 0,
-          height: 28),
-      headlineSmall: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 24,
-          letterSpacing: 0,
-          height: 32),
-      headlineMedium: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 28,
-          letterSpacing: 0,
-          height: 36),
-      headlineLarge: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 32,
-          letterSpacing: 0,
-          height: 40),
-      displaySmall: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 36,
-          letterSpacing: 0,
-          height: 44),
-      displayMedium: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 45,
-          letterSpacing: 0,
-          height: 52),
-      displayLarge: GoogleFonts.roboto(
-          fontWeight: FontWeight.w400,
-          fontSize: 57,
-          letterSpacing: -0.25,
-          height: 64),
-    );
-  }
+        displayLarge: const TextStyle(color: Colors.black, fontSize: 10),
+    displayMedium: TextStyle(color: Colors.black, fontSize: 10),
+    displaySmall: TextStyle(color: Colors.black, fontSize: 10),
+    headlineLarge: TextStyle(color: Colors.black, fontSize: 10),
+    headlineMedium: TextStyle(color: Colors.black, fontSize: 10),
+    headlineSmall: TextStyle(color: Colors.black, fontSize: 10),
+    titleLarge: TextStyle(color: Colors.black, fontSize: 10),
+    titleMedium: TextStyle(color: Colors.black, fontSize: 10),
+    titleSmall: TextStyle(color: Colors.black, fontSize: 10),
+    bodyLarge: TextStyle(color: Colors.black, fontSize: 10),
+    bodyMedium: TextStyle(color: Colors.black, fontSize: 10),
+    bodySmall: TextStyle(color: Colors.black, fontSize: 10),
+    labelLarge : TextStyle(color: Colors.black, fontSize: 10),
+    labelMedium : TextStyle(color: Colors.black, fontSize: 10),
+    labelSmall : TextStyle(color: Colors.black, fontSize: 10)
+    );}
 
   static ColorScheme darkHighContrastScheme() {
     return const ColorScheme(
@@ -422,16 +359,29 @@ class MaterialTheme {
   }
 
   ThemeData theme(ColorScheme colorScheme) {
-    final primaryTextTheme = GoogleFonts.lektonTextTheme();
-    final secondaryTextTheme = GoogleFonts.montserratTextTheme();
-    final textTheme = primaryTextTheme.copyWith(
-        displaySmall: secondaryTextTheme.displaySmall);
+    final primaryTextTheme  = TextTheme(
+      displayLarge: const TextStyle(color: Colors.black, fontSize: 10),
+      displayMedium: TextStyle(color: Colors.black, fontSize: 10),
+      displaySmall: TextStyle(color: Colors.black, fontSize: 10),
+      headlineLarge: TextStyle(color: Colors.black, fontSize: 10),
+      headlineMedium: TextStyle(color: Colors.black, fontSize: 10),
+      headlineSmall: TextStyle(color: Colors.black, fontSize: 10),
+      titleLarge: TextStyle(color: Colors.black, fontSize: 10),
+      titleMedium: TextStyle(color: Colors.black, fontSize: 10),
+      titleSmall: TextStyle(color: Colors.black, fontSize: 10),
+      bodyLarge: TextStyle(color: Colors.black, fontSize: 10),
+      bodyMedium: TextStyle(color: Colors.black, fontSize: 10),
+      bodySmall: TextStyle(color: Colors.black, fontSize: 10),
+      labelLarge : TextStyle(color: Colors.black, fontSize: 10),
+      labelMedium : TextStyle(color: Colors.black, fontSize: 10),
+      labelSmall : TextStyle(color: Colors.black, fontSize: 10)
+    );
 
     return ThemeData(
       useMaterial3: true,
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
-      textTheme: textTheme.apply(
+      textTheme: primaryTextTheme.apply(
         bodyColor: colorScheme.onSurface,
         displayColor: colorScheme.onSurface,
       ),
@@ -508,22 +458,6 @@ class FplTheme extends ThemeExtension<FplTheme> {
         neutralColor: Color.lerp(neutralColor, other.neutralColor, t)!);
   }
 
-  ThemeData _base(ColorScheme colorScheme) {
-    final primaryTextTheme = GoogleFonts.lektonTextTheme();
-    final secondaryTextTheme = GoogleFonts.montserratTextTheme();
-    final textTheme = primaryTextTheme.copyWith(
-        displaySmall: secondaryTextTheme.displaySmall);
-    final isLight = colorScheme.brightness == Brightness.light;
-
-    return ThemeData(
-      useMaterial3: true,
-      extensions: [this],
-      colorScheme: colorScheme,
-      textTheme: textTheme,
-      scaffoldBackgroundColor: isLight ? neutralColor : colorScheme.surface,
-    );
-  }
-
   // Scheme _scheme() {
   //   final base = CorePalette.of(primaryColor.value);
   //   final primary = base.primary;
@@ -574,7 +508,7 @@ class FplTheme extends ThemeExtension<FplTheme> {
         //   backgroundColor: isLight ? neutralColor : colorScheme.surface
         // ),
         chipTheme: const ChipThemeData(backgroundColor: Colors.greenAccent),
-        cardTheme: CardTheme(
+        cardTheme: CardThemeData(
           color: MaterialTheme.darkMediumContrastScheme().secondaryContainer,
         ));
   }

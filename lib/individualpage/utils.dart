@@ -19,27 +19,24 @@ class captainViceCaptainName extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
-        child: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-      TextButton(
-        child: Text(playerName.split(" ").last,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: flag
-                    ? MaterialTheme.lightHighContrastScheme().onErrorContainer
-                    : MaterialTheme.lightHighContrastScheme().onSurface,
-                fontSize: 10)),
-        onPressed: () {},
-      ),
-      TextButton(
-        child: Text("$playerPoint",
-            style: TextStyle(
-                color: flag
-                    ? MaterialTheme.lightHighContrastScheme().onErrorContainer
-                    : MaterialTheme.lightHighContrastScheme().onSurface,
-                fontSize: 12)),
-        onPressed: () {},
-      ),
-    ]));
+        // height: 60,
+        child: TextButton(
+      child: Text("${playerName.split(" ").last}, $playerPoint",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: flag
+                  ? MaterialTheme.lightHighContrastScheme().onErrorContainer
+                  : MaterialTheme.lightHighContrastScheme().onSurface,
+              fontSize: 10)),
+      onPressed: () {},
+    ));
+    // Text("$playerPoint",
+    //       style: TextStyle(
+    //           color: flag
+    //               ? MaterialTheme.lightHighContrastScheme().onErrorContainer
+    //               : MaterialTheme.lightHighContrastScheme().onSurface,
+    //           fontSize: 12)),
+    // ]));
   }
 }
 
@@ -81,7 +78,7 @@ class participantIDWidget extends StatelessWidget {
             // width: 80,
             // height: 50,
             child: Center(
-          child: Text("Participant ID : ${currParticipant?.fplUrl}",
+          child: Text("Participant ID : ${currParticipant?.participantId}",
               style: TextStyle(
                   color: MaterialTheme.darkMediumContrastScheme().onSurface,
                   fontSize: 15)),

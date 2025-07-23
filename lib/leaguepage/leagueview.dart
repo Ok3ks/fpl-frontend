@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
+import 'package:fpl/leaguepage/differential.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/leaguepage/benchmetrics.dart';
 import 'package:fpl/leaguepage/captainmetrics.dart';
 import 'package:fpl/leaguepage/transfermetrics.dart';
 import 'package:fpl/leaguepage/performancemetrics.dart';
-
+import 'package:fpl/leaguepage/leagueName.dart';
+import 'package:fpl/types.dart';
 import 'dart:convert';
 
 class LeagueView extends ConsumerStatefulWidget {
@@ -16,7 +17,7 @@ class LeagueView extends ConsumerStatefulWidget {
     super.key,
   });
 
-  String? leagueId;
+  League? userLeague;
 
   @override
   ConsumerState<LeagueView> createState() => LeagueViewState();
@@ -32,122 +33,127 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     final double width = size.width;
     final double height = size.height;
 
-    if (orientation == Orientation.landscape) {
-      return const Center(
-          child: Text("Adjust your device into a portrait orientation",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 30)));
-    }
-    //Left becomes top
-    else {
-      return SingleChildScrollView(
-          child: Column(children: [
-        Stack(alignment: AlignmentDirectional.center, children: [
-          Image.asset("assets/images/pexels-mike-1171084.webp"),
-          SizedBox(
-              width: width,
-              //height: (height/3) - 30,
-              // child: Card(
-              child: Column(children: [
-                const SizedBox(height: 20),
-                LandingPageTitle(),
-                const SizedBox(height: 20),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  SizedBox(
-                      width: 250,
-                      height: 50,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                width: 1.5,
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primary),
-                            borderRadius: BorderRadius.circular(12)),
-                        color: const Color.fromRGBO(100, 100, 100, 0),
-                        child: TextField(
-                          style: const TextStyle(
-                              fontSize: 10, color: Colors.white),
-                          cursorColor:
-                              MaterialTheme.darkMediumContrastScheme().primary,
-                          controller: leagueIdController,
-                          // textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                              hintText: 'Provide your FPL league URL',
-                              hintStyle: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w100,
-                                  fontStyle: FontStyle.italic),
-                              focusedBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: MaterialTheme
-                                              .darkMediumContrastScheme()
+    final currParticipant = ref.watch(currentUserProvider);
+
+    return SingleChildScrollView(
+        child: Column(children: [
+      Stack(alignment: AlignmentDirectional.center, children: [
+        Image.asset(
+          "assets/images/pexels-mike-1171084.webp",
+          // width: 1474/3,
+          // height: 534/3
+        ),
+        SizedBox(
+            // width: 1474,
+            // height: 500,
+            // child: Card(
+            child: Column(children: [
+          // const SizedBox(height: 20),
+          // if ( width > 300)
+          // LandingPageTitle(),
+          const SizedBox(height: 10),
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            if (width > 300)
+              SizedBox(
+                  width: 200,
+                  height: 40,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        side: BorderSide(
+                            width: 1.5,
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary),
+                        borderRadius: BorderRadius.circular(12)),
+                    color: const Color.fromRGBO(100, 100, 100, 0),
+                    child: TextField(
+                      style: const TextStyle(fontSize: 10, color: Colors.white),
+                      cursorColor:
+                          MaterialTheme.darkMediumContrastScheme().primary,
+                      controller: leagueIdController,
+                      // textInputAction: TextInputAction.done,
+                      decoration: InputDecoration(
+                          hintText: 'Provide your FPL league URL',
+                          hintStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w100,
+                              fontStyle: FontStyle.italic),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
                                           .primaryContainer)),
-                              disabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          MaterialTheme.darkMediumContrastScheme()
-                                              .primaryContainer)),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          MaterialTheme.darkMediumContrastScheme()
-                                              .primaryContainer)),
-                              border: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          MaterialTheme.darkMediumContrastScheme()
-                                              .primaryContainer)),
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 8),
-                              fillColor: Colors.white,
-                              iconColor: Colors.white),
-                          cursorHeight: 20,
-                          autocorrect: false,
-                        ),
-                      )),
-                  // ),
-                  IconButton(
-                    icon: Icon(Icons.keyboard_return,
-                        color:
-                            MaterialTheme.darkMediumContrastScheme().primary),
-                    onPressed: () async {
-                      widget.leagueId =
-                          parseLeagueCodeFromUrl(leagueIdController.text);
-                      ref.read(leagueProvider.notifier).state =
-                          double.tryParse(widget.leagueId ?? "0");
-                      if (leagueIdController.text.length > 1) {
-                        //TODO More data validation for league code, Also be able to parse link
-                        setState(() {
-                          widget.leagueId =
-                              parseLeagueCodeFromUrl(leagueIdController.text);
-                        });
-                      }
-                    },
-                  )
-                ]),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  // crossAxisAlignment: CrossAxisAlignment.cen,
-                  children: [
-                    if (widget.leagueId != null) leagueIDWidget(),
-                    GameweekWidget()
-                  ],
-                ),
-              ])
-              // )
-              ),
-        ]),
-        LeagueStatsView()
-      ]));
-      // );
-    }
+                          disabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .primaryContainer)),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .primaryContainer)),
+                          border: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
+                                          .primaryContainer)),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 8),
+                          fillColor: Colors.white,
+                          iconColor: Colors.white),
+                      cursorHeight: 20,
+                      autocorrect: false,
+                    ),
+                  )),
+            // ),
+            if (width > 300)
+              IconButton(
+                icon: Icon(Icons.keyboard_return,
+                    color: MaterialTheme.darkMediumContrastScheme().primary),
+                onPressed: () async {
+                  if (leagueIdController.text.length > 1 &&
+                      parseLeagueCodeFromUrl(leagueIdController.text) != '0') {
+                    setState(() {
+                      widget.userLeague = League(
+                          leagueId: double.tryParse(
+                              parseLeagueCodeFromUrl(leagueIdController.text)));
+                      // parseLeagueCodeFromUrl(leagueIdController.text);
+                    });
+                  }
+
+                  ref.read(leagueProvider.notifier).state = widget.userLeague;
+                  final leagueId = ref.watch(leagueProvider);
+                  if (leagueId != 0 &&
+                      leagueId != null &&
+                      currParticipant != null) {
+                    await currParticipant.addLeague(leagueId);
+                  }
+                },
+              )
+          ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.cen,
+            children: [
+              if (widget.userLeague != null) const leagueIDWidget(),
+              if (width > 300) const GameweekWidget(),
+            ],
+          ),
+          const expandedGameweekWidget()
+        ])
+            // )
+            ),
+      ]),
+      const LeagueStatsView()
+    ]));
+    // );
   }
 }
+// }
 
 class LeagueStatsView extends ConsumerStatefulWidget {
-  LeagueStatsView({
+  const LeagueStatsView({
     super.key,
   });
 
@@ -160,7 +166,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 
   @override
   Widget build(BuildContext context) {
-    final leagueId = ref.watch(leagueProvider);
+    final leagueId = ref.watch(leagueProvider)?.leagueId;
     final gameweek = ref.watch(gameweekProvider);
 
     if (leagueId != null) {
@@ -174,7 +180,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
               if (snapshot.hasData) {
                 return LeagueStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return LeagueStats(data: obj, hydrate: false);
               } else {
                 return const Text("No Data");
               }
@@ -186,6 +192,8 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 }
 
 class LandingPageTitle extends StatelessWidget {
+  const LandingPageTitle({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const Text(
@@ -201,6 +209,8 @@ class LandingPageTitle extends StatelessWidget {
 
 class LandingPage extends StatelessWidget {
   ExpansionTileController expansionTileController = ExpansionTileController();
+
+  LandingPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -230,9 +240,9 @@ class LandingPage extends StatelessWidget {
                       title: const Text('What is this?'),
                       childrenPadding: const EdgeInsets.symmetric(
                           vertical: 10, horizontal: 30),
-                      children: [
-                        const Text(
-                          "Dontsuckatfpl is a web-based application for fantasy premier league lovers. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
+                      children: const [
+                        Text(
+                          "Dontsuckatfpl is a web-based application for die hard fantasy premier league fans. With this application, your leagues just got more competitive. The application offers users a closer look into the happenings in their local leagues.With this application, you can track not just your performances, but the overall performance of your local leagues in one view.",
                           style: TextStyle(fontSize: 10),
                           textAlign: TextAlign.justify,
                           textWidthBasis: TextWidthBasis.longestLine,
@@ -325,7 +335,7 @@ class LandingPage extends StatelessWidget {
                             MaterialTheme.darkMediumContrastScheme().primary,
                         title:
                             const Text('What should we expect in the future?'),
-                        children: []),
+                        children: const []),
                   ]),
             ],
           ),
@@ -334,47 +344,47 @@ class LandingPage extends StatelessWidget {
 }
 
 class LeagueStats extends StatelessWidget {
-  QueryResult data;
-  LeagueStats({super.key, required this.data});
+  Map<String, dynamic>? data;
+  bool hydrate = true;
+
+  LeagueStats({super.key, required this.data, this.hydrate = true});
 
   @override
   Widget build(BuildContext context) {
-    String? leagueName = data.data?['leagueWeeklyReport']['leagueName'];
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-      Text("$leagueName ",
-          style: const TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w400,
-            fontSize: 20,
-            decoration: TextDecoration.none,
-          )),
       Container(
-          color: MaterialTheme.darkMediumContrastScheme().onSurface,
-          child: Column(children: [
-            if (data.data?['leagueWeeklyReport']['leagueAverage'] != null)
-              PerformanceMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['bestTransferIn'].length !=
-                null)
-              CaptainMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['mostBenched'].length != null)
-              BenchMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['captain'].length != null &&
-                data.data?['leagueWeeklyReport']['bestTransferIn'].length > 1)
-              TransferMetrics(data: data),
-            if (data.data?['leagueWeeklyReport']['mostBenched'].length == null)
-              Center(
-                  child: Container(
-                      // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                      color: Colors.white,
-                      child: Column(children: [
-                        const Text("Input is invalid",
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w200,
-                                color: Colors.red)),
-                        LandingPage(),
-                      ])))
-          ])),
+        color: MaterialTheme.darkMediumContrastScheme().onSurface,
+        child: SizedBox(
+            child: Column(children: [
+          leagueName(
+            data: data,
+            hydrate: hydrate,
+          ),
+          const CustomDivider(),
+          const Text("League Stats"),
+          PerformanceMetrics(data: data),
+          const Text("Captain Stats"),
+          CaptainMetrics(data: data),
+          const CustomDivider(),
+          BenchMetrics(data: data),
+          SizedBox(width: 300, child: Differentials(data: data)),
+          const CustomDivider(),
+          TransferMetrics(data: data, hydrate: hydrate),
+          if (data == null) //ToDo Add timeout here or just validate from entry?
+            Center(
+                child: Container(
+                    // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                    color: Colors.white,
+                    child: Column(children: [
+                      const Text("Input is invalid",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w200,
+                              color: Colors.red)),
+                      LandingPage(),
+                    ])))
+        ])),
+      )
     ]);
   }
 }
@@ -404,6 +414,7 @@ class ChooseLeague extends StatelessWidget {
           // const TextField(autocorrect: false, cursorHeight: 5,)),
           IconButton(
             icon: const Icon(Icons.keyboard_return),
+            iconSize: 5,
             onPressed: () {},
           )
         ])));
