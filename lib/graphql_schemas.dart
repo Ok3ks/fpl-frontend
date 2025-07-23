@@ -61,23 +61,26 @@ class AllQueries {
       bestTransferIn{
         entryId
         teamName
-        entryId
         playerIn
         playerOut
         pointsDelta
+        pointHit
       }
       worstTransferIn{
         entryId
         teamName
-        entryId
         playerIn
         playerOut
         pointsDelta
+        pointHit
       }
       mostPointsOnBench{
         teamName
         players
         pointOnBench
+      }
+      differential {
+      players
       }
       jammyPoints{
         teamName
@@ -200,14 +203,241 @@ class AllQueries {
   """;
 
   static String getGameViewReport = """
-  query GameViewReport(\$useGameweek: Boolean!, \$usePosition: Boolean!, \$useTeam: Boolean!) {
-    gameViewReport(useGameweek: \$useGameweek, usePosition: \$usePosition, useTeam: \$useTeam) {
+  query GameViewReport(\$gameweek: [Int!]) {
+    gameViewReport(gameweek: \$gameweek) {
+      gkStats {
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
         gameweek
-        position
+      }
+      defStats{
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+      midStats{
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+      strStats{
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+      goalkeepers{
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+      creative{
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+      threat{
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+      unlucky{
+        playerId
+        minutes
+        goalsScored
+        assists
+        cleanSheets
+        goalsConceded
+        ownGoals
+        penaltiesSaved
+        penaltiesMissed
+        yellowCards
+        redCards
+        saves
+        bonus
+        bps
+        influence
+        creativity
+        threat
+        ictIndex
+        starts
+        expectedGoals
+        expectedAssists
+        expectedGoalInvolvements
+        expectedGoalsConceded
+        totalPoints
+        inDreamteam
+        gameweek
+      }
+      teamAgg {
         team
         goalsScored
-        totalPoints
         assists
+        expectedGoalInvolvements
+        expectedGoals
+        expectedGoalsConceded
+      }
+    }
     }
   }
   """;
