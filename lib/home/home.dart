@@ -8,8 +8,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/themes.dart';
 
-import '../gamepage/gameview.dart';
-
 void main() {
   runApp(const Home());
 }
@@ -26,7 +24,7 @@ class Home extends ConsumerWidget {
       return MaterialApp(
         home: DefaultTabController(
           initialIndex: 0,
-          length: 3,
+          length: 2,
           child: Scaffold(
             drawer: Drawer(
               child: ListView(
@@ -77,16 +75,8 @@ class Home extends ConsumerWidget {
               bottom: const TabBar(
                 indicatorColor: Colors.blue,
                 tabs: [
-                  Tab(text: "individual view", icon: Icon(Icons.person)),
-                  Tab(text: "league view", icon: Icon(Icons.leaderboard)),
-                  Tab(
-                      text: "game view",
-                      icon: Icon(
-                        Icons.sports_soccer,
-                        // onPressed: () async {
-                        //     pullGameweekStats(true, true, false)
-                        // },
-                      ))
+                  Tab(text: "Participant", icon: Icon(Icons.person)),
+                  Tab(text: "League", icon: Icon(Icons.leaderboard)),
                 ],
               ),
               // title: const Text('Tabs Demo'),
@@ -95,11 +85,6 @@ class Home extends ConsumerWidget {
               children: [
                 const ProviderScope(child: ParticipantView()),
                 ProviderScope(child: LeagueView()),
-                SingleChildScrollView(
-                  child: Column(
-                    children: [BarChartSample3(), PieChartSample2()],
-                  ),
-                )
               ],
             ),
           ),
