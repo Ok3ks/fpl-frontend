@@ -287,21 +287,21 @@ class MaterialTheme {
   TextTheme get textTheme {
     return TextTheme(
         displayLarge: const TextStyle(color: Colors.black, fontSize: 10),
-    displayMedium: TextStyle(color: Colors.black, fontSize: 10),
-    displaySmall: TextStyle(color: Colors.black, fontSize: 10),
-    headlineLarge: TextStyle(color: Colors.black, fontSize: 10),
-    headlineMedium: TextStyle(color: Colors.black, fontSize: 10),
-    headlineSmall: TextStyle(color: Colors.black, fontSize: 10),
-    titleLarge: TextStyle(color: Colors.black, fontSize: 10),
-    titleMedium: TextStyle(color: Colors.black, fontSize: 10),
-    titleSmall: TextStyle(color: Colors.black, fontSize: 10),
-    bodyLarge: TextStyle(color: Colors.black, fontSize: 10),
-    bodyMedium: TextStyle(color: Colors.black, fontSize: 10),
-    bodySmall: TextStyle(color: Colors.black, fontSize: 10),
-    labelLarge : TextStyle(color: Colors.black, fontSize: 10),
-    labelMedium : TextStyle(color: Colors.black, fontSize: 10),
-    labelSmall : TextStyle(color: Colors.black, fontSize: 10)
-    );}
+        displayMedium: TextStyle(color: Colors.black, fontSize: 10),
+        displaySmall: TextStyle(color: Colors.black, fontSize: 10),
+        headlineLarge: TextStyle(color: Colors.black, fontSize: 10),
+        headlineMedium: TextStyle(color: Colors.black, fontSize: 10),
+        headlineSmall: TextStyle(color: Colors.black, fontSize: 10),
+        titleLarge: TextStyle(color: Colors.black, fontSize: 10),
+        titleMedium: TextStyle(color: Colors.black, fontSize: 10),
+        titleSmall: TextStyle(color: Colors.black, fontSize: 10),
+        bodyLarge: TextStyle(color: Colors.black, fontSize: 10),
+        bodyMedium: TextStyle(color: Colors.black, fontSize: 10),
+        bodySmall: TextStyle(color: Colors.black, fontSize: 10),
+        labelLarge: TextStyle(color: Colors.black, fontSize: 10),
+        labelMedium: TextStyle(color: Colors.black, fontSize: 10),
+        labelSmall: TextStyle(color: Colors.black, fontSize: 10));
+  }
 
   static ColorScheme darkHighContrastScheme() {
     return const ColorScheme(
@@ -359,23 +359,22 @@ class MaterialTheme {
   }
 
   ThemeData theme(ColorScheme colorScheme) {
-    final primaryTextTheme  = TextTheme(
-      displayLarge: const TextStyle(color: Colors.black, fontSize: 10),
-      displayMedium: TextStyle(color: Colors.black, fontSize: 10),
-      displaySmall: TextStyle(color: Colors.black, fontSize: 10),
-      headlineLarge: TextStyle(color: Colors.black, fontSize: 10),
-      headlineMedium: TextStyle(color: Colors.black, fontSize: 10),
-      headlineSmall: TextStyle(color: Colors.black, fontSize: 10),
-      titleLarge: TextStyle(color: Colors.black, fontSize: 10),
-      titleMedium: TextStyle(color: Colors.black, fontSize: 10),
-      titleSmall: TextStyle(color: Colors.black, fontSize: 10),
-      bodyLarge: TextStyle(color: Colors.black, fontSize: 10),
-      bodyMedium: TextStyle(color: Colors.black, fontSize: 10),
-      bodySmall: TextStyle(color: Colors.black, fontSize: 10),
-      labelLarge : TextStyle(color: Colors.black, fontSize: 10),
-      labelMedium : TextStyle(color: Colors.black, fontSize: 10),
-      labelSmall : TextStyle(color: Colors.black, fontSize: 10)
-    );
+    final primaryTextTheme = TextTheme(
+        displayLarge: const TextStyle(color: Colors.black, fontSize: 10),
+        displayMedium: TextStyle(color: Colors.black, fontSize: 10),
+        displaySmall: TextStyle(color: Colors.black, fontSize: 10),
+        headlineLarge: TextStyle(color: Colors.black, fontSize: 10),
+        headlineMedium: TextStyle(color: Colors.black, fontSize: 10),
+        headlineSmall: TextStyle(color: Colors.black, fontSize: 10),
+        titleLarge: TextStyle(color: Colors.black, fontSize: 10),
+        titleMedium: TextStyle(color: Colors.black, fontSize: 10),
+        titleSmall: TextStyle(color: Colors.black, fontSize: 10),
+        bodyLarge: TextStyle(color: Colors.black, fontSize: 10),
+        bodyMedium: TextStyle(color: Colors.black, fontSize: 10),
+        bodySmall: TextStyle(color: Colors.black, fontSize: 10),
+        labelLarge: TextStyle(color: Colors.black, fontSize: 10),
+        labelMedium: TextStyle(color: Colors.black, fontSize: 10),
+        labelSmall: TextStyle(color: Colors.black, fontSize: 10));
 
     return ThemeData(
       useMaterial3: true,

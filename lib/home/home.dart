@@ -97,12 +97,10 @@ class Home extends ConsumerWidget {
                 ProviderScope(child: LeagueView()),
                 SingleChildScrollView(
                   child: Column(
-                    children: [
-                    BarChartSample3(),
-                    PieChartSample2()
-                  ],
-                ),
-                )],
+                    children: [BarChartSample3(), PieChartSample2()],
+                  ),
+                )
+              ],
             ),
           ),
         ),
