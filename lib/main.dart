@@ -13,6 +13,7 @@ import 'package:fpl/navigation_services.dart';
 import 'package:fpl/home/login.dart';
 import 'package:fpl/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get_storage/get_storage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -25,7 +26,11 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
+  await GetStorage.init();
+
+  // if (await dotenv.env['DEVELOPMENT'] == 'True') {
   var app = await Firebase.initializeApp(
+      name: 'fpl-frontend',
       options: FirebaseOptions(
           apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
           authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
@@ -35,9 +40,10 @@ void main() async {
           appId: dotenv.env['appId'] ?? "<APP_ID>",
           measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
 
-  var auth = FirebaseAuth.instanceFor(app: app,);
+  var auth = FirebaseAuth.instanceFor(
+    app: app,
+  );
   auth.setPersistence(Persistence.LOCAL);
-  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(const FplApp());
 }
 
@@ -47,13 +53,13 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return ProviderScope(child: LoginView());
+        return const ProviderScope(child: Home());
       },
     ),
     GoRoute(
         path: '/gameview',
         builder: (BuildContext context, GoRouterState state) {
-          return const GameView();
+          return const BarChartSample3();
         }),
     GoRoute(
         path: '/leagueview',
@@ -63,12 +69,12 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: '/participantview',
         builder: (BuildContext context, GoRouterState state) {
-          return ProviderScope(child: ParticipantView());
+          return const ProviderScope(child: ParticipantView());
         }),
     GoRoute(
         path: '/login',
         builder: (BuildContext context, GoRouterState state) {
-          return ProviderScope(child: LoginView());
+          return const ProviderScope(child: LoginView());
         }),
     GoRoute(
         path: '/onboarding',
@@ -92,7 +98,7 @@ class FplApp extends StatelessWidget {
     const fplTheme = FplTheme();
     return MaterialApp.router(
       routerConfig: router,
-      title: 'League Analysis',
+      title: 'FPL Wrapped',
       theme: fplTheme.toThemeData(),
     );
   }

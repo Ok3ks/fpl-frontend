@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fpl/themes.dart';
 
 class PerformanceMetrics extends StatelessWidget {
-  dynamic data;
+  Map<String, dynamic>? data;
 
   PerformanceMetrics({super.key, required this.data});
 
@@ -14,37 +14,17 @@ class PerformanceMetrics extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Align(
-              alignment: Alignment.bottomLeft,
-              child: Text("Performance",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Colors.black,
-                    decoration: TextDecoration.none,
-                  ))),
-          // Card(
-          //     shadowColor:
-          //     MaterialTheme
-          //         .darkMediumContrastScheme()
-          //         .secondaryContainer,
-          //     elevation: 2,
-          //     color: MaterialTheme
-          //         .darkMediumContrastScheme()
-          //         .onSurface,
-          //     //elevation: 0,
-          //     child:
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             MetricsCard(
                 title: "Exceptional ",
-                data: data.data?['leagueWeeklyReport']['exceptional']),
+                data: data?['leagueWeeklyReport']['exceptional']),
             LeagueAverageCard(
-                title: "League Average",
-                data: data.data?['leagueWeeklyReport']),
-            if ((data.data != null) &&
-                (data.data?['leagueWeeklyReport']['abysmal']['score'] != null))
+                title: "League Average", data: data?['leagueWeeklyReport']),
+            if ((data != null) &&
+                (data?['leagueWeeklyReport']['abysmal']['score'] != null))
               MetricsCard(
                   title: "Abysmal ",
-                  data: data.data?['leagueWeeklyReport']['abysmal']),
+                  data: data?['leagueWeeklyReport']['abysmal']),
           ])
           // ),
         ]);
