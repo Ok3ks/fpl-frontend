@@ -124,9 +124,7 @@ Future<dynamic> pullParticipantStats(double? participantId) async {
   }
 }
 
-Future<dynamic> pullGameViewStats(
-    List<int> gameweek
-) async {
+Future<dynamic> pullGameViewStats(List<int> gameweek) async {
   try {
     QueryResult results = await client.value.query(QueryOptions(
         document: gql(AllQueries.getGameViewReport), //

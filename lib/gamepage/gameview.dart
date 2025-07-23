@@ -5,9 +5,7 @@ import 'package:fpl/dataprovider.dart';
 import 'package:fpl/utils.dart';
 
 void main() {
-  runApp(
-      MaterialApp(home: const GameView()
-  ));
+  runApp(MaterialApp(home: const GameView()));
 }
 
 class _BarChart extends StatelessWidget {
@@ -29,27 +27,27 @@ class _BarChart extends StatelessWidget {
   }
 
   BarTouchData get barTouchData => BarTouchData(
-    enabled: false,
-    touchTooltipData: BarTouchTooltipData(
-      getTooltipColor: (group) => Colors.transparent,
-      tooltipPadding: EdgeInsets.zero,
-      tooltipMargin: 8,
-      getTooltipItem: (
-          BarChartGroupData group,
-          int groupIndex,
-          BarChartRodData rod,
-          int rodIndex,
+        enabled: false,
+        touchTooltipData: BarTouchTooltipData(
+          getTooltipColor: (group) => Colors.transparent,
+          tooltipPadding: EdgeInsets.zero,
+          tooltipMargin: 8,
+          getTooltipItem: (
+            BarChartGroupData group,
+            int groupIndex,
+            BarChartRodData rod,
+            int rodIndex,
           ) {
-        return BarTooltipItem(
-          rod.toY.round().toString(),
-          const TextStyle(
-            color: Colors.green,
-            fontWeight: FontWeight.bold,
-          ),
-        );
-      },
-    ),
-  );
+            return BarTooltipItem(
+              rod.toY.round().toString(),
+              const TextStyle(
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
+        ),
+      );
 
   Widget getTitles(double value, TitleMeta meta) {
     final style = TextStyle(
@@ -92,110 +90,110 @@ class _BarChart extends StatelessWidget {
   }
 
   FlTitlesData get titlesData => FlTitlesData(
-    show: true,
-    bottomTitles: AxisTitles(
-      sideTitles: SideTitles(
-        showTitles: true,
-        reservedSize: 30,
-        getTitlesWidget: getTitles,
-      ),
-    ),
-    leftTitles: const AxisTitles(
-      sideTitles: SideTitles(showTitles: false),
-    ),
-    topTitles: const AxisTitles(
-      sideTitles: SideTitles(showTitles: false),
-    ),
-    rightTitles: const AxisTitles(
-      sideTitles: SideTitles(showTitles: false),
-    ),
-  );
+        show: true,
+        bottomTitles: AxisTitles(
+          sideTitles: SideTitles(
+            showTitles: true,
+            reservedSize: 30,
+            getTitlesWidget: getTitles,
+          ),
+        ),
+        leftTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        topTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+        rightTitles: const AxisTitles(
+          sideTitles: SideTitles(showTitles: false),
+        ),
+      );
 
   FlBorderData get borderData => FlBorderData(
-    show: false,
-  );
+        show: false,
+      );
 
   LinearGradient get _barsGradient => LinearGradient(
-    colors: [
-      Colors.blueGrey,
-      Colors.grey,
-    ],
-    begin: Alignment.bottomCenter,
-    end: Alignment.topCenter,
-  );
+        colors: [
+          Colors.blueGrey,
+          Colors.grey,
+        ],
+        begin: Alignment.bottomCenter,
+        end: Alignment.topCenter,
+      );
 
   List<BarChartGroupData> get barGroups => [
-    BarChartGroupData(
-      x: 0,
-      barRods: [
-        BarChartRodData(
-          toY: 8,
-          gradient: _barsGradient,
-        )
-      ],
-      showingTooltipIndicators: [0],
-    ),
-    BarChartGroupData(
-      x: 1,
-      barRods: [
-        BarChartRodData(
-          toY: 10,
-          gradient: _barsGradient,
-        )
-      ],
-      showingTooltipIndicators: [0],
-    ),
-    BarChartGroupData(
-      x: 2,
-      barRods: [
-        BarChartRodData(
-          toY: 14,
-          gradient: _barsGradient,
-        )
-      ],
-      showingTooltipIndicators: [0],
-    ),
-    BarChartGroupData(
-      x: 3,
-      barRods: [
-        BarChartRodData(
-          toY: 15,
-          gradient: _barsGradient,
-        )
-      ],
-      showingTooltipIndicators: [0],
-    ),
-    BarChartGroupData(
-      x: 4,
-      barRods: [
-        BarChartRodData(
-          toY: 13,
-          gradient: _barsGradient,
-        )
-      ],
-      showingTooltipIndicators: [0],
-    ),
-    BarChartGroupData(
-      x: 5,
-      barRods: [
-        BarChartRodData(
-          toY: 10,
-          gradient: _barsGradient,
-        )
-      ],
-      showingTooltipIndicators: [0],
-    ),
-    BarChartGroupData(
-      x: 6,
-      barRods: [
-        BarChartRodData(
-          toY: 16,
-          gradient: _barsGradient,
-        )
-      ],
-      showingTooltipIndicators: [0],
-    ),
-  ];
+        BarChartGroupData(
+          x: 0,
+          barRods: [
+            BarChartRodData(
+              toY: 8,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 1,
+          barRods: [
+            BarChartRodData(
+              toY: 10,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 2,
+          barRods: [
+            BarChartRodData(
+              toY: 14,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 3,
+          barRods: [
+            BarChartRodData(
+              toY: 15,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 4,
+          barRods: [
+            BarChartRodData(
+              toY: 13,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 5,
+          barRods: [
+            BarChartRodData(
+              toY: 10,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+        BarChartGroupData(
+          x: 6,
+          barRods: [
+            BarChartRodData(
+              toY: 16,
+              gradient: _barsGradient,
+            )
+          ],
+          showingTooltipIndicators: [0],
+        ),
+      ];
 }
 
 class BarChartSample3 extends StatefulWidget {
@@ -343,12 +341,10 @@ class GameView extends ConsumerStatefulWidget {
   });
 
   @override
-  ConsumerState<GameView> createState() =>
-      GameViewState();
+  ConsumerState<GameView> createState() => GameViewState();
 }
 
 class GameViewState extends ConsumerState<GameView> {
-
   @override
   void initState() {
     super.initState();
@@ -356,35 +352,32 @@ class GameViewState extends ConsumerState<GameView> {
 
   @override
   Widget build(BuildContext context) {
-      return SingleChildScrollView(
-          child: Column(
-          children: [
-            Stack(
-              alignment: AlignmentDirectional.center,
-              children: [
-                // Image.asset("assets/images/pexels-mike-1171084.webp"),
-                SizedBox(
-                  // width: width,
-                  child: Column(children: [
-                      SizedBox(
-                // width: width,
-                  child: FutureBuilder(
-                      future: pullGameViewStats([38]),
-                      builder: (context, snapshot) {
-                        var obj = snapshot.data;
-                        if (snapshot.hasData) {
-                          return GameViewStats(data: obj);
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          //optimistic U.I
-                        } else {
-                          return const Text("No Data");
-                        }
-                        return const Text("No Data");
-                      }))
-          ]
-    ))])
-          ]));
+    return SingleChildScrollView(
+        child: Column(children: [
+      Stack(alignment: AlignmentDirectional.center, children: [
+        // Image.asset("assets/images/pexels-mike-1171084.webp"),
+        SizedBox(
+            // width: width,
+            child: Column(children: [
+          SizedBox(
+              // width: width,
+              child: FutureBuilder(
+                  future: pullGameViewStats([38]),
+                  builder: (context, snapshot) {
+                    var obj = snapshot.data;
+                    if (snapshot.hasData) {
+                      return GameViewStats(data: obj);
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      //optimistic U.I
+                    } else {
+                      return const Text("No Data");
+                    }
+                    return const Text("No Data");
+                  }))
+        ]))
+      ])
+    ]));
   }
 }
 
