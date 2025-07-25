@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
+import 'package:fpl/leaguepage/chatWidget.dart';
 import 'package:fpl/leaguepage/differential.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/utils.dart';
@@ -11,6 +12,8 @@ import 'package:fpl/leaguepage/performancemetrics.dart';
 import 'package:fpl/leaguepage/leagueName.dart';
 import 'package:fpl/types.dart';
 import 'dart:convert';
+
+import 'package:material_color_utilities/material_color_utilities.dart';
 
 class LeagueView extends ConsumerStatefulWidget {
   LeagueView({
@@ -351,42 +354,83 @@ class LeagueStats extends StatelessWidget {
 
   LeagueStats({super.key, required this.data, this.hydrate = true});
 
+  Widget slides() {
+    return const Card(
+        child: CarouselView(itemExtent: 4, children: [
+      Text("Copy"),
+      Text("Copy"),
+      Text("Copy"),
+      Text("Copy")
+    ]));
+  }
+
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.orientationOf(context);
+    Size size = MediaQuery.sizeOf(context);
+
+    double chatBoxWidth = size.width * 0.3;
+    double chatBoxHeight = size.height * 0.5;
+
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Container(
-        color: MaterialTheme.darkMediumContrastScheme().onSurface,
-        child: SizedBox(
+          color: MaterialTheme.darkMediumContrastScheme().onSurface,
+          child: SizedBox(
             child: Column(children: [
-          leagueName(
-            data: data,
-            hydrate: hydrate,
-          ),
-          const CustomDivider(),
-          const Text("League Stats"),
-          PerformanceMetrics(data: data),
-          const Text("Captain Stats"),
-          CaptainMetrics(data: data),
-          const CustomDivider(),
-          BenchMetrics(data: data),
-          SizedBox(width: 300, child: Differentials(data: data)),
-          const CustomDivider(),
-          TransferMetrics(data: data, hydrate: hydrate),
-          if (data == null) //ToDo Add timeout here or just validate from entry?
-            Center(
-                child: Container(
-                    // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                    color: Colors.white,
+              leagueName(
+                data: data,
+                hydrate: hydrate,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+                SizedBox(
+                    width: size.width * 0.6,
                     child: Column(children: [
-                      const Text("Input is invalid",
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w200,
-                              color: Colors.red)),
-                      LandingPage(),
-                    ])))
-        ])),
-      )
+                      const CustomDivider(),
+                      const Text("League Stats"),
+                      PerformanceMetrics(data: data),
+                      const Text("Captain Stats"),
+                      CaptainMetrics(data: data),
+                      const CustomDivider(),
+                      BenchMetrics(data: data),
+                      SizedBox(width: 300, child: Differentials(data: data)),
+                      const CustomDivider(),
+                      TransferMetrics(data: data, hydrate: hydrate),
+                      if (data ==
+                          null) //ToDo Add timeout here or just validate from entry?
+                        Center(
+                            child: Container(
+                                // color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                                color: Colors.white,
+                                child: Column(children: [
+                                  const Text("Input is invalid",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w200,
+                                          color: Colors.red)),
+                                  LandingPage(),
+                                ])))
+                    ])),
+                SizedBox(
+                    width: chatBoxWidth,
+                    height: chatBoxHeight,
+                    child: Card(
+                        elevation: 8,
+                        color: MaterialTheme.darkMediumContrastScheme()
+                            .primaryContainer,
+                        shadowColor: Colors.brown.withOpacity(0.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          side: BorderSide(
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary,
+                            width: 2,
+                          ),
+                        ),
+                        child:
+                            SizedBox(child: Chat(chatBoxWidth: chatBoxWidth))))
+              ]),
+            ]),
+          ))
     ]);
   }
 }
