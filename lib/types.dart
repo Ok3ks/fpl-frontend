@@ -207,8 +207,6 @@ class Participant {
     }
   }
 
-//TODO: Add LogOut
-
 //TODO: Provider which supplies most accessed element on login
 }
 
@@ -216,4 +214,17 @@ class ParticipantHistory {
   List<Map<String, dynamic>>? current;
   List<Map<String, dynamic>>? past;
   List<Map<String, dynamic>>? chips;
+}
+
+class Message {
+  String id;
+  Participant? from;
+  String timestamp;
+  String text;
+
+  Message(
+      {required this.id,
+      required this.from,
+      required this.timestamp,
+      required this.text});
 }
