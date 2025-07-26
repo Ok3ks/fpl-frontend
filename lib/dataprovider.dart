@@ -18,27 +18,8 @@ Future<void> addLeagueGlobal(
 
   DocumentReference temp = LeagueDbRef.doc(leagueId.toString());
   temp.set({gameweek.toString(): result}, SetOptions(merge: true));
-}
 
-Future<void> addMessage(
-    double leagueId, double gameweek, Message message) async {
-  """Add Messages to respective leagues""";
-
-  //Save to global league firestore collection
-  DocumentReference messageRef = FirebaseFirestore.instance
-      .collection("leagues/")
-      .doc(leagueId.toString())
-      .collection("messages")
-      .doc(gameweek.toString());
-
-  messageRef.set({
-    message.id: Map.from({
-      "id": message.id,
-      "from": message.from?.email,
-      "timestamp": message.timestamp,
-      "text": message.text
-    })
-  }, SetOptions(merge: true));
+  print("added to global league successfully");
 }
 
 Future<Object?> getLeagueGlobal(double? leagueId) async {
