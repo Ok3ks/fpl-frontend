@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
@@ -25,14 +26,17 @@ class ChatState extends ConsumerState<Chat> {
     final leagueId = ref.watch(leagueProvider)?.leagueId;
     final gameweek = ref.watch(gameweekProvider);
     final currentUser = ref.watch(currentUserProvider);
+    final Stream<DocumentSnapshot> messageStream = LeagueDbRef
+        .doc(leagueId.toString())
+        .collection("messages")
+        .doc(gameweek.toString()).snapshots();
 
     if (leagueId != null) {
       return Column(children: [
-        FutureBuilder(
-            future: pullStats(leagueId, gameweek),
-            builder: (context, snapshot) {
-              var obj = snapshot.data;
-              print(snapshot.connectionState);
+        StreamBuilder(
+            stream: messageStream,
+            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+              var obj = snapshot.data?.data()! as Map<String, dynamic>;
               if (snapshot.hasData) {
                 return chatWidget(
                     data: obj,
@@ -77,31 +81,34 @@ class chatWidget extends StatelessWidget {
       required this.user});
 
   TextEditingController chatController = TextEditingController();
+  ScrollController scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
-    int msgLength = data?['msgLength'] ?? 1;
-    return Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-      Column(
-          children: List.generate(msgLength, (int index) {
-        return SizedBox(
-            width: width,
-            child: Card(
-                margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
-                elevation: 8,
-                color: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2),
-                ),
-                child: const Text(" " + "Temp",
-                    textDirection: TextDirection.rtl,
-                    softWrap: true,
-                    style: TextStyle(
-                      color: Colors.black26,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 15,
-                    ))));
-      })),
+    int msgLength = data?.length ?? 1;
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          SingleChildScrollView(
+            child: Column(
+                children: List.generate(msgLength, (int index) {
+              return SizedBox(
+                  width: width,
+                  child: Card(
+                      margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
+                      elevation: 8,
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: Text(" " + data?.values.elementAt(index)['text'],
+                          textDirection: TextDirection.rtl,
+                          softWrap: true,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 11,
+                          ))));
+            }))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -111,7 +118,7 @@ class chatWidget extends StatelessWidget {
                 style: const TextStyle(fontSize: 9, color: Colors.white),
                 cursorColor: MaterialTheme.darkMediumContrastScheme().primary,
                 controller: chatController,
-                // textInputAction: TextInputAction.done,
+                textInputAction: TextInputAction.newline,
                 decoration: InputDecoration(
                     hintText: 'Send a message',
                     hintStyle: const TextStyle(
@@ -143,8 +150,6 @@ class chatWidget extends StatelessWidget {
               )),
           IconButton(
               onPressed: (
-                  //TODO: Send to chat History
-                  //TODO: Sync to FireStore
                   ) async {
                 Message message = Message(
                     id: const Uuid().v4obj().toString(),
@@ -152,7 +157,7 @@ class chatWidget extends StatelessWidget {
                     timestamp: DateTime.now().toString(),
                     text: chatController.text);
                 await addMessage(leagueId, gameweek, message);
-                chatController.text = "";
+                chatController.clear();
               },
               icon: Icon(Icons.send,
                   color: MaterialTheme.darkMediumContrastScheme().primary))

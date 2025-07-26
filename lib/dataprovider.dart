@@ -7,14 +7,13 @@ import "package:fpl/types.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
+CollectionReference LeagueDbRef = FirebaseFirestore.instance.collection("leagues/");
 
 Future<void> addLeagueGlobal(
     double leagueId, double gameweek, Map<String, dynamic>? result) async {
   """Adds to Global League FireStore for other users""";
 
   //Save to global league firestore collection
-  CollectionReference LeagueDbRef =
-      FirebaseFirestore.instance.collection("leagues/");
 
   DocumentReference temp = LeagueDbRef.doc(leagueId.toString());
   temp.set({gameweek.toString(): result}, SetOptions(merge: true));
@@ -25,8 +24,7 @@ Future<void> addMessage(
   """Add Messages to respective leagues""";
 
   //Save to global league firestore collection
-  DocumentReference messageRef = FirebaseFirestore.instance
-      .collection("leagues/")
+  DocumentReference messageRef = LeagueDbRef
       .doc(leagueId.toString())
       .collection("messages")
       .doc(gameweek.toString());
