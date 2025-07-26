@@ -64,29 +64,80 @@ class chatWidget extends StatelessWidget {
       this.hydrate = true,
       required this.width});
 
+  TextEditingController chatController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    int msgLength = data?['msgLength'] ?? 2;
+    int msgLength = data?['msgLength'] ?? 1;
     return Column(
-        children: List.generate(msgLength, (int index) {
-      return SizedBox(
-          width: width,
-          child: Card(
-              margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
-              elevation: 8,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2),
-              ),
-              child: const Text(" " + "Temp",
-                  // textAlign: TextAlign.end,
-                  textDirection: TextDirection.rtl,
-                  softWrap: true,
-                  style: TextStyle(
-                    color: Colors.black26,
-                    fontStyle: FontStyle.italic,
-                    fontSize: 15,
-                  ))));
-    }));
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+              children: List.generate(msgLength, (int index) {
+            return SizedBox(
+                width: width,
+                child: Card(
+                    margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
+                    elevation: 8,
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                    child: const Text(" " + "Temp",
+                        textDirection: TextDirection.rtl,
+                        softWrap: true,
+                        style: TextStyle(
+                          color: Colors.black26,
+                          fontStyle: FontStyle.italic,
+                          fontSize: 15,
+                        ))));
+          })),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  SizedBox(
+                  width: width - 60,
+                  child: TextField(
+                    style: const TextStyle(fontSize: 9, color: Colors.white),
+                    cursorColor: MaterialTheme.darkMediumContrastScheme().primary,
+                    controller: chatController,
+                    // textInputAction: TextInputAction.done,
+                    decoration: InputDecoration(
+                        hintText: 'Send a message',
+                        hintStyle: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w100,
+                            fontStyle: FontStyle.italic),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        disabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: MaterialTheme.darkMediumContrastScheme()
+                                    .primaryContainer)),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                        fillColor: Colors.white,
+                        iconColor: Colors.white),
+                    cursorHeight: 20,
+                    autocorrect: false,
+                  )),
+                  IconButton(
+                      onPressed: (
+                          //TODO: Send to chat History
+                          //TODO: Sync to FireStore
+                          ) async {},
+                      icon: Icon(Icons.send,
+                          color: MaterialTheme.darkMediumContrastScheme().primary))
+                  ],)]);
   }
 }
