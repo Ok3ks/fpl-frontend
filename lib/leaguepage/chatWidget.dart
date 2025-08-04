@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
+import 'package:gap/gap.dart';
 import 'package:uuid/uuid.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/types.dart';
@@ -81,16 +82,24 @@ class chatWidget extends StatelessWidget {
       required this.user});
 
   TextEditingController chatController = TextEditingController();
-  ScrollController scrollController = ScrollController();
+  ScrollController chatScroll = ScrollController();
+
 
   @override
   Widget build(BuildContext context) {
     int msgLength = data?.length ?? 1;
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+          const Gap(5),
+          Text("Banter Zone", style: TextStyle(color: MaterialTheme.darkMediumContrastScheme().primary)), //TODO: Design Text
+      const Gap(5),
+      SizedBox(
+        height: 300,
+        child:
           SingleChildScrollView(
-            child: Column(
+            controller: chatScroll,
+            child:
+            Column(
                 children: List.generate(msgLength, (int index) {
               return SizedBox(
                   width: width,
@@ -108,7 +117,7 @@ class chatWidget extends StatelessWidget {
                             color: Colors.black,
                             fontSize: 11,
                           ))));
-            }))),
+            })))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
