@@ -37,8 +37,10 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     final double height = size.height;
 
     final currParticipant = ref.watch(currentUserProvider);
+    ScrollController homePageScroll = ScrollController();
 
     return SingleChildScrollView(
+        controller: homePageScroll,
         child: Column(children: [
       Stack(alignment: AlignmentDirectional.center, children: [
         Image.asset(
@@ -370,7 +372,7 @@ class LeagueStats extends StatelessWidget {
     Size size = MediaQuery.sizeOf(context);
 
     double chatBoxWidth = size.width * 0.3;
-    double chatBoxHeight = size.height * 0.5;
+
 
     return Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
       Container(
@@ -409,10 +411,9 @@ class LeagueStats extends StatelessWidget {
                                           color: Colors.red)),
                                   LandingPage(),
                                 ])))
-                    ])),
-                SizedBox(
+                    ])), SizedBox(
                     width: chatBoxWidth,
-                    height: chatBoxHeight,
+                    // height: chatBoxHeight,
                     child: Card(
                         elevation: 8,
                         color: MaterialTheme.darkMediumContrastScheme()
@@ -428,7 +429,7 @@ class LeagueStats extends StatelessWidget {
                         ),
                         child:
                             SizedBox(child: Chat(chatBoxWidth: chatBoxWidth))))
-              ]),
+                ]),
             ]),
           ))
     ]);

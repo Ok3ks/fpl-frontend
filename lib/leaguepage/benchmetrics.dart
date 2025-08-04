@@ -27,6 +27,12 @@ class BenchMetricsState extends State<BenchMetrics> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const Text("Bench Points",
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  decoration: TextDecoration.none,
+                )),
             Scrollbar(
                 thickness: 2,
                 trackVisibility: true,
@@ -36,12 +42,6 @@ class BenchMetricsState extends State<BenchMetrics> {
                     scrollDirection: Axis.horizontal,
                     child: Column(
                       children: [
-                        const Text("Bench Points",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              decoration: TextDecoration.none,
-                            )),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [

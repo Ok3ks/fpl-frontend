@@ -75,16 +75,16 @@ class Home extends ConsumerWidget {
               bottom: const TabBar(
                 indicatorColor: Colors.blue,
                 tabs: [
-                  Tab(text: "Participant", icon: Icon(Icons.person)),
-                  Tab(text: "League", icon: Icon(Icons.leaderboard)),
+                  Tab(text: "League", icon: Icon(Icons.person)),
+                  Tab(text: "Participant", icon: Icon(Icons.leaderboard)),
                 ],
               ),
               // title: const Text('Tabs Demo'),
             ),
             body: TabBarView(
               children: [
-                const ProviderScope(child: ParticipantView()),
                 ProviderScope(child: LeagueView()),
+                const ProviderScope(child: ParticipantView()),
               ],
             ),
           ),
