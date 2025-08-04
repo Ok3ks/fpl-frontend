@@ -156,87 +156,164 @@ class TransferTile extends ConsumerWidget {
     List<Object?> playerInIds = data[index]['playerIn'] ?? [];
     List<Object?> playerOutIds = data[index]['playerOut'] ?? [];
 
-    return SizedBox(
+    Size size = MediaQuery
+        .of(context)
+        .size;
+
+    if (size.width < 600) {
+      return SizedBox(
         // width: 600,
-        child: Card(
-            shape: RoundedRectangleBorder(
-                side: BorderSide(
-                    width: 1.5,
-                    color: MaterialTheme.darkMediumContrastScheme().primary),
-                borderRadius: BorderRadius.circular(8)),
-            color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
-            child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                          child: TextButton(
-                        child: Text("${data[index]['teamName']}",
-                            style: TextStyle(
-                              color: MaterialTheme.darkMediumContrastScheme()
-                                  .primary,
-                              fontSize: 10,
-                            )),
-                        onPressed: () {
-                          html.window.location.assign(
-                              "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
-                        },
-                      )),
-                      if (playerOutIds.isNotEmpty)
-                        Column(
-                            children: List.generate(playerOutIds.length, (i) {
-                          return playerName(
-                            playerId:
-                                int.parse(playerOutIds[i].toString() ?? "0"),
-                            vertical: false,
-                          );
-                        })),
-                      const SizedBox(
-                          width: 100,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(
-                                Icons.arrow_circle_right_sharp,
-                                color: Colors.red,
-                              ),
-                              Icon(
-                                Icons.arrow_circle_left_sharp,
-                                color: Colors.green,
-                              )
-                            ],
-                          )),
-                      if (playerInIds.isNotEmpty)
-                        Column(
-                            children: List.generate(playerInIds.length, (i) {
-                          return playerName(
-                            playerId:
-                                int.parse(playerInIds[i].toString() ?? "0"),
-                            vertical: false,
-                          );
-                        })),
-                      SizedBox(
-                          child: Center(
-                              child: Column(children: [
-                        Text(
-                          "${data[index]['pointsDelta']}pts",
-                          style: TextStyle(
-                              color: data[index]['pointsDelta'] > 0
-                                  ? Colors.green
-                                  : Colors.red,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        if (data[index]['pointHit'] > 0)
-                          Text(
-                            "( - ${data[index]['pointHit'] ?? 0}pts )",
-                            style: const TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w200,
-                                fontSize: 10),
-                          ),
-                      ])))
-                    ]))));
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme
+                          .darkMediumContrastScheme()
+                          .primary),
+                  borderRadius: BorderRadius.circular(8)),
+              color: MaterialTheme
+                  .darkMediumContrastScheme()
+                  .primaryContainer,
+              child: SingleChildScrollView(
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                                child: Center(
+                                    child: Row(children: [
+                                      Text(
+                                        "${data[index]['pointsDelta']}pts",
+                                        style: TextStyle(
+                                            color: data[index]['pointsDelta'] >
+                                                0
+                                                ? Colors.green
+                                                : Colors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      if (data[index]['pointHit'] > 0)
+                                        Text(
+                                          "( - ${data[index]['pointHit'] ??
+                                              0}pts )",
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.w200,
+                                              fontSize: 10),
+                                        ),
+                                    ]))),
+                            SizedBox(
+                                child: TextButton(
+                                  child: Text("${data[index]['teamName']}",
+                                      style: TextStyle(
+                                        color: MaterialTheme
+                                            .darkMediumContrastScheme()
+                                            .primary,
+                                        fontSize: 10,
+                                      )),
+                                  onPressed: () {
+                                    html.window.location.assign(
+                                        "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                                  },
+                                )),
+                          ])))));
+    }
+    else {
+      return SizedBox(
+        // width: 600,
+          child: Card(
+              shape: RoundedRectangleBorder(
+                  side: BorderSide(
+                      width: 1.5,
+                      color: MaterialTheme
+                          .darkMediumContrastScheme()
+                          .primary),
+                  borderRadius: BorderRadius.circular(8)),
+              color: MaterialTheme
+                  .darkMediumContrastScheme()
+                  .primaryContainer,
+              child: SingleChildScrollView(
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            SizedBox(
+                                child: Center(
+                                    child: Column(children: [
+                                      Text(
+                                        "${data[index]['pointsDelta']}pts",
+                                        style: TextStyle(
+                                            color: data[index]['pointsDelta'] >
+                                                0
+                                                ? Colors.green
+                                                : Colors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      if (data[index]['pointHit'] > 0)
+                                        Text(
+                                          "( - ${data[index]['pointHit'] ??
+                                              0}pts )",
+                                          style: const TextStyle(
+                                              color: Colors.grey,
+                                              fontWeight: FontWeight.w200,
+                                              fontSize: 10),
+                                        ),
+                                    ]))),
+                            SizedBox(
+                                child: TextButton(
+                                  child: Text("${data[index]['teamName']}",
+                                      style: TextStyle(
+                                        color: MaterialTheme
+                                            .darkMediumContrastScheme()
+                                            .primary,
+                                        fontSize: 10,
+                                      )),
+                                  onPressed: () {
+                                    html.window.location.assign(
+                                        "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                                  },
+                                )),
+                            if (playerOutIds.isNotEmpty)
+                              Column(
+                                  children: List.generate(
+                                      playerOutIds.length, (i) {
+                                    return playerName(
+                                      playerId:
+                                      int.parse(
+                                          playerOutIds[i].toString() ?? "0"),
+                                      vertical: false,
+                                    );
+                                  })),
+                            const SizedBox(
+                                width: 60,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceBetween,
+                                  children: [
+                                    Icon(
+                                      Icons.arrow_circle_right_sharp,
+                                      color: Colors.red,
+                                    ),
+                                    Icon(
+                                      Icons.arrow_circle_left_sharp,
+                                      color: Colors.green,
+                                    )
+                                  ],
+                                )),
+                            if (playerInIds.isNotEmpty)
+                              Column(
+                                  children: List.generate(
+                                      playerInIds.length, (i) {
+                                    return playerName(
+                                      playerId:
+                                      int.parse(
+                                          playerInIds[i].toString() ?? "0"),
+                                      vertical: false,
+                                    );
+                                  })),
+                          ])))));
+    }
   }
 }
 
@@ -250,11 +327,9 @@ class TransferOut extends StatelessWidget {
   Widget build(BuildContext context) {
     //TODO: Find an elegant way
     List<dynamic> playerOutIds = data ?? [];
-    print("---transfer out");
-    print(playerOutIds);
 
     return SizedBox(
-        width: 200,
+        // width: 200,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(
@@ -302,7 +377,7 @@ class TransferIn extends StatelessWidget {
     List<dynamic> playerInIds = data ?? [];
 
     return SizedBox(
-        width: 200,
+        // width: 200,
         child: Card(
             shape: RoundedRectangleBorder(
                 side: BorderSide(

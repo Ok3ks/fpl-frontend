@@ -72,9 +72,6 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
   Map<String, dynamic> leagueRefResults =
       await getLeagueGlobal(leagueId) as Map<String, dynamic>;
   dynamic results = leagueRefResults[gameweek.toString()];
-  print('response');
-  print(results);
-
   if (results == null) {
     try {
       QueryResult results = await client.value.query(QueryOptions(
