@@ -95,7 +95,10 @@ class chatWidget extends StatelessWidget {
       const Gap(5),
       SizedBox(
         height: 300,
-        child:
+        child: Scrollbar(
+            trackVisibility: true,
+            thickness: 4,
+            child:
           SingleChildScrollView(
             controller: chatScroll,
             child:
@@ -117,7 +120,7 @@ class chatWidget extends StatelessWidget {
                             color: Colors.black,
                             fontSize: 11,
                           ))));
-            })))),
+            }))))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
