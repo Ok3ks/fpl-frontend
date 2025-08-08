@@ -389,15 +389,20 @@ class LeagueStats extends StatelessWidget {
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 SizedBox(
                     width: size.width * 0.7,
-                    child: Card(
-                        // margin: EdgeInsetsGeometry.all(50),
-                        color:
-                            MaterialTheme.darkMediumContrastScheme().onSurface,
-                        shape: RoundedRectangleBorder(
-                            side: BorderSide(
-                                width: 1.5,
+                    child: Container(
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Colors.grey.shade300,
+                                Colors.grey.shade100
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            border: Border.all(
                                 color: MaterialTheme.darkMediumContrastScheme()
-                                    .primary),
+                                    .primaryContainer,
+                                width: 1),
                             borderRadius: BorderRadius.circular(8)),
                         child: Card(
                             // margin: EdgeInsetsGeometry.all(50),
@@ -408,7 +413,7 @@ class LeagueStats extends StatelessWidget {
                                     width: 1.5,
                                     color:
                                         MaterialTheme.darkMediumContrastScheme()
-                                            .primaryContainer),
+                                            .primary),
                                 borderRadius: BorderRadius.circular(8)),
                             child: Column(children: [
                               PerformanceMetrics(data: data),
