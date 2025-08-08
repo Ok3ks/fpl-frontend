@@ -421,6 +421,7 @@ class LeagueStats extends StatelessWidget {
                               CaptainMetrics(data: data),
                               const CustomDivider(),
                               BenchMetrics(data: data),
+                              const CustomDivider(),
                               SizedBox(
                                   width: 300, child: Differentials(data: data)),
                               const CustomDivider(),
