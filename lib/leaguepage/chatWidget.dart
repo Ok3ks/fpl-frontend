@@ -27,16 +27,18 @@ class ChatState extends ConsumerState<Chat> {
     final leagueId = ref.watch(leagueProvider)?.leagueId;
     final gameweek = ref.watch(gameweekProvider);
     final currentUser = ref.watch(currentUserProvider);
-    final Stream<DocumentSnapshot> messageStream = LeagueDbRef
-        .doc(leagueId.toString())
-        .collection("messages")
-        .doc(gameweek.toString()).snapshots();
+    final Stream<DocumentSnapshot> messageStream =
+        LeagueDbRef.doc(leagueId.toString())
+            .collection("messages")
+            .doc(gameweek.toString())
+            .snapshots();
 
     if (leagueId != null) {
       return Column(children: [
         StreamBuilder(
             stream: messageStream,
-            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
               var obj = snapshot.data?.data()! as Map<String, dynamic>;
               if (snapshot.hasData) {
                 return chatWidget(
@@ -84,43 +86,44 @@ class chatWidget extends StatelessWidget {
   TextEditingController chatController = TextEditingController();
   ScrollController chatScroll = ScrollController();
 
-
   @override
   Widget build(BuildContext context) {
     int msgLength = data?.length ?? 1;
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          const Gap(5),
-          Text("Banter Zone", style: TextStyle(color: MaterialTheme.darkMediumContrastScheme().primary)), //TODO: Design Text
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      const Gap(5),
+      Text("Banter Zone",
+          style: TextStyle(
+              color: MaterialTheme.darkMediumContrastScheme()
+                  .primary)), //TODO: Design Text
       const Gap(5),
       SizedBox(
-        height: 300,
-        child: Scrollbar(
-            trackVisibility: true,
-            thickness: 4,
-            child:
-          SingleChildScrollView(
-            controller: chatScroll,
-            child:
-            Column(
-                children: List.generate(msgLength, (int index) {
-              return SizedBox(
-                  width: width,
-                  child: Card(
-                      margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
-                      elevation: 8,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: Text(" " + data?.values.elementAt(index)['text'],
-                          textDirection: TextDirection.rtl,
-                          softWrap: true,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 11,
-                          ))));
-            }))))),
+          height: 300,
+          child: Scrollbar(
+              trackVisibility: true,
+              thickness: 4,
+              child: SingleChildScrollView(
+                  controller: chatScroll,
+                  child: Column(
+                      children: List.generate(msgLength, (int index) {
+                    return SizedBox(
+                        width: width,
+                        child: Card(
+                            margin:
+                                const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
+                            elevation: 8,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: Text(
+                                " " + data?.values.elementAt(index)['text'],
+                                textDirection: TextDirection.rtl,
+                                softWrap: true,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 11,
+                                ))));
+                  }))))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -161,8 +164,7 @@ class chatWidget extends StatelessWidget {
                 autocorrect: false,
               )),
           IconButton(
-              onPressed: (
-                  ) async {
+              onPressed: () async {
                 Message message = Message(
                     id: const Uuid().v4obj().toString(),
                     from: user,
