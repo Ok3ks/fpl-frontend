@@ -55,10 +55,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                 // width: 1474,
                 // height: 500,
                 // child: Card(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                  LeagueList(width: width / 5),
+                child:
                   Column(children: [
                     // const SizedBox(height: 20),
                     // if ( width > 300)
@@ -147,17 +144,15 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                     ]),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      // crossAxisAlignment: CrossAxisAlignment.cen,
                       children: [
                         if (widget.userLeague != null) const leagueIDWidget(),
                         if (width > 300) const GameweekWidget(),
                       ],
                     ),
-                    const expandedGameweekWidget()
+                    const expandedGameweekWidget(),
+                    LeagueList(width: width / 5),
                   ]),
-                  const MaxGap(80)
-                  // )
-                ])),
+                 ),
           ]),
           const LeagueStatsView()
         ]));
