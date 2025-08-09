@@ -31,7 +31,8 @@ class LeagueListState extends ConsumerState<LeagueList> {
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
             List<League>? leagues = snapshot.data;
-            return Column(
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.start,
                 children: List.generate(leagues?.length ?? 1, (index) {
               return SizedBox(
                   width: widget.width,
