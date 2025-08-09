@@ -7,7 +7,8 @@ import "package:fpl/types.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
-CollectionReference LeagueDbRef = FirebaseFirestore.instance.collection("leagues/");
+CollectionReference LeagueDbRef =
+    FirebaseFirestore.instance.collection("leagues/");
 
 Future<void> addLeagueGlobal(
     double leagueId, double gameweek, Map<String, dynamic>? result) async {
@@ -24,8 +25,7 @@ Future<void> addMessage(
   """Add Messages to respective leagues""";
 
   //Save to global league firestore collection
-  DocumentReference messageRef = LeagueDbRef
-      .doc(leagueId.toString())
+  DocumentReference messageRef = LeagueDbRef.doc(leagueId.toString())
       .collection("messages")
       .doc(gameweek.toString());
 
@@ -187,12 +187,12 @@ var currentUserProvider = StateProvider<Participant?>((ref) {
   final userData = local.read('participant');
   if (userData != null) {
     Participant currentParticipant = Participant(
-      email: userData['email'],
-      favoriteTeam: userData['favoriteTeam'],
-      participantId: userData['participantId'],
-      yearsPlayingFpl: userData['yearsPlayingFpl'],
-      username: userData['username'],
-    );
+        email: userData['email'],
+        favoriteTeam: userData['favoriteTeam'],
+        participantId: userData['participantId'],
+        yearsPlayingFpl: userData['yearsPlayingFpl'],
+        username: userData['username'],
+        leagues: userData['leagues']);
     return currentParticipant;
   }
   return null;

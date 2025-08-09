@@ -22,6 +22,7 @@ class Participant {
   String? password;
   String? error;
   Map<String, dynamic>? history;
+  List<String>? leagues;
 
   Participant({
     required this.email,
@@ -32,6 +33,7 @@ class Participant {
     this.location,
     this.password,
     this.history,
+    this.leagues,
   });
 
   Future<UserCredential?> registerUser() async {
@@ -66,6 +68,7 @@ class Participant {
         "yearsPlayingFpl": yearsPlayingFpl,
         "location": location,
         "favoriteTeam": favoriteTeam,
+        "leagues": leagues?.join('')
         // "username":username,
       });
       if (firebaseUser.user != null) {

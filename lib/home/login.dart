@@ -206,7 +206,7 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Login'),
+          title: const Text('Fpl Wrapped'),
         ),
         body: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
           SizedBox(
