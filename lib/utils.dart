@@ -304,19 +304,23 @@ class playerName extends ConsumerWidget {
   }
 }
 
-String parseLeagueCodeFromUrl(String url) {
-  try {
-    final uri = Uri.parse(url); // Parse the URL to handle it more reliably
-    final RegExp regExp = RegExp(r'leagues/(\d+)/standings');
-    final match = regExp.firstMatch(uri.path);
+String parseLeagueCodeFromUrl(String url, bool reverse) {
+  if (reverse) {
+    return "https://fantasy.premierleague.com/leagues/$url/standings/c";
+  } else {
+    try {
+      final uri = Uri.parse(url); // Parse the URL to handle it more reliably
+      final RegExp regExp = RegExp(r'leagues/(\d+)/standings');
+      final match = regExp.firstMatch(uri.path);
 
-    if (match != null && match.groupCount >= 1) {
-      return match.group(1) ?? '0'; // group(1) will contain the league code
+      if (match != null && match.groupCount >= 1) {
+        return match.group(1) ?? '0'; // group(1) will contain the league code
+      }
+      return '0'; // Return null if no league code is found
+    } on FormatException {
+      // Handle invalid URL
+      return '0';
     }
-    return '0'; // Return null if no league code is found
-  } on FormatException {
-    // Handle invalid URL
-    return '0';
   }
 }
 

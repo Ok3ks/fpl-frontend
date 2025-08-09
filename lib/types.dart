@@ -66,7 +66,7 @@ class Participant {
         "yearsPlayingFpl": yearsPlayingFpl,
         "location": location,
         "favoriteTeam": favoriteTeam,
-        // "username":username,
+        "username": username,
       });
       if (firebaseUser.user != null) {
         await firebaseUser.user?.sendEmailVerification();
@@ -193,6 +193,7 @@ class Participant {
       app: app,
     );
     auth.setPersistence(Persistence.LOCAL);
+
     //Save to users firestore collection
     if (participantId != null) {
       CollectionReference userLeagueDbRef =
@@ -202,8 +203,10 @@ class Participant {
       CollectionReference leagues = temp.collection("leagues");
 
       temp = leagues.doc(userLeague.leagueId.toString());
-      temp.set({"id": userLeague.leagueId},
-          SetOptions(merge: true)); // SetOptions caters to updates
+      temp.set({
+        "id": userLeague.leagueId.toString(),
+        "name": userLeague.name.toString()
+      }, SetOptions(merge: true)); // SetOptions caters to updates
     }
   }
 
