@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/themes.dart';
 
 import '../types.dart';
+
 class LeagueList extends ConsumerStatefulWidget {
   double width;
   LeagueList({
@@ -18,7 +19,7 @@ class LeagueList extends ConsumerStatefulWidget {
 }
 
 class LeagueListState extends ConsumerState<LeagueList> {
-  LeagueListState({required });
+  LeagueListState({required});
 
   @override
   Widget build(BuildContext context) {
@@ -46,15 +47,14 @@ class LeagueListState extends ConsumerState<LeagueList> {
                           ref.read(leagueProvider.notifier).state =
                               leagues?[index];
 
-                        //   setState(() {
-                        //     widget.userLeague = League(
-                        //         leagueId: double.tryParse(
-                        //             parseLeagueCodeFromUrl(
-                        //                 leagueIdController.text, false)));
-                        //     // parseLeagueCodeFromUrl(leagueIdController.text);
-                        //   });
+                          //   setState(() {
+                          //     widget.userLeague = League(
+                          //         leagueId: double.tryParse(
+                          //             parseLeagueCodeFromUrl(
+                          //                 leagueIdController.text, false)));
+                          //     // parseLeagueCodeFromUrl(leagueIdController.text);
+                          //   });
                         },
-
                         child: Text(leagues?[index].name ?? "No name",
                             textDirection: TextDirection.rtl,
                             softWrap: true,

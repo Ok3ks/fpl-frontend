@@ -70,9 +70,9 @@ Future<List<League>> getParticipantLeagues(String? participantId) async {
     final snapshot = await LeagueDbRef.doc(temp['id']).get();
     final leagueDetails = snapshot.data() as Map<String, dynamic>;
 
-    final leagueName = leagueDetails.values.first['leagueWeeklyReport']['leagueName'];
+    final leagueName =
+        leagueDetails.values.first['leagueWeeklyReport']['leagueName'];
     temp2.add(League(leagueId: double.tryParse(temp['id']), name: leagueName));
-
   }
   return temp2;
 }
