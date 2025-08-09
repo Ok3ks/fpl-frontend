@@ -10,6 +10,8 @@ import 'package:fpl/leaguepage/captainmetrics.dart';
 import 'package:fpl/leaguepage/transfermetrics.dart';
 import 'package:fpl/leaguepage/performancemetrics.dart';
 import 'package:fpl/leaguepage/leagueName.dart';
+import 'package:fpl/leaguepage/leagueList.dart';
+
 import 'package:fpl/types.dart';
 import 'dart:convert';
 
@@ -58,6 +60,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
               // LandingPageTitle(),
               const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                LeagueList(width: width / 4),
                 if (width > 300)
                   SizedBox(
                       width: 200,
@@ -115,31 +118,26 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                 // ),
                 if (width > 300)
                   IconButton(
-                    icon: Icon(Icons.keyboard_return,
-                        color:
-                            MaterialTheme.darkMediumContrastScheme().primary),
-                    onPressed: () async {
-                      if (leagueIdController.text.length > 1 &&
-                          parseLeagueCodeFromUrl(leagueIdController.text) !=
-                              '0') {
-                        setState(() {
-                          widget.userLeague = League(
-                              leagueId: double.tryParse(parseLeagueCodeFromUrl(
-                                  leagueIdController.text)));
-                          // parseLeagueCodeFromUrl(leagueIdController.text);
-                        });
-                      }
+                      icon: Icon(Icons.keyboard_return,
+                          color:
+                              MaterialTheme.darkMediumContrastScheme().primary),
+                      onPressed: () async {
+                        if (leagueIdController.text.length > 1 &&
+                            parseLeagueCodeFromUrl(
+                                    leagueIdController.text, false) !=
+                                '0') {
+                          setState(() {
+                            widget.userLeague = League(
+                                leagueId: double.tryParse(
+                                    parseLeagueCodeFromUrl(
+                                        leagueIdController.text, false)));
+                            // parseLeagueCodeFromUrl(leagueIdController.text);
+                          });
+                        }
 
-                      ref.read(leagueProvider.notifier).state =
-                          widget.userLeague;
-                      final leagueId = ref.watch(leagueProvider);
-                      if (leagueId != 0 &&
-                          leagueId != null &&
-                          currParticipant != null) {
-                        await currParticipant.addLeague(leagueId);
-                      }
-                    },
-                  )
+                        ref.read(leagueProvider.notifier).state =
+                            widget.userLeague;
+                      }),
               ]),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -175,18 +173,23 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
 
   @override
   Widget build(BuildContext context) {
-    final leagueId = ref.watch(leagueProvider)?.leagueId;
+    final league = ref.watch(leagueProvider);
+    final currParticipant = ref.watch(currentUserProvider);
     final gameweek = ref.watch(gameweekProvider);
 
-    if (leagueId != null) {
+    if (league != null) {
       return Column(children: [
-        //TODO: Add leagueName,
         FutureBuilder(
-            future: pullStats(leagueId, gameweek),
+            future: pullStats(league.leagueId, gameweek,
+                currParticipant?.participantId ?? "0"),
             builder: (context, snapshot) {
               var obj = snapshot.data;
-              print(snapshot.connectionState);
               if (snapshot.hasData) {
+                //update provider with league name
+                ref.read(leagueProvider.notifier).state = League(
+                    leagueId: league.leagueId,
+                    name: obj?['leagueWeeklyReport']['leagueName']);
+
                 return LeagueStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LeagueStats(data: obj, hydrate: false);

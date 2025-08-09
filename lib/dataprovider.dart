@@ -7,7 +7,8 @@ import "package:fpl/types.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
 CollectionReference userDbRef = FirebaseFirestore.instance.collection("users");
-CollectionReference LeagueDbRef = FirebaseFirestore.instance.collection("leagues/");
+CollectionReference LeagueDbRef =
+    FirebaseFirestore.instance.collection("leagues/");
 
 Future<void> addLeagueGlobal(
     double leagueId, double gameweek, Map<String, dynamic>? result) async {
@@ -19,13 +20,22 @@ Future<void> addLeagueGlobal(
   temp.set({gameweek.toString(): result}, SetOptions(merge: true));
 }
 
+Future<void> addLeagueNameUser(
+    String participantId, double leagueId, String name) async {
+  """Adds to League Name""";
+
+  dynamic userLeagues =
+      await userDbRef.doc(participantId).collection('leagues');
+  userLeagues = userLeagues.doc(leagueId.toString());
+  userLeagues.add({"id": leagueId, "name": name}, SetOptions(merge: true));
+}
+
 Future<void> addMessage(
     double leagueId, double gameweek, Message message) async {
   """Add Messages to respective leagues""";
 
   //Save to global league firestore collection
-  DocumentReference messageRef = LeagueDbRef
-      .doc(leagueId.toString())
+  DocumentReference messageRef = LeagueDbRef.doc(leagueId.toString())
       .collection("messages")
       .doc(gameweek.toString());
 
@@ -49,29 +59,27 @@ Future<Object?> getLeagueGlobal(double? leagueId) async {
 }
 
 Future<List<League>> getParticipantLeagues(String? participantId) async {
-  // QuerySnapshot<Object?> currentUser = await userDbRef.where(
-  //     'email', isEqualTo: email).get();
-  // Map<String, dynamic> currentUserData = currentUser.docs[0].data() as Map<
-  //     String,
-  //     dynamic>;
-
-//set Leagues
   QuerySnapshot userLeagues =
       await userDbRef.doc(participantId).collection('leagues').get();
   List<League> temp2 = [];
+
   for (var obj in userLeagues.docs) {
     Map<String, dynamic> temp = obj.data() as Map<String, dynamic>;
-    temp2.add(League(leagueId: temp['id']));
+    for (var obj in temp.values) {
+      temp2.add(League(leagueId: obj['id'], name: obj['name']));
+    }
   }
   return temp2;
 }
 
-Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
+Future<dynamic> pullStats(
+    double? leagueId, double? gameweek, String participantId) async {
   //First check firebase store, otherwise check backend
 
   Map<String, dynamic> leagueRefResults =
       await getLeagueGlobal(leagueId) as Map<String, dynamic>;
   dynamic results = leagueRefResults[gameweek.toString()];
+
   if (results == null) {
     try {
       QueryResult results = await client.value.query(QueryOptions(
@@ -85,6 +93,10 @@ Future<dynamic> pullStats(double? leagueId, double? gameweek) async {
       if (gameweek != null && leagueId != null && results.data != null) {
         //add to global firestore cache
         await addLeagueGlobal(leagueId, gameweek, results.data);
+
+        //store name in currentUser's leagues
+        await addLeagueNameUser(participantId, leagueId,
+            results.data?['leagueWeeklyReport']['leagueName']);
       }
       return results.data;
     } catch (e) {
