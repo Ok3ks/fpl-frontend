@@ -13,6 +13,7 @@ import 'package:fpl/leaguepage/leagueName.dart';
 import 'package:fpl/leaguepage/leagueList.dart';
 
 import 'package:fpl/types.dart';
+import 'package:gap/gap.dart';
 import 'dart:convert';
 
 import 'package:material_color_utilities/material_color_utilities.dart';
@@ -54,13 +55,16 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                 // width: 1474,
                 // height: 500,
                 // child: Card(
-                child: Column(children: [
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      LeagueList(width: width / 5),
+                    Column(children: [
               // const SizedBox(height: 20),
               // if ( width > 300)
               // LandingPageTitle(),
               const SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                LeagueList(width: width / 4),
                 if (width > 300)
                   SizedBox(
                       width: 200,
@@ -148,9 +152,9 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                 ],
               ),
               const expandedGameweekWidget()
-            ])
+            ]), const MaxGap(80)
                 // )
-                ),
+            ])),
           ]),
           const LeagueStatsView()
         ]));
@@ -185,11 +189,6 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
             builder: (context, snapshot) {
               var obj = snapshot.data;
               if (snapshot.hasData) {
-                //update provider with league name
-                ref.read(leagueProvider.notifier).state = League(
-                    leagueId: league.leagueId,
-                    name: obj?['leagueWeeklyReport']['leagueName']);
-
                 return LeagueStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return LeagueStats(data: obj, hydrate: false);

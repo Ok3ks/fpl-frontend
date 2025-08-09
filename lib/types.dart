@@ -205,7 +205,6 @@ class Participant {
       temp = leagues.doc(userLeague.leagueId.toString());
       temp.set({
         "id": userLeague.leagueId.toString(),
-        "name": userLeague.name.toString()
       }, SetOptions(merge: true)); // SetOptions caters to updates
     }
   }

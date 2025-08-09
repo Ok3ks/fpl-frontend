@@ -6,13 +6,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/themes.dart';
 
 import '../types.dart';
-
-class LeagueList extends ConsumerWidget {
+class LeagueList extends ConsumerStatefulWidget {
   double width;
-  LeagueList({super.key, required this.width});
+  LeagueList({
+    super.key,
+    required this.width,
+  });
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<LeagueList> createState() => LeagueListState();
+}
+
+class LeagueListState extends ConsumerState<LeagueList> {
+  LeagueListState({required });
+
+  @override
+  Widget build(BuildContext context) {
     final currUser = ref.watch(currentUserProvider);
     final Size size = MediaQuery.sizeOf(context);
 
@@ -24,7 +33,7 @@ class LeagueList extends ConsumerWidget {
             return Column(
                 children: List.generate(leagues?.length ?? 1, (index) {
               return SizedBox(
-                  width: width,
+                  width: widget.width,
                   child: Card(
                       margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
                       elevation: 8,
@@ -36,13 +45,22 @@ class LeagueList extends ConsumerWidget {
                         onPressed: () {
                           ref.read(leagueProvider.notifier).state =
                               leagues?[index];
+
+                        //   setState(() {
+                        //     widget.userLeague = League(
+                        //         leagueId: double.tryParse(
+                        //             parseLeagueCodeFromUrl(
+                        //                 leagueIdController.text, false)));
+                        //     // parseLeagueCodeFromUrl(leagueIdController.text);
+                        //   });
                         },
+
                         child: Text(leagues?[index].name ?? "No name",
                             textDirection: TextDirection.rtl,
                             softWrap: true,
                             style: const TextStyle(
                               color: Colors.black,
-                              fontSize: 11,
+                              fontSize: 9,
                             )),
                       )));
             }));

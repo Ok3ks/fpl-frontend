@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpl/leaguepage/leagueName.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:fpl/logging.dart';
@@ -65,9 +66,13 @@ Future<List<League>> getParticipantLeagues(String? participantId) async {
 
   for (var obj in userLeagues.docs) {
     Map<String, dynamic> temp = obj.data() as Map<String, dynamic>;
-    for (var obj in temp.values) {
-      temp2.add(League(leagueId: obj['id'], name: obj['name']));
-    }
+
+    final snapshot = await LeagueDbRef.doc(temp['id']).get();
+    final leagueDetails = snapshot.data() as Map<String, dynamic>;
+
+    final leagueName = leagueDetails.values.first['leagueWeeklyReport']['leagueName'];
+    temp2.add(League(leagueId: double.tryParse(temp['id']), name: leagueName));
+
   }
   return temp2;
 }
@@ -93,10 +98,6 @@ Future<dynamic> pullStats(
       if (gameweek != null && leagueId != null && results.data != null) {
         //add to global firestore cache
         await addLeagueGlobal(leagueId, gameweek, results.data);
-
-        //store name in currentUser's leagues
-        await addLeagueNameUser(participantId, leagueId,
-            results.data?['leagueWeeklyReport']['leagueName']);
       }
       return results.data;
     } catch (e) {
