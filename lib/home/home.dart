@@ -22,72 +22,69 @@ class Home extends ConsumerWidget {
 
     if (local.read("isLoggedIn") == true) {
       return MaterialApp(
-        home: DefaultTabController(
-          initialIndex: 0,
-          length: 2,
-          child: Scaffold(
-            drawer: Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  // Drawer header with a gradient background.
-                  UserAccountsDrawerHeader(
-                    accountName: Text(
-                      user?.username ?? "",
-                      style: TextStyle(
-                        color: MaterialTheme.darkMediumContrastScheme().primary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
+          home: DefaultTabController(
+            initialIndex: 0,
+            length: 2,
+            child: Scaffold(
+              drawer: Drawer(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    // Drawer header with a gradient background.
+                    UserAccountsDrawerHeader(
+                      accountName: Text(
+                        user?.username ?? "",
+                        style: TextStyle(
+                          color: MaterialTheme.darkMediumContrastScheme().primary,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                        ),
+                      ),
+                      accountEmail: Text(
+                        user?.email ?? "",
+                        style: TextStyle(
+                          color: MaterialTheme.darkMediumContrastScheme().primary,
+                          fontSize: 14,
+                        ),
+                      ),
+                      currentAccountPicture: const CircleAvatar(
+                        backgroundImage: AssetImage("images/pexels-mike-1171084.webp"),
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            MaterialTheme.darkMediumContrastScheme().primaryContainer, //TODO: configure in Settings
+                            MaterialTheme.darkMediumContrastScheme().secondaryContainer
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
                       ),
                     ),
-                    accountEmail: Text(
-                      user?.email ?? "",
-                      style: TextStyle(
-                        color: MaterialTheme.darkMediumContrastScheme().primary,
-                        fontSize: 14,
+                    // Drawer items
+                    ListTile(
+                      leading: const Icon(Icons.settings, color: Colors.black54),
+                      title: const Text(
+                        'Settings',
+                        style: TextStyle(fontSize: 16),
                       ),
+                      dense: true,
+                      onTap: () {
+                        // TODO: Handle settings tap
+                      },
                     ),
-                    currentAccountPicture: const CircleAvatar(
-                      backgroundImage:
-                          AssetImage("images/pexels-mike-1171084.webp"),
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [
-                          MaterialTheme.darkMediumContrastScheme()
-                              .primaryContainer, //TODO: configure in Settings
-                          MaterialTheme.darkMediumContrastScheme()
-                              .secondaryContainer
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
+                    const Divider(thickness: 1),
+                    ListTile(
+                      leading: const Icon(Icons.logout, color: Colors.black54),
+                      title: const Text(
+                        'Logout',
+                        style: TextStyle(fontSize: 16),
                       ),
-                    ),
-                  ),
-                  // Drawer items
-                  ListTile(
-                    leading: const Icon(Icons.settings, color: Colors.black54),
-                    title: const Text(
-                      'Settings',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    dense: true,
-                    onTap: () {
-                      // TODO: Handle settings tap
-                    },
-                  ),
-                  const Divider(thickness: 1),
-                  ListTile(
-                    leading: const Icon(Icons.logout, color: Colors.black54),
-                    title: const Text(
-                      'Logout',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      context.go("/login");
-                      await user?.logOut();
-                    },
+                      dense: true,
+                      onTap: () async {
+                        context.go("/login");
+                        await user?.logOut();
+        },
                   ),
                 ],
               ),
