@@ -39,17 +39,17 @@ class ChatState extends ConsumerState<Chat> {
             stream: messageStream,
             builder: (BuildContext context,
                 AsyncSnapshot<DocumentSnapshot> snapshot) {
-              var obj = snapshot.data?.data()! as Map<String, dynamic>;
+              var obj = snapshot.data?.data();
               if (snapshot.hasData) {
                 return chatWidget(
-                    data: obj,
+                    data: obj != null ? obj as Map<String, dynamic> : {},
                     width: widget.chatBoxWidth,
                     gameweek: gameweek,
                     leagueId: leagueId,
                     user: currentUser);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return chatWidget(
-                  data: obj,
+                  data: obj == null ? obj as Map<String, dynamic> : {},
                   hydrate: false,
                   width: widget.chatBoxWidth,
                   gameweek: gameweek,
@@ -88,7 +88,7 @@ class chatWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    int msgLength = data?.length ?? 1;
+    int msgLength = data?.length ?? 0;
     return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
       const Gap(5),
       Text("Banter Zone",
@@ -116,8 +116,11 @@ class chatWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(2),
                             ),
                             child: Text(
-                                " " + data?.values.elementAt(index)['text'],
-                                textDirection: TextDirection.rtl,
+                                data != null
+                                    ? " " +
+                                        data?.values.elementAt(index)['text']
+                                    : " ",
+                                // textDirection: TextDirection.rtl,
                                 softWrap: true,
                                 style: const TextStyle(
                                   color: Colors.black,
