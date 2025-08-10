@@ -13,9 +13,7 @@ import 'package:fpl/leaguepage/leagueName.dart';
 import 'package:fpl/leaguepage/leagueList.dart';
 
 import 'package:fpl/types.dart';
-import 'package:gap/gap.dart';
 import 'dart:convert';
-
 import 'package:material_color_utilities/material_color_utilities.dart';
 
 class LeagueView extends ConsumerStatefulWidget {
@@ -40,6 +38,7 @@ class LeagueViewState extends ConsumerState<LeagueView> {
     final double height = size.height;
 
     final currParticipant = ref.watch(currentUserProvider);
+    final userLeagueLength = ref.watch(userLeaguesLengthProvider);
     ScrollController homePageScroll = ScrollController();
 
     return SingleChildScrollView(
@@ -52,107 +51,150 @@ class LeagueViewState extends ConsumerState<LeagueView> {
               // height: 534/3
             ),
             SizedBox(
-                // width: 1474,
-                // height: 500,
-                // child: Card(
-                child:
-                  Column(children: [
-                    // const SizedBox(height: 20),
-                    // if ( width > 300)
-                    // LandingPageTitle(),
-                    const SizedBox(height: 10),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      if (width > 300)
-                        SizedBox(
-                            width: 200,
-                            height: 40,
-                            child: Card(
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      width: 1.5,
-                                      color: MaterialTheme
-                                              .darkMediumContrastScheme()
+              // width: 1474,
+              // height: 500,
+              // child: Card(
+              child: Column(children: [
+                // const SizedBox(height: 20),
+                // if ( width > 300)
+                // LandingPageTitle(),
+                const SizedBox(height: 10),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  if (width > 300)
+                    SizedBox(
+                        width: 260,
+                        height: 60,
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              side: BorderSide(
+                                  width: 1.5,
+                                  color:
+                                      MaterialTheme.darkMediumContrastScheme()
                                           .primary),
-                                  borderRadius: BorderRadius.circular(12)),
-                              color: const Color.fromRGBO(100, 100, 100, 0),
-                              child: TextField(
-                                style: const TextStyle(
-                                    fontSize: 10, color: Colors.white),
-                                cursorColor:
-                                    MaterialTheme.darkMediumContrastScheme()
-                                        .primary,
-                                controller: leagueIdController,
-                                // textInputAction: TextInputAction.done,
-                                decoration: InputDecoration(
-                                    hintText: 'Provide your FPL league URL',
-                                    hintStyle: const TextStyle(
-                                        color: Colors.grey,
+                              borderRadius: BorderRadius.circular(12)),
+                          color: const Color.fromRGBO(100, 100, 100, 0),
+                          child: TextFormField(
+                            autovalidateMode: AutovalidateMode.onUnfocus,
+                            errorBuilder:
+                                (BuildContext context, String? errorText) {
+                              if (errorText == null)
+                                return const SizedBox.shrink();
+                              return
+                                  // padding: const EdgeInsets.only(top: 12),
+                                  Row(
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      errorText,
+                                      style: const TextStyle(
+                                        color: Colors.red,
                                         fontSize: 10,
-                                        fontWeight: FontWeight.w100,
-                                        fontStyle: FontStyle.italic),
-                                    focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                MaterialTheme.darkMediumContrastScheme()
-                                                    .primaryContainer)),
-                                    disabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                MaterialTheme.darkMediumContrastScheme()
-                                                    .primaryContainer)),
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                MaterialTheme.darkMediumContrastScheme()
-                                                    .primaryContainer)),
-                                    border: UnderlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color:
-                                                MaterialTheme.darkMediumContrastScheme()
-                                                    .primaryContainer)),
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        horizontal: 8),
-                                    fillColor: Colors.white,
-                                    iconColor: Colors.white),
-                                cursorHeight: 20,
-                                autocorrect: false,
-                              ),
-                            )),
-                      // ),
-                      if (width > 300)
-                        IconButton(
-                            icon: Icon(Icons.keyboard_return,
-                                color: MaterialTheme.darkMediumContrastScheme()
-                                    .primary),
-                            onPressed: () async {
-                              if (leagueIdController.text.length > 1 &&
-                                  parseLeagueCodeFromUrl(
-                                          leagueIdController.text, false) !=
-                                      '0') {
-                                setState(() {
-                                  widget.userLeague = League(
-                                      leagueId: double.tryParse(
-                                          parseLeagueCodeFromUrl(
-                                              leagueIdController.text, false)));
-                                  // parseLeagueCodeFromUrl(leagueIdController.text);
-                                });
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                                // ),
+                              );
+                            },
+
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return "";
+                              }
+                              if (parseLeagueCodeFromUrl(value!, false) ==
+                                  '0') {
+                                if (value!.contains('entry')) {
+                                  return '\u26A0 This is your entry ID, check for your league ID.';
+                                }
+                                return '\u26A0 Invalid league ID';
                               }
 
-                              ref.read(leagueProvider.notifier).state =
-                                  widget.userLeague;
-                            }),
-                    ]),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        if (widget.userLeague != null) const leagueIDWidget(),
-                        if (width > 300) const GameweekWidget(),
-                      ],
-                    ),
-                    const expandedGameweekWidget(),
-                    LeagueList(width: width / 5),
-                  ]),
-                 ),
+                              if (currParticipant?.tier != 'pro' &&
+                                  userLeagueLength > 3) {
+                                return '\u26A0 Max league for free tier is 3';
+                              }
+
+                              return null;
+                            },
+
+                            // parseParticipantIdFromUrl(value ?? ""); },
+                            style: const TextStyle(
+                                fontSize: 10, color: Colors.white),
+                            cursorColor:
+                                MaterialTheme.darkMediumContrastScheme()
+                                    .primary,
+                            controller: leagueIdController,
+                            // textInputAction: TextInputAction.done,
+                            decoration: InputDecoration(
+                                errorBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MaterialTheme.darkMediumContrastScheme()
+                                            .primaryContainer)),
+                                hintText: 'Provide your FPL league URL',
+                                errorMaxLines: 4,
+                                hintStyle: const TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w100,
+                                    fontStyle: FontStyle.italic),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MaterialTheme.darkMediumContrastScheme()
+                                            .primaryContainer)),
+                                disabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MaterialTheme.darkMediumContrastScheme()
+                                            .primaryContainer)),
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color:
+                                            MaterialTheme.darkMediumContrastScheme()
+                                                .primaryContainer)),
+                                border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: MaterialTheme.darkMediumContrastScheme().primaryContainer)),
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                                fillColor: Colors.white,
+                                iconColor: Colors.white),
+                            cursorHeight: 20,
+                            autocorrect: false,
+                          ),
+                        )),
+                  // ),
+                  if (width > 300)
+                    IconButton(
+                        icon: Icon(Icons.keyboard_return,
+                            color: MaterialTheme.darkMediumContrastScheme()
+                                .primary),
+                        onPressed: () async {
+                          if (leagueIdController.text.length > 1 &&
+                              parseLeagueCodeFromUrl(
+                                      leagueIdController.text, false) !=
+                                  '0') {
+                            setState(() {
+                              widget.userLeague = League(
+                                  leagueId: double.tryParse(
+                                      parseLeagueCodeFromUrl(
+                                          leagueIdController.text, false)));
+                              // parseLeagueCodeFromUrl(leagueIdController.text);
+                            });
+                          }
+
+                          ref.read(leagueProvider.notifier).state =
+                              widget.userLeague;
+                        }),
+                ]),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (widget.userLeague != null) const leagueIDWidget(),
+                    if (width > 300) const GameweekWidget(),
+                  ],
+                ),
+                const expandedGameweekWidget(),
+                LeagueList(width: width / 5),
+              ]),
+            ),
           ]),
           const LeagueStatsView()
         ]));
