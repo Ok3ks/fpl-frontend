@@ -25,6 +25,7 @@ class LeagueListState extends ConsumerState<LeagueList> {
   Widget build(BuildContext context) {
     final currUser = ref.watch(currentUserProvider);
     final Size size = MediaQuery.sizeOf(context);
+    final leaguesLength = ref.watch(userLeaguesLengthProvider);
 
     return FutureBuilder(
         future: getParticipantLeagues(currUser?.participantId),
@@ -32,39 +33,37 @@ class LeagueListState extends ConsumerState<LeagueList> {
           if (snapshot.hasData) {
             List<League>? leagues = snapshot.data;
             return Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-                children: List.generate(leagues?.length ?? 1, (index) {
-              return SizedBox(
-                  width: widget.width,
-                  child: Card(
-                      margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
-                      elevation: 8,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: TextButton(
-                        onPressed: () {
-                          ref.read(leagueProvider.notifier).state =
-                              leagues?[index];
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: List.generate(
+                    currUser?.tier != 'pro' ? leaguesLength : 3, (index) {
+                  return SizedBox(
+                      width: widget.width,
+                      child: Card(
+                          margin:
+                              const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
+                          elevation: 8,
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                          child: TextButton(
+                            onPressed: () {
+                              ref
+                                  .read(userLeaguesLengthProvider.notifier)
+                                  .state = leagues?.length ?? 1;
 
-                          //   setState(() {
-                          //     widget.userLeague = League(
-                          //         leagueId: double.tryParse(
-                          //             parseLeagueCodeFromUrl(
-                          //                 leagueIdController.text, false)));
-                          //     // parseLeagueCodeFromUrl(leagueIdController.text);
-                          //   });
-                        },
-                        child: Text(leagues?[index].name ?? "No name",
-                            textDirection: TextDirection.rtl,
-                            softWrap: true,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 9,
-                            )),
-                      )));
-            }));
+                              ref.read(leagueProvider.notifier).state =
+                                  leagues?[index];
+                            },
+                            child: Text(leagues?[index].name ?? "No name",
+                                textDirection: TextDirection.rtl,
+                                softWrap: true,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 9,
+                                )),
+                          )));
+                }));
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text("Snapshot Connecting");
           } else {

@@ -66,15 +66,20 @@ Future<List<League>> getParticipantLeagues(String? participantId) async {
 
   for (var obj in userLeagues.docs) {
     Map<String, dynamic> temp = obj.data() as Map<String, dynamic>;
-
-    final snapshot = await LeagueDbRef.doc(temp['id']).get();
-    final leagueDetails = snapshot.data() as Map<String, dynamic>;
-
-    final leagueName =
-        leagueDetails.values.first['leagueWeeklyReport']['leagueName'];
+    String leagueName = await getLeagueName(temp['id']);
     temp2.add(League(leagueId: double.tryParse(temp['id']), name: leagueName));
   }
   return temp2;
+}
+
+Future<String> getLeagueName(String leagueID) async {
+  final snapshot = await LeagueDbRef.doc(leagueID).get();
+  final leagueDetails = snapshot.data() as Map<String, dynamic>;
+
+  final leagueName =
+      leagueDetails.values.first['leagueWeeklyReport']['leagueName'];
+
+  return leagueName;
 }
 
 Future<dynamic> pullStats(
@@ -193,6 +198,10 @@ final leagueProvider = StateProvider<League?>((ref) {
 
 final gameweekProvider = StateProvider<double>((ref) {
   return 30; //Should start from current gameweek
+});
+
+final userLeaguesLengthProvider = StateProvider<int>((ref) {
+  return 1; //Should start from current gameweek
 });
 
 var currentUserProvider = StateProvider<Participant?>((ref) {
