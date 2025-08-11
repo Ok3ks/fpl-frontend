@@ -5,6 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/home/home.dart';
 
+import '../themes.dart';
 import '../types.dart';
 
 void main() {
@@ -209,50 +210,69 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
           title: const Text('Login'),
         ),
         body: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          SizedBox(
-              width: orientation == Orientation.portrait
-                  ? size.width
-                  : size.width * 0.6,
-              child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: !forgotPassword
-                      ? Card(
-                          elevation: 4,
-                          child: Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: loginBox()),
-                        )
-                      : Card(
-                          elevation: 4,
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: SizedBox(
-                              height: 60,
-                              child: Column(children: [
-                                const Text(
-                                    "A link to reset your password has been sent. Check your inbox"),
-                                Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.mail),
-                                        onPressed: () {
-                                          // context.go("/");
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.keyboard_return),
-                                        onPressed: () {
-                                          setState(() {
-                                            forgotPassword = false;
-                                          });
-                                          // context.go("/login");
-                                        },
-                                      )
-                                    ])
-                              ]),
-                            ),
-                          )))),
+          Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    MaterialTheme.darkMediumContrastScheme().primary,
+                    MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                    MaterialTheme.darkMediumContrastScheme().primary,
+                    MaterialTheme.darkMediumContrastScheme().primaryContainer,
+                    MaterialTheme.darkMediumContrastScheme().primary,
+                    // Colors.redAccent,
+                    // Colors.greenAccent,
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: SizedBox(
+                  width: orientation == Orientation.portrait
+                      ? size.width
+                      : size.width * 0.6,
+                  child: Padding(
+                      padding: const EdgeInsets.all(1.0),
+                      child: !forgotPassword
+                          ? Card(
+                              elevation: 4,
+                              child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: loginBox()),
+                            )
+                          : Card(
+                              elevation: 4,
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: SizedBox(
+                                  height: 60,
+                                  child: Column(children: [
+                                    const Text(
+                                        "A link to reset your password has been sent. Check your inbox"),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(Icons.mail),
+                                            onPressed: () {
+                                              // context.go("/");
+                                            },
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                                Icons.keyboard_return),
+                                            onPressed: () {
+                                              setState(() {
+                                                forgotPassword = false;
+                                              });
+                                              // context.go("/login");
+                                            },
+                                          )
+                                        ])
+                                  ]),
+                                ),
+                              ))))),
           if (orientation != Orientation.portrait)
             SizedBox(
                 width: size.width * 0.3,
