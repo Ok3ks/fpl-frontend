@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/individualpage/utils.dart';
+import 'package:get_storage/get_storage.dart';
 import 'dart:math';
 
 import 'package:go_router/go_router.dart';
@@ -36,6 +37,8 @@ class OnboardingFlow extends ConsumerStatefulWidget {
 
 class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   int currentStep = 0;
+  final box = GetStorage();
+
   final _formKey = GlobalKey<FormState>();
 
   // Form data
@@ -49,9 +52,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 
   final List<Map<String, String>> steps = [
     {
-      'title': 'Welcome to DontSuckatFpl',
+      'title': 'Welcome to FplWrapped',
       'description':
-          'DontSuckatFPL is a fpl analysis tool, particularly for your mini leagues.'
+          'Fpl Wrapped is a fpl analysis tool, particularly for your mini leagues.'
               ' Find trends and patterns in your FPL Mini League'
     },
     {
@@ -127,6 +130,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       case 2:
         return _addPassword();
       case 3:
+        box.write("status", "registered");
         return _buildCompletionStep();
       default:
         return const SizedBox.shrink();
