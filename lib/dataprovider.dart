@@ -43,7 +43,7 @@ Future<void> addMessage(
   messageRef.set({
     message.id: Map.from({
       "id": message.id,
-      "from": message.from?.email,
+      "from": message.from?.username,
       "timestamp": message.timestamp,
       "text": message.text
     })
