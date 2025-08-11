@@ -89,6 +89,9 @@ class chatWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     int msgLength = data?.length ?? 0;
+    List<Map<String, dynamic>> sortedMessages =
+        List<Map<String, dynamic>>.from(data?.values ?? []);
+    sortedMessages.sort((a, b) => a["timestamp"].compareTo(b['timestamp']));
     return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
       const Gap(5),
       Text("Banter Zone",
@@ -106,8 +109,8 @@ class chatWidget extends StatelessWidget {
                   child: Column(
                       children: List.generate(msgLength, (int index) {
                     Duration messageTimeStamp = DateTime.now().difference(
-                        DateTime.parse(data?.values
-                                .elementAt(index)['timestamp']
+                        DateTime.parse(sortedMessages
+                                .elementAt(index)["timestamp"]
                                 .toString() ??
                             ""));
                     return SizedBox(
@@ -125,10 +128,10 @@ class chatWidget extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Text(
-                                      data != null
+                                      sortedMessages.length > index
                                           ? " " +
-                                              data?.values
-                                                  .elementAt(index)['from']
+                                              sortedMessages
+                                                  .elementAt(index)["from"]
                                           : " ",
                                       // textDirection: TextDirection.rtl,
                                       softWrap: true,
@@ -143,7 +146,7 @@ class chatWidget extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                            data != null
+                                            sortedMessages.length > index
                                                 ? messageTimeStamp.inDays > 0
                                                     ? messageTimeStamp.inDays
                                                             .toString() +
@@ -174,8 +177,8 @@ class chatWidget extends StatelessWidget {
                                         Text(
                                             data != null
                                                 ? " " +
-                                                    data?.values.elementAt(
-                                                        index)['text']
+                                                    sortedMessages.elementAt(
+                                                        index)["text"]
                                                 : " ",
                                             // textDirection: TextDirection.rtl,
                                             softWrap: true,
