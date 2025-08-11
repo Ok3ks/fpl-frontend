@@ -9,6 +9,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/themes.dart';
 
+import 'banner.dart';
+
 void main() {
   runApp(const Home());
 }
@@ -116,6 +118,6 @@ class Home extends ConsumerWidget {
         ),
       );
     }
-    return const Onboarding();
+    return HomeBanner();
   }
 }
