@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/home/login.dart';
+import 'package:fpl/home/onboarding.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:get_storage/get_storage.dart';
@@ -20,7 +21,9 @@ class Home extends ConsumerWidget {
     final local = GetStorage();
     final user = ref.read(currentUserProvider);
 
-    if (local.read("isLoggedIn") == true) {
+    if (local.read("status") == "registered") {
+      return const LoginView();
+    } else if (local.read("isLoggedIn") == true) {
       return MaterialApp(
         home: DefaultTabController(
           initialIndex: 0,
@@ -102,7 +105,6 @@ class Home extends ConsumerWidget {
                   Tab(text: "Participant", icon: Icon(Icons.leaderboard)),
                 ],
               ),
-              // title: const Text('Tabs Demo'),
             ),
             body: TabBarView(
               children: [
@@ -114,6 +116,6 @@ class Home extends ConsumerWidget {
         ),
       );
     }
-    return const LoginView();
+    return const Onboarding();
   }
 }
