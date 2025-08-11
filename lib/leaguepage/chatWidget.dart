@@ -105,6 +105,11 @@ class chatWidget extends StatelessWidget {
                   controller: chatScroll,
                   child: Column(
                       children: List.generate(msgLength, (int index) {
+                    Duration messageTimeStamp = DateTime.now().difference(
+                        DateTime.parse(data?.values
+                                .elementAt(index)['timestamp']
+                                .toString() ??
+                            ""));
                     return SizedBox(
                         width: width,
                         child: Card(
@@ -115,17 +120,71 @@ class chatWidget extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(2),
                             ),
-                            child: Text(
-                                data != null
-                                    ? " " +
-                                        data?.values.elementAt(index)['text']
-                                    : " ",
-                                // textDirection: TextDirection.rtl,
-                                softWrap: true,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 11,
-                                ))));
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      data != null
+                                          ? " " +
+                                              data?.values
+                                                  .elementAt(index)['from']
+                                          : " ",
+                                      // textDirection: TextDirection.rtl,
+                                      softWrap: true,
+                                      style: TextStyle(
+                                          color: MaterialTheme
+                                                  .darkMediumContrastScheme()
+                                              .primary,
+                                          fontSize: 9,
+                                          fontStyle: FontStyle.italic)),
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                            data != null
+                                                ? messageTimeStamp.inDays > 0
+                                                    ? messageTimeStamp.inDays
+                                                            .toString() +
+                                                        " days ago"
+                                                    : messageTimeStamp.inHours >
+                                                            0
+                                                        ? messageTimeStamp.inHours
+                                                                .toString() +
+                                                            " hours ago"
+                                                        : messageTimeStamp
+                                                                    .inMinutes >
+                                                                0
+                                                            ? messageTimeStamp
+                                                                    .inMinutes
+                                                                    .toString() +
+                                                                " minutes ago"
+                                                            : messageTimeStamp
+                                                                    .inSeconds
+                                                                    .toString() +
+                                                                " seconds ago"
+                                                : " ",
+                                            // textDirection: TextDirection.rtl,
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 10,
+                                            )),
+                                        Text(
+                                            data != null
+                                                ? " " +
+                                                    data?.values.elementAt(
+                                                        index)['text']
+                                                : " ",
+                                            // textDirection: TextDirection.rtl,
+                                            softWrap: true,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 11,
+                                            )),
+                                      ])
+                                ])));
                   }))))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
