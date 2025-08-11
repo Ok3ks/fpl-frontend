@@ -6,12 +6,11 @@ import 'package:gap/gap.dart';
 import 'package:uuid/uuid.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/types.dart';
-import 'dart:convert';
 
 import '../individualpage/participantview.dart';
 
 class Chat extends ConsumerStatefulWidget {
-  double chatBoxWidth;
+  final double chatBoxWidth;
   Chat({
     super.key,
     required this.chatBoxWidth,
@@ -69,9 +68,9 @@ class ChatState extends ConsumerState<Chat> {
 class chatWidget extends StatelessWidget {
   Map<String, dynamic>? data;
   bool hydrate = true;
-  double width;
-  double gameweek;
-  double leagueId;
+  final double width;
+  final double gameweek;
+  final double leagueId;
   Participant? user;
 
   chatWidget(
@@ -110,9 +109,8 @@ class chatWidget extends StatelessWidget {
                       children: List.generate(msgLength, (int index) {
                     Duration messageTimeStamp = DateTime.now().difference(
                         DateTime.parse(sortedMessages
-                                .elementAt(index)["timestamp"]
-                                .toString() ??
-                            ""));
+                            .elementAt(index)["timestamp"]
+                            .toString()));
                     return SizedBox(
                         width: width,
                         child: Card(
@@ -123,7 +121,9 @@ class chatWidget extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(2),
                             ),
-                            child: Column(
+                            child: Padding(
+                              padding: const EdgeInsetsGeometry.fromLTRB(4,0,4,0),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -133,7 +133,6 @@ class chatWidget extends StatelessWidget {
                                               sortedMessages
                                                   .elementAt(index)["from"]
                                           : " ",
-                                      // textDirection: TextDirection.rtl,
                                       softWrap: true,
                                       style: TextStyle(
                                           color: MaterialTheme
@@ -148,25 +147,15 @@ class chatWidget extends StatelessWidget {
                                         Text(
                                             sortedMessages.length > index
                                                 ? messageTimeStamp.inDays > 0
-                                                    ? messageTimeStamp.inDays
-                                                            .toString() +
-                                                        " days ago"
+                                                    ? "${messageTimeStamp.inDays} days ago"
                                                     : messageTimeStamp.inHours >
                                                             0
-                                                        ? messageTimeStamp.inHours
-                                                                .toString() +
-                                                            " hours ago"
+                                                        ? "${messageTimeStamp.inHours} hours ago"
                                                         : messageTimeStamp
                                                                     .inMinutes >
                                                                 0
-                                                            ? messageTimeStamp
-                                                                    .inMinutes
-                                                                    .toString() +
-                                                                " minutes ago"
-                                                            : messageTimeStamp
-                                                                    .inSeconds
-                                                                    .toString() +
-                                                                " seconds ago"
+                                                            ? "${messageTimeStamp.inMinutes} minutes ago"
+                                                            : "${messageTimeStamp.inSeconds} seconds ago"
                                                 : " ",
                                             // textDirection: TextDirection.rtl,
                                             softWrap: true,
@@ -182,12 +171,12 @@ class chatWidget extends StatelessWidget {
                                                 : " ",
                                             // textDirection: TextDirection.rtl,
                                             softWrap: true,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 11,
                                             )),
                                       ])
-                                ])));
+                                ]))));
                   }))))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
