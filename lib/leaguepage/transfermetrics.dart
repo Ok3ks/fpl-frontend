@@ -57,8 +57,7 @@ class TransferMetricsState extends State<TransferMetrics>
                     TransferOut(
                       data: widget.data?['leagueWeeklyReport']
                           ['mostTransferredOut'],
-                      index: index,
-                    ),
+                      index: index,),
                     TransferIn(
                       data: widget.data?['leagueWeeklyReport']
                           ['mostTransferredIn'],
@@ -84,60 +83,7 @@ class TransferMetricsState extends State<TransferMetrics>
                 }))
           ]));
     } else {
-      return SizedBox(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(2, (index) {
-                  return SizedBox(
-                      width: 600,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1.5,
-                                  color:
-                                      MaterialTheme.darkMediumContrastScheme()
-                                          .primary),
-                              borderRadius: BorderRadius.circular(8)),
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .primaryContainer,
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: AnimatedIcon(
-                              icon: AnimatedIcons.play_pause,
-                              progress: animation,
-                              size: 10.0,
-                            ),
-                          )));
-                })),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(2, (index) {
-                  return SizedBox(
-                      width: 600,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1.5,
-                                  color:
-                                      MaterialTheme.darkMediumContrastScheme()
-                                          .primary),
-                              borderRadius: BorderRadius.circular(8)),
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .primaryContainer,
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: AnimatedIcon(
-                              icon: AnimatedIcons.play_pause,
-                              progress: animation,
-                              size: 10.0,
-                            ),
-                          )));
-                }))
-          ]));
+      return SizedBox.shrink();
     }
   }
 }
