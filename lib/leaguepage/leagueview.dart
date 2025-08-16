@@ -231,9 +231,10 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
               if (snapshot.hasData) {
                 return LeagueStats(data: obj);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return LeagueStats(data: obj, hydrate: false);
+                return CircularProgressIndicator();
+                // return LeagueStats(hydrate: false);
               } else {
-                return const Text("No Data");
+                return CircularProgressIndicator();
               }
             })
       ]);
@@ -400,7 +401,7 @@ class LeagueStats extends StatelessWidget {
   Map<String, dynamic>? data;
   bool hydrate = true;
 
-  LeagueStats({super.key, required this.data, this.hydrate = true});
+  LeagueStats({super.key, this.data, this.hydrate = true});
 
   Widget slides() {
     return const Card(
