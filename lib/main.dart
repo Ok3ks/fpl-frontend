@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/home/onboarding.dart';
+import 'package:fpl/theme_provider.dart';
 import 'package:fpl/themes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
@@ -44,7 +45,7 @@ void main() async {
     app: app,
   );
   auth.setPersistence(Persistence.LOCAL);
-  runApp(const FplApp());
+  runApp(const ProviderScope(child: FplApp()));
 }
 
 final GoRouter router = GoRouter(
@@ -90,16 +91,19 @@ final GoRouter router = GoRouter(
   routerNeglect: true,
 );
 
-class FplApp extends StatelessWidget {
+class FplApp extends ConsumerWidget {
   const FplApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    const fplTheme = FplTheme();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final themeMode = ref.watch(themeProvider);
+    final fplTheme = FplTheme();
     return MaterialApp.router(
       routerConfig: router,
       title: 'FPL Wrapped',
-      theme: fplTheme.toThemeData(),
+      theme: MaterialTheme().light(),
+      darkTheme: MaterialTheme().dark(),
+      themeMode: themeMode,
     );
   }
 }
