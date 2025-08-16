@@ -2,29 +2,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/individualpage/utils.dart';
+import 'package:fpl/themes.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:math';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/types.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
-  runApp(const Onboarding());
-}
-
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FPL League Analytics Tool',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-        textTheme: GoogleFonts.poppinsTextTheme(),
-      ),
-      home: const OnboardingFlow(),
+    return const Scaffold(
+      body: OnboardingFlow(),
     );
   }
 }
@@ -384,6 +375,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 
   @override
   Widget build(BuildContext context) {
+    final funkyGradient = ref.watch(funkyGradientProvider);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -411,8 +403,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                       height: 30,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
+                        gradient: stepIndex <= currentStep
+                            ? funkyGradient
+                            : null,
                         color: stepIndex <= currentStep
-                            ? Colors.blue
+                            ? null
                             : Colors.grey[300],
                       ),
                       child: Center(
@@ -474,9 +469,34 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                   else
                     const SizedBox(width: 80),
                   if (currentStep < steps.length - 1)
-                    ElevatedButton(
+                    TextButton(
+                      style: ButtonStyle(
+                        padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
                       onPressed: _handleNext,
-                      child: Text('Next', style: GoogleFonts.poppins()),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          gradient: funkyGradient,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Container(
+                          constraints: const BoxConstraints(
+                              minWidth: 88, minHeight: 36),
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Next',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                 ],
               ),

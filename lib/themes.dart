@@ -1,4 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final funkyGradientProvider = Provider<LinearGradient>((ref) {
+  return const LinearGradient(
+    colors: [
+      Colors.purpleAccent,
+      Colors.greenAccent,
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+});
 
 class MaterialTheme {
   // final textTheme = GoogleFonts.lektonTextTheme();

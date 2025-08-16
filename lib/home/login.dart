@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
+import 'package:fpl/themes.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
-import 'package:fpl/home/home.dart';
-
-import '../themes.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../types.dart';
-
-void main() {
-  runApp(const LoginView());
-}
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login Box',
-      theme: ThemeData(
-        useMaterial3: true, // Enable Material 3
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
-      home: const LoginBox(),
+    return const Scaffold(
+      body: LoginBox(),
     );
   }
 }
@@ -40,10 +30,9 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   final TextEditingController _passwordController = TextEditingController();
   String _errorMessage = '';
   bool toggled = true;
-  bool signIn = false;
   bool signInWithPassWord = false;
   bool forgotPassword = false;
-  late bool loggedIn;
+  late bool loggedIn = false;
 
   void toggleObscurePassword() {
     setState(() {
@@ -66,7 +55,6 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         email: _emailController.text, password: _passwordController.text);
     dynamic LoggedInUser = await currentUser.retrieveUser(password);
 
-    // Mock logic for demonstration
     if (email.isEmpty || password.isEmpty) {
       setState(() {
         _errorMessage = 'Email and Password cannot be empty.';
@@ -77,22 +65,17 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
         _errorMessage = 'Email or password supplied is incorrect';
       });
     } else if (currentUser.error == 'user-not-found') {
-      // Proceed with login
       setState(() {
         _errorMessage = 'User does not exist, please Register and retry';
       });
     } else {
-      // Proceed with login
       setState(() {
         _errorMessage = '';
         loggedIn = true;
       });
-      //Update field with userHistory
 
-      //TODO: Update currentUserProvider with desired State
       final snapshot = await userDbRef.where('email', isEqualTo: email).get();
       final userData = snapshot.docs.first.data() as Map<String, dynamic>;
-      // await currentUser.getHistory(participantID ?? "null");
       box.write('isLoggedIn', true);
       ref.read(currentUserProvider.notifier).state = Participant(
           email: userData['email'],
@@ -115,8 +98,40 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
   }
 
   void _register() {
-    // Logic for registration (e.g., navigating to a registration page)
     context.go('/onboarding');
+  }
+
+  Widget _buildGradientButton(
+      {required VoidCallback onPressed, required String text}) {
+    final funkyGradient = ref.watch(funkyGradientProvider);
+    return TextButton(
+      style: ButtonStyle(
+        padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      onPressed: onPressed,
+      child: Ink(
+        decoration: BoxDecoration(
+          gradient: funkyGradient,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Container(
+          constraints: const BoxConstraints(minWidth: 88, minHeight: 36),
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget loginBox() {
@@ -125,159 +140,132 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
       children: [
         TextField(
           controller: _emailController,
-          decoration: const InputDecoration(
+          style: GoogleFonts.poppins(),
+          decoration: InputDecoration(
             labelText: 'Email',
+            labelStyle: GoogleFonts.poppins(),
           ),
         ),
         if (signInWithPassWord)
-          // Row(
-          //   children: [
           TextField(
             controller: _passwordController,
-            obscureText: toggled ? true : false,
+            obscureText: toggled,
+            style: GoogleFonts.poppins(),
             decoration: InputDecoration(
               labelText: 'Password',
+              labelStyle: GoogleFonts.poppins(),
               errorText: _errorMessage.isNotEmpty ? _errorMessage : null,
+              suffixIcon: IconButton(
+                onPressed: toggleObscurePassword,
+                icon: const Icon(Icons.remove_red_eye),
+              ),
             ),
           ),
-        if (signInWithPassWord)
-          IconButton(
-              onPressed: toggleObscurePassword,
-              icon: const Icon(Icons.remove_red_eye)),
-        // ]),
-
         const SizedBox(height: 20),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          ElevatedButton(
-              onPressed: () {
-                if (_passwordController.text.isEmpty) {
-                  setState(() {
-                    signInWithPassWord = true;
-                  });
-                } else {
-                  _login();
-                  if (loggedIn) {
-                    context.go("/home");
-                  }
-                }
-              },
-              style: signInWithPassWord
-                  ? const ButtonStyle()
-                  : const ButtonStyle(),
-              child: const Text(
-                'Sign In',
-              )),
+          _buildGradientButton(
+            text: 'Sign In',
+            onPressed: () {
+              if (!signInWithPassWord) {
+                setState(() {
+                  signInWithPassWord = true;
+                });
+              } else {
+                _login();
+              }
+            },
+          ),
           const SizedBox(width: 20),
           if (signInWithPassWord)
-            ElevatedButton(
+            TextButton(
               onPressed: () {
                 setState(() {
                   forgotPassword = true;
                 });
                 _resetPassword();
               },
-              child: const Text('Forgot Password'),
+              child: Text('Forgot Password', style: GoogleFonts.poppins()),
             ),
         ]),
         const SizedBox(
           height: 15,
         ),
-        ElevatedButton(
+        TextButton(
           onPressed: _register,
-          child: const Text('Register'),
+          child: Text('No account? Register', style: GoogleFonts.poppins()),
         ),
       ],
     );
   }
 
-  Widget slides() {
-    return const Card(
-        child: CarouselView(itemExtent: 4, children: [
-      Text("Copy"),
-      Text("Copy"),
-      Text("Copy"),
-      Text("Copy")
-    ]));
-  }
-
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.orientationOf(context);
-    Size size = MediaQuery.sizeOf(context);
-
+    final funkyGradient = ref.watch(funkyGradientProvider);
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Login'),
-        ),
-        body: Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    MaterialTheme.darkMediumContrastScheme().primary,
-                    MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                    MaterialTheme.darkMediumContrastScheme().primary,
-                    MaterialTheme.darkMediumContrastScheme().primaryContainer,
-                    MaterialTheme.darkMediumContrastScheme().primary,
-                    // Colors.redAccent,
-                    // Colors.greenAccent,
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: SizedBox(
-                  width: orientation == Orientation.portrait
-                      ? size.width
-                      : size.width * 0.6,
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
+          child: !forgotPassword
+              ? Card(
+                  elevation: 4,
                   child: Padding(
-                      padding: const EdgeInsets.all(1.0),
-                      child: !forgotPassword
-                          ? Card(
-                              elevation: 4,
-                              child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: loginBox()),
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      children: [
+                        ShaderMask(
+                          blendMode: BlendMode.srcIn,
+                          shaderCallback: (bounds) => funkyGradient.createShader(
+                            Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                          ),
+                          child: Text(
+                            'Login',
+                            style: GoogleFonts.poppins(
+                              fontSize: 32,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        loginBox(),
+                      ],
+                    ),
+                  ),
+                )
+              : Card(
+                  elevation: 4,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          "A link to reset your password has been sent. Check your inbox.",
+                          style: GoogleFonts.poppins(),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.mail),
+                              onPressed: () {},
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.keyboard_return),
+                              onPressed: () {
+                                setState(() {
+                                  forgotPassword = false;
+                                });
+                              },
                             )
-                          : Card(
-                              elevation: 4,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: SizedBox(
-                                  height: 60,
-                                  child: Column(children: [
-                                    const Text(
-                                        "A link to reset your password has been sent. Check your inbox"),
-                                    Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          IconButton(
-                                            icon: const Icon(Icons.mail),
-                                            onPressed: () {
-                                              // context.go("/");
-                                            },
-                                          ),
-                                          IconButton(
-                                            icon: const Icon(
-                                                Icons.keyboard_return),
-                                            onPressed: () {
-                                              setState(() {
-                                                forgotPassword = false;
-                                              });
-                                              // context.go("/login");
-                                            },
-                                          )
-                                        ])
-                                  ]),
-                                ),
-                              ))))),
-          if (orientation != Orientation.portrait)
-            SizedBox(
-                width: size.width * 0.3,
-                child: Padding(
-                    padding: const EdgeInsets.all(16.0), child: slides()))
-        ]));
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+        ),
+      ),
+    );
   }
 }
