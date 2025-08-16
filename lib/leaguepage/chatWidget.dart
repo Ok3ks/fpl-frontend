@@ -26,7 +26,7 @@ class ChatState extends ConsumerState<Chat> {
     final leagueId = ref.watch(leagueProvider)?.leagueId;
     final gameweek = ref.watch(gameweekProvider);
     final currentUser = ref.watch(currentUserProvider);
-    final Stream<DocumentSnapshot> messageStream =
+    final Stream<DocumentSnapshot>? messageStream =
         LeagueDbRef.doc(leagueId.toString())
             .collection("messages")
             .doc(gameweek.toString())
@@ -41,14 +41,14 @@ class ChatState extends ConsumerState<Chat> {
               var obj = snapshot.data?.data();
               if (snapshot.hasData) {
                 return chatWidget(
-                    data: obj != null ? obj as Map<String, dynamic> : {},
+                    data: obj as Map<String, dynamic>?,
                     width: widget.chatBoxWidth,
                     gameweek: gameweek,
                     leagueId: leagueId,
                     user: currentUser);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return chatWidget(
-                  data: obj == null ? obj as Map<String, dynamic> : {},
+                  data:  obj as Map<String, dynamic>?,
                   hydrate: false,
                   width: widget.chatBoxWidth,
                   gameweek: gameweek,
