@@ -403,12 +403,10 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                       height: 30,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        gradient: stepIndex <= currentStep
-                            ? funkyGradient
-                            : null,
-                        color: stepIndex <= currentStep
-                            ? null
-                            : Colors.grey[300],
+                        gradient:
+                            stepIndex <= currentStep ? funkyGradient : null,
+                        color:
+                            stepIndex <= currentStep ? null : Colors.grey[300],
                       ),
                       child: Center(
                         child: stepIndex < currentStep
@@ -471,7 +469,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                   if (currentStep < steps.length - 1)
                     TextButton(
                       style: ButtonStyle(
-                        padding: WidgetStateProperty.all<EdgeInsets>(EdgeInsets.zero),
+                        padding: WidgetStateProperty.all<EdgeInsets>(
+                            EdgeInsets.zero),
                         shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -485,8 +484,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Container(
-                          constraints: const BoxConstraints(
-                              minWidth: 88, minHeight: 36),
+                          constraints:
+                              const BoxConstraints(minWidth: 88, minHeight: 36),
                           alignment: Alignment.center,
                           child: Text(
                             'Next',

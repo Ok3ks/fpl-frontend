@@ -131,7 +131,8 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
   }
 
   Widget centerBanner(double height) {
-    final transform = _isHovered ? (Matrix4.identity()..scale(1.03)) : Matrix4.identity();
+    final transform =
+        _isHovered ? (Matrix4.identity()..scale(1.03)) : Matrix4.identity();
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -168,16 +169,19 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
         child: Container(
           height: 100, // Adjust the height as needed for your login screen
           decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainerLow, // Keeps the inside empty
+            color: Theme.of(context)
+                .colorScheme
+                .surfaceContainerLow, // Keeps the inside empty
             borderRadius: BorderRadius.circular(9),
           ),
           child: OrientationBuilder(
             builder: (context, orientation) {
               final headline = ShaderMask(
                 blendMode: BlendMode.srcIn,
-                shaderCallback: (bounds) => ref.watch(funkyGradientProvider).createShader(
-                  Rect.fromLTWH(0, 0, bounds.width, bounds.height),
-                ),
+                shaderCallback: (bounds) =>
+                    ref.watch(funkyGradientProvider).createShader(
+                          Rect.fromLTWH(0, 0, bounds.width, bounds.height),
+                        ),
                 child: RichText(
                   textAlign: TextAlign.center,
                   text: TextSpan(
