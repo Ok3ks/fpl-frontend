@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/individualpage/utils.dart';
+import 'package:fpl/theme_provider.dart';
 import 'package:fpl/themes.dart';
 import 'package:get_storage/get_storage.dart';
 import 'dart:math';
@@ -14,9 +15,8 @@ class Onboarding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: OnboardingFlow(),
-    );
+    return const OnboardingFlow();
+    // );
   }
 }
 
@@ -261,7 +261,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             items: teams.map((String team) {
               return DropdownMenuItem(
                 value: team,
-                child: Text(team, style: GoogleFonts.poppins()),
+                child: Text(team, style: GoogleFonts.poppins(color: Colors.grey)),
               );
             }).toList(),
             onChanged: (String? value) {
@@ -287,16 +287,16 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             items: [
               DropdownMenuItem(
                   value: 'new',
-                  child: Text('First Season', style: GoogleFonts.poppins())),
+                  child: Text('First Season', style: GoogleFonts.poppins(color: Colors.grey))),
               DropdownMenuItem(
                   value: '1-2',
-                  child: Text('1-2 Years', style: GoogleFonts.poppins())),
+                  child: Text('1-2 Years', style: GoogleFonts.poppins(color: Colors.grey))),
               DropdownMenuItem(
                   value: '3-5',
-                  child: Text('3-5 Years', style: GoogleFonts.poppins())),
+                  child: Text('3-5 Years', style: GoogleFonts.poppins(color: Colors.grey))),
               DropdownMenuItem(
                   value: '5+',
-                  child: Text('5+ Years', style: GoogleFonts.poppins()))
+                  child: Text('5+ Years', style: GoogleFonts.poppins(color: Colors.grey)))
             ],
             onChanged: (String? value) {
               setState(() {
@@ -376,7 +376,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   @override
   Widget build(BuildContext context) {
     final funkyGradient = ref.watch(funkyGradientProvider);
-    return Scaffold(
+    final currentTheme = ref.watch(themeProvider);
+    return
+      Scaffold(
       body: SafeArea(
         child: Column(
           children: [
