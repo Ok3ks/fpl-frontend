@@ -99,7 +99,6 @@ class Participant {
             appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
             measurementId: "G-RCXFD9EQ9E",
             databaseURL: "https://default.firebaseio.com"));
-
     var auth = FirebaseAuth.instanceFor(
       app: app,
     );
@@ -199,10 +198,8 @@ class Participant {
 
     //Save to users firestore collection
     if (participantId != null) {
-      CollectionReference userLeagueDbRef =
-          FirebaseFirestore.instance.collection("users");
 
-      DocumentReference temp = userLeagueDbRef.doc(participantId);
+      DocumentReference temp = userDbRef.doc(participantId);
       CollectionReference leagues = temp.collection("leagues");
 
       temp = leagues.doc(userLeague.leagueId.toString());
