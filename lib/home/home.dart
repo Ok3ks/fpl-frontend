@@ -25,9 +25,7 @@ class Home extends ConsumerWidget {
     final user = ref.read(currentUserProvider);
     final themeMode = ref.watch(themeProvider);
 
-    if (local.read("status") == "registered") {
-      return const LoginView();
-    } else if (local.read("isLoggedIn") == true) {
+    if (local.read("isLoggedIn") == true) {
       return MaterialApp(
         home: DefaultTabController(
           initialIndex: 0,
