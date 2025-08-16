@@ -1,16 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:fpl/individualpage/utils.dart';
+import 'package:fpl/theme_provider.dart';
 import 'package:fpl/themes.dart';
-import 'package:gap/gap.dart';
-
 import 'package:go_router/go_router.dart';
-import 'package:fpl/types.dart';
+import 'package:lottie/lottie.dart';
 
-class HomeBanner extends ConsumerWidget {
+class HomeBanner extends ConsumerStatefulWidget {
   const HomeBanner({super.key});
 
+  @override
+  ConsumerState<HomeBanner> createState() => _HomeBannerState();
+}
+
+class _HomeBannerState extends ConsumerState<HomeBanner> {
   Widget _registerButton(BuildContext context) {
     return TextButton(
       style: ButtonStyle(
@@ -21,13 +23,13 @@ class HomeBanner extends ConsumerWidget {
           ),
         ),
         // Use resolvers for hover and press effects.
-        overlayColor: MaterialStateProperty.resolveWith<Color?>(
-          (Set<MaterialState> states) {
-            if (states.contains(MaterialState.hovered)) {
-              return Colors.white.withOpacity(0.2);
+        overlayColor: WidgetStateProperty.resolveWith<Color?>(
+          (Set<WidgetState> states) {
+            if (states.contains(WidgetState.hovered)) {
+              return Colors.white.withAlpha(51);
             }
-            if (states.contains(MaterialState.pressed)) {
-              return Colors.white.withOpacity(0.3);
+            if (states.contains(WidgetState.pressed)) {
+              return Colors.white.withAlpha(77);
             }
             return null;
           },
@@ -49,7 +51,7 @@ class HomeBanner extends ConsumerWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withAlpha(77),
               offset: const Offset(2, 2),
               blurRadius: 4,
             ),
@@ -85,10 +87,10 @@ class HomeBanner extends ConsumerWidget {
         overlayColor: WidgetStateProperty.resolveWith<Color?>(
           (Set<WidgetState> states) {
             if (states.contains(WidgetState.hovered)) {
-              return Colors.white.withOpacity(0.2);
+              return Colors.white.withAlpha(51);
             }
-            if (states.contains(MaterialState.pressed)) {
-              return Colors.white.withOpacity(0.3);
+            if (states.contains(WidgetState.pressed)) {
+              return Colors.white.withAlpha(77);
             }
             return null;
           },
@@ -110,7 +112,7 @@ class HomeBanner extends ConsumerWidget {
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.3),
+              color: Colors.black.withAlpha(77),
               offset: const Offset(2, 2),
               blurRadius: 4,
             ),
@@ -162,12 +164,70 @@ class HomeBanner extends ConsumerWidget {
           color: Colors.white, // Keeps the inside empty
           borderRadius: BorderRadius.circular(9),
         ),
+        child: OrientationBuilder(
+          builder: (context, orientation) {
+            if (orientation == Orientation.portrait) {
+              return Column(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Lottie.network(
+                        'https://lottie.host/26387b06-41a3-445a-a1e2-52557330bbe8/282wuWxDwX.json',
+                    ),
+                  ),
+                  const Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Find Statistics about your FPL Mini League",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            } else {
+              return Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Lottie.network(
+                      'https://lottie.host/26387b06-41a3-445a-a1e2-52557330bbe8/282wuWxDwX.json',
+                    ),
+                  ), Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child:
+                      Center(
+                        child: Text(
+                          "Find Fun Stats about your FPL Mini League",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )]);
+            }
+          },
+        ),
       ),
     );
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final bannerHeight = size.height - 200;
 

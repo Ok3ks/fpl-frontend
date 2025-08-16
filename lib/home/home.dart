@@ -5,6 +5,7 @@ import 'package:fpl/home/login.dart';
 import 'package:fpl/home/onboarding.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
+import 'package:fpl/theme_provider.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/themes.dart';
@@ -22,6 +23,7 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final local = GetStorage();
     final user = ref.read(currentUserProvider);
+    final themeMode = ref.watch(themeProvider);
 
     if (local.read("status") == "registered") {
       return const LoginView();
@@ -98,6 +100,14 @@ class Home extends ConsumerWidget {
               ),
             ),
             appBar: AppBar(
+              actions: [
+                Switch(
+                  value: themeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    ref.read(themeProvider.notifier).toggleTheme();
+                  },
+                )
+              ],
               backgroundColor: const Color.fromRGBO(80, 100, 80,
                   0), // MaterialTheme.darkMediumContrastScheme().onSurface,
               bottom: const TabBar(
@@ -118,6 +128,6 @@ class Home extends ConsumerWidget {
         ),
       );
     }
-    return HomeBanner();
+    return const HomeBanner();
   }
 }
