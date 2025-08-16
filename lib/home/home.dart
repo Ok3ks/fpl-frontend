@@ -128,6 +128,11 @@ class Home extends ConsumerWidget {
         ),
       );
     }
-    return const HomeBanner();
+    return MaterialApp(
+      theme: MaterialTheme().light(),
+      darkTheme: MaterialTheme().dark(),
+      themeMode: themeMode,
+      home: const HomeBanner(),
+    );
   }
 }
