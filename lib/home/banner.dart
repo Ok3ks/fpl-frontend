@@ -42,14 +42,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
       },
       child: Ink(
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [
-              Colors.purpleAccent,
-              Colors.greenAccent,
-            ],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: ref.watch(funkyGradientProvider),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
@@ -182,10 +175,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
             builder: (context, orientation) {
               final headline = ShaderMask(
                 blendMode: BlendMode.srcIn,
-                shaderCallback: (bounds) => const LinearGradient(colors: [
-                  Colors.purpleAccent,
-                  Colors.greenAccent,
-                ]).createShader(
+                shaderCallback: (bounds) => ref.watch(funkyGradientProvider).createShader(
                   Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                 ),
                 child: RichText(
@@ -265,7 +255,7 @@ class _HomeBannerState extends ConsumerState<HomeBanner> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             headline,
-                            const SizedBox(height: 8),
+                            const SizedBox(height: 12),
                             tagline,
                           ],
                         ),
