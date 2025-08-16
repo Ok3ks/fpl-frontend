@@ -67,7 +67,7 @@ class LeagueListState extends ConsumerState<LeagueList> {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text("Snapshot Connecting");
           } else {
-            return const Text("Handle final state");
+            return const SizedBox.shrink();
           }
         });
   }
