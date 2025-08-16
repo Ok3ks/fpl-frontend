@@ -65,7 +65,7 @@ class MaterialTheme {
   }
 
   ThemeData light() {
-    return theme(lightScheme());
+    return theme(lightMediumContrastScheme());
   }
 
   static ColorScheme lightMediumContrastScheme() {
@@ -395,6 +395,8 @@ class MaterialTheme {
       //   ),
       //   labelStyle: textTheme.bodyMedium,
       // ),
+
+
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           shape: RoundedRectangleBorder(
