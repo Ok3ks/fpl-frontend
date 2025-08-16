@@ -214,7 +214,8 @@ class _LoginBoxState extends ConsumerState<LoginBox> {
                       children: [
                         ShaderMask(
                           blendMode: BlendMode.srcIn,
-                          shaderCallback: (bounds) => funkyGradient.createShader(
+                          shaderCallback: (bounds) =>
+                              funkyGradient.createShader(
                             Rect.fromLTWH(0, 0, bounds.width, bounds.height),
                           ),
                           child: Text(
