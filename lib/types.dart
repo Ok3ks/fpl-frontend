@@ -198,7 +198,6 @@ class Participant {
 
     //Save to users firestore collection
     if (participantId != null) {
-
       DocumentReference temp = userDbRef.doc(participantId);
       CollectionReference leagues = temp.collection("leagues");
 
