@@ -430,6 +430,7 @@ class LeagueStats extends StatelessWidget {
                 data: data,
                 hydrate: hydrate,
               ),
+
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 SizedBox(
                     width: size.width * 0.7,
@@ -485,6 +486,7 @@ class LeagueStats extends StatelessWidget {
                                           LandingPage(),
                                         ])))
                             ])))),
+                if (orientation == Orientation.landscape)
                 SizedBox(
                     width: chatBoxWidth,
                     // height: 300,
