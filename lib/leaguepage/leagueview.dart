@@ -174,8 +174,9 @@ class LeagueViewState extends ConsumerState<LeagueView> {
                             setState(() {
                               widget.userLeague = League(
                                   leagueId: double.tryParse(
-                                      parseLeagueCodeFromUrl(
-                                          leagueIdController.text, false)));
+                                parseLeagueCodeFromUrl(
+                                    leagueIdController.text, false),
+                              ));
                               // parseLeagueCodeFromUrl(leagueIdController.text);
                             });
                           }
@@ -234,7 +235,7 @@ class LeagueStatsViewState extends ConsumerState<LeagueStatsView> {
                 return CircularProgressIndicator();
                 // return LeagueStats(hydrate: false);
               } else {
-                return CircularProgressIndicator();
+                return Text("No data");
               }
             })
       ]);

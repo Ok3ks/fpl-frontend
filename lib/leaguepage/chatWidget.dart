@@ -48,7 +48,7 @@ class ChatState extends ConsumerState<Chat> {
                     user: currentUser);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return chatWidget(
-                  data:  obj as Map<String, dynamic>?,
+                  data: obj as Map<String, dynamic>?,
                   hydrate: false,
                   width: widget.chatBoxWidth,
                   gameweek: gameweek,
@@ -122,61 +122,65 @@ class chatWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(2),
                             ),
                             child: Padding(
-                              padding: const EdgeInsetsGeometry.fromLTRB(4,0,4,0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      sortedMessages.length > index
-                                          ? " " +
-                                              sortedMessages
-                                                  .elementAt(index)["from"]
-                                          : " ",
-                                      softWrap: true,
-                                      style: TextStyle(
-                                          color: MaterialTheme
-                                                  .darkMediumContrastScheme()
-                                              .primary,
-                                          fontSize: 9,
-                                          fontStyle: FontStyle.italic)),
-                                  Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                            sortedMessages.length > index
-                                                ? messageTimeStamp.inDays > 0
-                                                    ? "${messageTimeStamp.inDays} days ago"
-                                                    : messageTimeStamp.inHours >
+                                padding: const EdgeInsetsGeometry.fromLTRB(
+                                    4, 0, 4, 0),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          sortedMessages.length > index
+                                              ? " " +
+                                                  sortedMessages
+                                                      .elementAt(index)["from"]
+                                              : " ",
+                                          softWrap: true,
+                                          style: TextStyle(
+                                              color: MaterialTheme
+                                                      .darkMediumContrastScheme()
+                                                  .primary,
+                                              fontSize: 9,
+                                              fontStyle: FontStyle.italic)),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                                sortedMessages.length > index
+                                                    ? messageTimeStamp.inDays >
                                                             0
-                                                        ? "${messageTimeStamp.inHours} hours ago"
+                                                        ? "${messageTimeStamp.inDays} days ago"
                                                         : messageTimeStamp
-                                                                    .inMinutes >
+                                                                    .inHours >
                                                                 0
-                                                            ? "${messageTimeStamp.inMinutes} minutes ago"
-                                                            : "${messageTimeStamp.inSeconds} seconds ago"
-                                                : " ",
-                                            // textDirection: TextDirection.rtl,
-                                            softWrap: true,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 10,
-                                            )),
-                                        Text(
-                                            data != null
-                                                ? " " +
-                                                    sortedMessages.elementAt(
-                                                        index)["text"]
-                                                : " ",
-                                            // textDirection: TextDirection.rtl,
-                                            softWrap: true,
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 11,
-                                            )),
-                                      ])
-                                ]))));
+                                                            ? "${messageTimeStamp.inHours} hours ago"
+                                                            : messageTimeStamp
+                                                                        .inMinutes >
+                                                                    0
+                                                                ? "${messageTimeStamp.inMinutes} minutes ago"
+                                                                : "${messageTimeStamp.inSeconds} seconds ago"
+                                                    : " ",
+                                                // textDirection: TextDirection.rtl,
+                                                softWrap: true,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10,
+                                                )),
+                                            Text(
+                                                data != null
+                                                    ? " " +
+                                                        sortedMessages
+                                                            .elementAt(
+                                                                index)["text"]
+                                                    : " ",
+                                                // textDirection: TextDirection.rtl,
+                                                softWrap: true,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 11,
+                                                )),
+                                          ])
+                                    ]))));
                   }))))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
