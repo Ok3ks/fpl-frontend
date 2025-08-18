@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/dataprovider.dart';
 import 'package:fpl/home/login.dart';
+import 'package:fpl/home/onboarding.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
+import 'package:fpl/theme_provider.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fpl/themes.dart';
+
+import 'banner.dart';
 
 void main() {
   runApp(const Home());
@@ -19,6 +23,7 @@ class Home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final local = GetStorage();
     final user = ref.read(currentUserProvider);
+    final themeMode = ref.watch(themeProvider);
 
     if (local.read("isLoggedIn") == true) {
       return MaterialApp(
@@ -29,38 +34,61 @@ class Home extends ConsumerWidget {
             drawer: Drawer(
               child: ListView(
                 padding: EdgeInsets.zero,
-                children: [
-                  // Drawer header containing user profile infos.
+                children: <Widget>[
+                  // Drawer header with a gradient background.
                   UserAccountsDrawerHeader(
-                    accountName: Text(user?.username ?? "",
-                        style: TextStyle(
-                            color: MaterialTheme.darkMediumContrastScheme()
-                                .primary)),
-                    accountEmail: Text(user?.email ?? "",
-                        style: TextStyle(
-                            color: MaterialTheme.darkMediumContrastScheme()
-                                .primary)),
+                    accountName: Text(
+                      user?.username ?? "",
+                      style: TextStyle(
+                        color: MaterialTheme.darkMediumContrastScheme().primary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    accountEmail: Text(
+                      user?.email ?? "",
+                      style: TextStyle(
+                        color: MaterialTheme.darkMediumContrastScheme().primary,
+                        fontSize: 14,
+                      ),
+                    ),
                     currentAccountPicture: const CircleAvatar(
                       backgroundImage:
                           AssetImage("images/pexels-mike-1171084.webp"),
                     ),
                     decoration: BoxDecoration(
-                        color: MaterialTheme.darkMediumContrastScheme()
-                            .primaryContainer //Customize
-                        ),
+                      gradient: LinearGradient(
+                        colors: [
+                          MaterialTheme.darkMediumContrastScheme()
+                              .primaryContainer, //TODO: configure in Settings
+                          MaterialTheme.darkMediumContrastScheme()
+                              .secondaryContainer
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
                   ),
-                  // Add any other drawer items you want.
+                  // Drawer items
                   ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Settings'),
+                    leading: const Icon(Icons.settings, color: Colors.black54),
+                    title: const Text(
+                      'Settings',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    dense: true,
                     onTap: () {
-                      //TODO: Handle settings tap
+                      // TODO: Handle settings tap
                     },
                   ),
-                  const Divider(),
+                  const Divider(thickness: 1),
                   ListTile(
-                    leading: const Icon(Icons.logout),
-                    title: const Text('Logout'),
+                    leading: const Icon(Icons.logout, color: Colors.black54),
+                    title: const Text(
+                      'Logout',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    dense: true,
                     onTap: () async {
                       context.go("/login");
                       await user?.logOut();
@@ -70,6 +98,14 @@ class Home extends ConsumerWidget {
               ),
             ),
             appBar: AppBar(
+              actions: [
+                Switch(
+                  value: themeMode == ThemeMode.dark,
+                  onChanged: (value) {
+                    ref.read(themeProvider.notifier).toggleTheme();
+                  },
+                )
+              ],
               backgroundColor: const Color.fromRGBO(80, 100, 80,
                   0), // MaterialTheme.darkMediumContrastScheme().onSurface,
               bottom: const TabBar(
@@ -79,7 +115,6 @@ class Home extends ConsumerWidget {
                   Tab(text: "Participant", icon: Icon(Icons.leaderboard)),
                 ],
               ),
-              // title: const Text('Tabs Demo'),
             ),
             body: TabBarView(
               children: [
@@ -91,6 +126,11 @@ class Home extends ConsumerWidget {
         ),
       );
     }
-    return const LoginView();
+    return MaterialApp(
+      theme: MaterialTheme().light(),
+      darkTheme: MaterialTheme().dark(),
+      themeMode: themeMode,
+      home: const HomeBanner(),
+    );
   }
 }

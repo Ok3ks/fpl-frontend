@@ -2,28 +2,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpl/individualpage/utils.dart';
+import 'package:fpl/theme_provider.dart';
+import 'package:fpl/themes.dart';
+import 'package:get_storage/get_storage.dart';
 import 'dart:math';
-
 import 'package:go_router/go_router.dart';
 import 'package:fpl/types.dart';
-
-void main() {
-  runApp(const Onboarding());
-}
+import 'package:google_fonts/google_fonts.dart';
 
 class Onboarding extends StatelessWidget {
   const Onboarding({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'FPL League Analytics Tool',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const OnboardingFlow(),
-    );
+    return const OnboardingFlow();
+    // );
   }
 }
 
@@ -36,6 +29,8 @@ class OnboardingFlow extends ConsumerStatefulWidget {
 
 class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   int currentStep = 0;
+  final box = GetStorage();
+
   final _formKey = GlobalKey<FormState>();
 
   // Form data
@@ -48,12 +43,6 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   String? _error;
 
   final List<Map<String, String>> steps = [
-    {
-      'title': 'Welcome to DontSuckatFpl',
-      'description':
-          'DontSuckatFPL is a fpl analysis tool, particularly for your mini leagues.'
-              ' Find trends and patterns in your FPL Mini League'
-    },
     {
       'title': 'Tell us about yourself',
       'description': 'Help us personalize your experience'
@@ -68,21 +57,21 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   final List<String> teams = [
     'Arsenal',
     'Aston Villa',
+    'Brentford',
     'Brighton',
     'Burnley',
     'Chelsea',
     'Crystal Palace',
     'Everton',
+    'Fulham',
     'Leeds United',
-    'Leicester City',
     'Liverpool',
     'Manchester City',
     'Manchester United',
     'Newcastle United',
-    'Norwich City',
-    'Southampton',
+    'Nottingham Forest',
+    'Sunderland',
     'Tottenham Hotspur',
-    'Watford',
     'West Ham United',
     'Wolves'
   ];
@@ -92,9 +81,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       children: [
         const Icon(Icons.emoji_events, size: 64, color: Colors.blue),
         const SizedBox(height: 24),
-        const Text(
+        Text(
           'Enhance Your FPL Strategy',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 24),
         _buildFeatureItem(Icons.analytics, 'Personal Season Reflection'),
@@ -112,7 +101,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
         children: [
           Icon(icon, color: Colors.green),
           const SizedBox(width: 12),
-          Expanded(child: Text(text)),
+          Expanded(child: Text(text, style: GoogleFonts.poppins())),
         ],
       ),
     );
@@ -121,12 +110,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   Widget _buildStepContent() {
     switch (currentStep) {
       case 0:
-        return _buildWelcomeStep();
-      case 1:
         return _buildFormStep();
-      case 2:
+      case 1:
         return _addPassword();
-      case 3:
+      case 2:
+        box.write("status", "registered");
         return _buildCompletionStep();
       default:
         return const SizedBox.shrink();
@@ -140,9 +128,9 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   }
 
   void _handleNext() async {
-    if (currentStep == 3) {
+    if (currentStep == 2) {
       context.go('/login');
-    } else if (currentStep == 2) {
+    } else if (currentStep == 1) {
       if (_formKey.currentState?.validate() ?? false) {
         _formKey.currentState?.save();
         print(
@@ -171,7 +159,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           });
         }
       }
-    } else if (currentStep == 1) {
+    } else if (currentStep == 0) {
       if (_formKey.currentState?.validate() ?? false) {
         setState(() {
           currentStep = min(currentStep + 1, steps.length - 1);
@@ -191,9 +179,11 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
         padding: const EdgeInsets.all(16.0),
         children: [
           TextFormField(
-            decoration: const InputDecoration(
+            style: GoogleFonts.poppins(),
+            decoration: InputDecoration(
               labelText: 'username',
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              labelStyle: GoogleFonts.poppins(),
             ),
             onChanged: (String? value) {
               setState(() {
@@ -202,16 +192,18 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter a username';
+                return 'required field';
               }
               return null;
             },
           ),
           const SizedBox(height: 16),
           TextFormField(
-            decoration: const InputDecoration(
+            style: GoogleFonts.poppins(),
+            decoration: InputDecoration(
               labelText: 'Email',
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              labelStyle: GoogleFonts.poppins(),
             ),
             keyboardType: TextInputType.emailAddress,
             onChanged: (String? value) {
@@ -221,24 +213,27 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter your email';
+                return 'required field';
               }
               if (!value.contains('@')) {
-                return 'Please enter a valid email';
+                return 'required field';
               }
               return null;
             },
           ),
           const SizedBox(height: 16),
           TextFormField(
+              style: GoogleFonts.poppins(),
               autocorrect: false,
               // initialValue: "a",
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Fantasy Premier League URL',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
                 hintTextDirection: TextDirection.ltr,
                 hintText:
                     "https://fantasy.premierleague.com/entry/*****/event/**",
+                labelStyle: GoogleFonts.poppins(),
+                hintStyle: GoogleFonts.poppins(),
               ),
               keyboardType: TextInputType.url,
               onChanged: (String? value) {
@@ -248,23 +243,66 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
               },
               validator: (value) {
                 if (value == null || value.isEmpty) {
-                  return 'Please enter your Fantasy Premier League URL';
+                  return 'required field';
                 }
                 if (!value.contains('entry')) {
-                  return 'Please enter a valid Fantasy Premier League URL';
+                  return 'required field';
                 }
                 return null;
               }),
+          ExpansionTile(
+              leading: const Icon(Icons.sports_soccer),
+              iconColor: MaterialTheme.darkMediumContrastScheme().primary,
+              collapsedIconColor:
+                  MaterialTheme.darkMediumContrastScheme().primary,
+              childrenPadding:
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+              maintainState: true,
+              title: const Text('How can i find my FPL URL'),
+              children: [
+                Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        " 1] From the official Fantasy Premier league page,navigate to the points tab.",
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                      ),
+                      const Text(
+                        " 2]  Copy the https link in the URL bar of your browser",
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      const Text(
+                        " 3] Return to this page and past the copied link in the rectangular box",
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                      ),
+                    ]),
+              ]),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            decoration: const InputDecoration(
+            style: GoogleFonts.poppins(),
+            decoration: InputDecoration(
               labelText: 'Favorite Team',
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              labelStyle: GoogleFonts.poppins(),
             ),
             items: teams.map((String team) {
               return DropdownMenuItem(
                 value: team,
-                child: Text(team),
+                child:
+                    Text(team, style: GoogleFonts.poppins(color: Colors.grey)),
               );
             }).toList(),
             onChanged: (String? value) {
@@ -274,22 +312,36 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select your favorite team';
+                return 'Be a proud Fan!';
               }
               return null;
             },
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            decoration: const InputDecoration(
+            style: GoogleFonts.poppins(),
+            decoration: InputDecoration(
               labelText: 'Years Playing FPL',
-              border: OutlineInputBorder(),
+              border: const OutlineInputBorder(),
+              labelStyle: GoogleFonts.poppins(),
             ),
-            items: const [
-              DropdownMenuItem(value: 'new', child: Text('First Season')),
-              DropdownMenuItem(value: '1-2', child: Text('1-2 Years')),
-              DropdownMenuItem(value: '3-5', child: Text('3-5 Years')),
-              DropdownMenuItem(value: '5+', child: Text('5+ Years')),
+            items: [
+              DropdownMenuItem(
+                  value: 'new',
+                  child: Text('First Season',
+                      style: GoogleFonts.poppins(color: Colors.grey))),
+              DropdownMenuItem(
+                  value: '1-2',
+                  child: Text('1-2 Years',
+                      style: GoogleFonts.poppins(color: Colors.grey))),
+              DropdownMenuItem(
+                  value: '3-5',
+                  child: Text('3-5 Years',
+                      style: GoogleFonts.poppins(color: Colors.grey))),
+              DropdownMenuItem(
+                  value: '5+',
+                  child: Text('5+ Years',
+                      style: GoogleFonts.poppins(color: Colors.grey)))
             ],
             onChanged: (String? value) {
               setState(() {
@@ -298,7 +350,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please select your experience';
+                return 'Been an addict since when?';
               }
               return null;
             },
@@ -312,13 +364,15 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     return Form(
         key: _formKey,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          _buildFeatureItem(Icons.key, 'Please enter a password'),
+          _buildFeatureItem(Icons.key, 'A safe needs a passkey'),
           TextFormField(
+            style: GoogleFonts.poppins(),
             obscureText: true,
             decoration: InputDecoration(
               labelText: 'password',
               errorText: _error,
               border: const OutlineInputBorder(),
+              labelStyle: GoogleFonts.poppins(),
             ),
             onChanged: (String? value) {
               setState(() {
@@ -343,12 +397,13 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
       children: [
         const Icon(Icons.star, size: 64, color: Colors.amber),
         const SizedBox(height: 24),
-        const Text(
+        Text(
           'You\'re All Set!',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 12),
-        const Text('Get ready to take your FPL game to the next level'),
+        Text('Get ready to take your FPL game to the next level',
+            style: GoogleFonts.poppins()),
         const SizedBox(height: 24),
         ElevatedButton(
           onPressed: () {
@@ -356,7 +411,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             debugPrint('Navigating to dashboard');
             context.go('/login');
           },
-          child: const Text('Now login to view your Dashboard'),
+          child: Text('Now login to view your Dashboard',
+              style: GoogleFonts.poppins()),
         ),
       ],
     );
@@ -364,6 +420,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
 
   @override
   Widget build(BuildContext context) {
+    final funkyGradient = ref.watch(funkyGradientProvider);
+    final currentTheme = ref.watch(themeProvider);
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -391,9 +449,10 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                       height: 30,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: stepIndex <= currentStep
-                            ? Colors.blue
-                            : Colors.grey[300],
+                        gradient:
+                            stepIndex <= currentStep ? funkyGradient : null,
+                        color:
+                            stepIndex <= currentStep ? null : Colors.grey[300],
                       ),
                       child: Center(
                         child: stepIndex < currentStep
@@ -401,7 +460,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                                 color: Colors.white, size: 16)
                             : Text(
                                 '${stepIndex + 1}',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
                                   color: stepIndex <= currentStep
                                       ? Colors.white
                                       : Colors.grey[600],
@@ -420,7 +479,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                 children: [
                   Text(
                     steps[currentStep]['title']!,
-                    style: const TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -429,7 +488,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                   Text(
                     steps[currentStep]['description']!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.grey[600],
                     ),
                   ),
@@ -449,14 +508,40 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                   if (currentStep > 0)
                     TextButton(
                       onPressed: _handleBack,
-                      child: const Text('Back'),
+                      child: Text('Back', style: GoogleFonts.poppins()),
                     )
                   else
                     const SizedBox(width: 80),
                   if (currentStep < steps.length - 1)
-                    ElevatedButton(
+                    TextButton(
+                      style: ButtonStyle(
+                        padding: WidgetStateProperty.all<EdgeInsets>(
+                            EdgeInsets.zero),
+                        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                      ),
                       onPressed: _handleNext,
-                      child: const Text('Next'),
+                      child: Ink(
+                        decoration: BoxDecoration(
+                          gradient: funkyGradient,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Container(
+                          constraints:
+                              const BoxConstraints(minWidth: 88, minHeight: 36),
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Next',
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                 ],
               ),

@@ -84,60 +84,7 @@ class TransferMetricsState extends State<TransferMetrics>
                 }))
           ]));
     } else {
-      return SizedBox(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(2, (index) {
-                  return SizedBox(
-                      width: 600,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1.5,
-                                  color:
-                                      MaterialTheme.darkMediumContrastScheme()
-                                          .primary),
-                              borderRadius: BorderRadius.circular(8)),
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .primaryContainer,
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: AnimatedIcon(
-                              icon: AnimatedIcons.play_pause,
-                              progress: animation,
-                              size: 10.0,
-                            ),
-                          )));
-                })),
-            Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(2, (index) {
-                  return SizedBox(
-                      width: 600,
-                      child: Card(
-                          shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                  width: 1.5,
-                                  color:
-                                      MaterialTheme.darkMediumContrastScheme()
-                                          .primary),
-                              borderRadius: BorderRadius.circular(8)),
-                          color: MaterialTheme.darkMediumContrastScheme()
-                              .primaryContainer,
-                          child: Opacity(
-                            opacity: 0.5,
-                            child: AnimatedIcon(
-                              icon: AnimatedIcons.play_pause,
-                              progress: animation,
-                              size: 10.0,
-                            ),
-                          )));
-                }))
-          ]));
+      return SizedBox.shrink();
     }
   }
 }
@@ -156,24 +103,18 @@ class TransferTile extends ConsumerWidget {
     List<Object?> playerInIds = data[index]['playerIn'] ?? [];
     List<Object?> playerOutIds = data[index]['playerOut'] ?? [];
 
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
 
     if (size.width < 600) {
       return SizedBox(
-        // width: 600,
+          // width: 600,
           child: Card(
               shape: RoundedRectangleBorder(
                   side: BorderSide(
                       width: 1.5,
-                      color: MaterialTheme
-                          .darkMediumContrastScheme()
-                          .primary),
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
                   borderRadius: BorderRadius.circular(8)),
-              color: MaterialTheme
-                  .darkMediumContrastScheme()
-                  .primaryContainer,
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
               child: SingleChildScrollView(
                   child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -183,55 +124,48 @@ class TransferTile extends ConsumerWidget {
                             SizedBox(
                                 child: Center(
                                     child: Row(children: [
-                                      Text(
-                                        "${data[index]['pointsDelta']}pts",
-                                        style: TextStyle(
-                                            color: data[index]['pointsDelta'] >
-                                                0
-                                                ? Colors.green
-                                                : Colors.red,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      if (data[index]['pointHit'] > 0)
-                                        Text(
-                                          "( - ${data[index]['pointHit'] ??
-                                              0}pts )",
-                                          style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.w200,
-                                              fontSize: 10),
-                                        ),
-                                    ]))),
+                              Text(
+                                "${data[index]['pointsDelta']}pts",
+                                style: TextStyle(
+                                    color: data[index]['pointsDelta'] > 0
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              if (data[index]['pointHit'] > 0)
+                                Text(
+                                  "( - ${data[index]['pointHit'] ?? 0}pts )",
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w200,
+                                      fontSize: 10),
+                                ),
+                            ]))),
                             SizedBox(
                                 child: TextButton(
-                                  child: Text("${data[index]['teamName']}",
-                                      style: TextStyle(
-                                        color: MaterialTheme
-                                            .darkMediumContrastScheme()
+                              child: Text("${data[index]['teamName']}",
+                                  style: TextStyle(
+                                    color:
+                                        MaterialTheme.darkMediumContrastScheme()
                                             .primary,
-                                        fontSize: 10,
-                                      )),
-                                  onPressed: () {
-                                    html.window.location.assign(
-                                        "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
-                                  },
-                                )),
+                                    fontSize: 10,
+                                  )),
+                              onPressed: () {
+                                html.window.location.assign(
+                                    "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                              },
+                            )),
                           ])))));
-    }
-    else {
+    } else {
       return SizedBox(
-        // width: 600,
+          // width: 600,
           child: Card(
               shape: RoundedRectangleBorder(
                   side: BorderSide(
                       width: 1.5,
-                      color: MaterialTheme
-                          .darkMediumContrastScheme()
-                          .primary),
+                      color: MaterialTheme.darkMediumContrastScheme().primary),
                   borderRadius: BorderRadius.circular(8)),
-              color: MaterialTheme
-                  .darkMediumContrastScheme()
-                  .primaryContainer,
+              color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
               child: SingleChildScrollView(
                   child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -241,55 +175,52 @@ class TransferTile extends ConsumerWidget {
                             SizedBox(
                                 child: Center(
                                     child: Column(children: [
-                                      Text(
-                                        "${data[index]['pointsDelta']}pts",
-                                        style: TextStyle(
-                                            color: data[index]['pointsDelta'] >
-                                                0
-                                                ? Colors.green
-                                                : Colors.red,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      if (data[index]['pointHit'] > 0)
-                                        Text(
-                                          "( - ${data[index]['pointHit'] ??
-                                              0}pts )",
-                                          style: const TextStyle(
-                                              color: Colors.grey,
-                                              fontWeight: FontWeight.w200,
-                                              fontSize: 10),
-                                        ),
-                                    ]))),
+                              Text(
+                                "${data[index]['pointsDelta']}pts",
+                                style: TextStyle(
+                                    color: data[index]['pointsDelta'] > 0
+                                        ? Colors.green
+                                        : Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              if (data[index]['pointHit'] > 0)
+                                Text(
+                                  "( - ${data[index]['pointHit'] ?? 0}pts )",
+                                  style: const TextStyle(
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.w200,
+                                      fontSize: 10),
+                                ),
+                            ]))),
                             SizedBox(
                                 child: TextButton(
-                                  child: Text("${data[index]['teamName']}",
-                                      style: TextStyle(
-                                        color: MaterialTheme
-                                            .darkMediumContrastScheme()
+                              child: Text("${data[index]['teamName']}",
+                                  style: TextStyle(
+                                    color:
+                                        MaterialTheme.darkMediumContrastScheme()
                                             .primary,
-                                        fontSize: 10,
-                                      )),
-                                  onPressed: () {
-                                    html.window.location.assign(
-                                        "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
-                                  },
-                                )),
+                                    fontSize: 10,
+                                  )),
+                              onPressed: () {
+                                html.window.location.assign(
+                                    "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                              },
+                            )),
                             if (playerOutIds.isNotEmpty)
                               Column(
-                                  children: List.generate(
-                                      playerOutIds.length, (i) {
-                                    return playerName(
-                                      playerId:
-                                      int.parse(
-                                          playerOutIds[i].toString() ?? "0"),
-                                      vertical: false,
-                                    );
-                                  })),
+                                  children:
+                                      List.generate(playerOutIds.length, (i) {
+                                return playerName(
+                                  playerId: int.parse(
+                                      playerOutIds[i].toString() ?? "0"),
+                                  vertical: false,
+                                );
+                              })),
                             const SizedBox(
                                 width: 60,
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Icon(
                                       Icons.arrow_circle_right_sharp,
@@ -303,15 +234,14 @@ class TransferTile extends ConsumerWidget {
                                 )),
                             if (playerInIds.isNotEmpty)
                               Column(
-                                  children: List.generate(
-                                      playerInIds.length, (i) {
-                                    return playerName(
-                                      playerId:
-                                      int.parse(
-                                          playerInIds[i].toString() ?? "0"),
-                                      vertical: false,
-                                    );
-                                  })),
+                                  children:
+                                      List.generate(playerInIds.length, (i) {
+                                return playerName(
+                                  playerId: int.parse(
+                                      playerInIds[i].toString() ?? "0"),
+                                  vertical: false,
+                                );
+                              })),
                           ])))));
     }
   }
