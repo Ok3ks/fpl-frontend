@@ -250,6 +250,46 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
                 }
                 return null;
               }),
+          ExpansionTile(
+              leading: const Icon(Icons.sports_soccer),
+              iconColor: MaterialTheme.darkMediumContrastScheme().primary,
+              collapsedIconColor:
+                  MaterialTheme.darkMediumContrastScheme().primary,
+              childrenPadding:
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 30),
+              maintainState: true,
+              title: const Text('How can i find my FPL URL'),
+              children: [
+                Column(
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        " 1] From the official Fantasy Premier league page,navigate to the points tab.",
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                      ),
+                      const Text(
+                        " 2]  Copy the https link in the URL bar of your browser",
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      const Text(
+                        " 3] Return to this page and past the copied link in the rectangular box",
+                        style: TextStyle(
+                            fontSize: 10, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,
+                        textWidthBasis: TextWidthBasis.longestLine,
+                      ),
+                    ]),
+              ]),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
             style: GoogleFonts.poppins(),
@@ -261,7 +301,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             items: teams.map((String team) {
               return DropdownMenuItem(
                 value: team,
-                child: Text(team, style: GoogleFonts.poppins(color: Colors.grey)),
+                child:
+                    Text(team, style: GoogleFonts.poppins(color: Colors.grey)),
               );
             }).toList(),
             onChanged: (String? value) {
@@ -287,16 +328,20 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             items: [
               DropdownMenuItem(
                   value: 'new',
-                  child: Text('First Season', style: GoogleFonts.poppins(color: Colors.grey))),
+                  child: Text('First Season',
+                      style: GoogleFonts.poppins(color: Colors.grey))),
               DropdownMenuItem(
                   value: '1-2',
-                  child: Text('1-2 Years', style: GoogleFonts.poppins(color: Colors.grey))),
+                  child: Text('1-2 Years',
+                      style: GoogleFonts.poppins(color: Colors.grey))),
               DropdownMenuItem(
                   value: '3-5',
-                  child: Text('3-5 Years', style: GoogleFonts.poppins(color: Colors.grey))),
+                  child: Text('3-5 Years',
+                      style: GoogleFonts.poppins(color: Colors.grey))),
               DropdownMenuItem(
                   value: '5+',
-                  child: Text('5+ Years', style: GoogleFonts.poppins(color: Colors.grey)))
+                  child: Text('5+ Years',
+                      style: GoogleFonts.poppins(color: Colors.grey)))
             ],
             onChanged: (String? value) {
               setState(() {
@@ -377,8 +422,7 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   Widget build(BuildContext context) {
     final funkyGradient = ref.watch(funkyGradientProvider);
     final currentTheme = ref.watch(themeProvider);
-    return
-      Scaffold(
+    return Scaffold(
       body: SafeArea(
         child: Column(
           children: [

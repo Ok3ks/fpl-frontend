@@ -313,43 +313,28 @@ class LandingPage extends StatelessWidget {
                         childrenPadding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 30),
                         maintainState: true,
-                        title: const Text('How can i find my FPL league URL'),
+                        title: const Text('How can i find my FPL URL'),
                         children: [
                           Column(
                               // mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  " 1] From the official Fantasy Premier league page, navigate to classic league of interest.",
+                                  " 1] From the official Fantasy Premier league page,navigate to the points tab.",
                                   style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Image.asset(
-                                    "assets/images/useApp - Step 1.png"),
-                                const SizedBox(
-                                  height: 5,
                                 ),
                                 const Text(
-                                  " 2]  Copy the https link in the URL bar of your browser after you must have clicked on the league of interest.",
+                                  " 2]  Copy the https link in the URL bar of your browser",
                                   style: TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold),
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Image.asset(
-                                    "assets/images/useApp - Step 2.png"),
-                                Image.asset(
-                                    "assets/images/useApp - Step 3.png"),
                                 const SizedBox(
                                   height: 5,
                                 ),
@@ -361,25 +346,6 @@ class LandingPage extends StatelessWidget {
                                   textAlign: TextAlign.left,
                                   textWidthBasis: TextWidthBasis.longestLine,
                                 ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Image.asset(
-                                    "assets/images/useApp - Step 4.png"),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                const Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      "Now you have a mini league report to view.",
-                                      style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold),
-                                      textAlign: TextAlign.center,
-                                      textWidthBasis:
-                                          TextWidthBasis.longestLine,
-                                    ))
                               ]),
                         ]),
                     ExpansionTile(
