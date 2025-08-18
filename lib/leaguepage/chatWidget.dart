@@ -6,12 +6,11 @@ import 'package:gap/gap.dart';
 import 'package:uuid/uuid.dart';
 import 'package:fpl/themes.dart';
 import 'package:fpl/types.dart';
-import 'dart:convert';
 
 import '../individualpage/participantview.dart';
 
 class Chat extends ConsumerStatefulWidget {
-  double chatBoxWidth;
+  final double chatBoxWidth;
   Chat({
     super.key,
     required this.chatBoxWidth,
@@ -27,27 +26,29 @@ class ChatState extends ConsumerState<Chat> {
     final leagueId = ref.watch(leagueProvider)?.leagueId;
     final gameweek = ref.watch(gameweekProvider);
     final currentUser = ref.watch(currentUserProvider);
-    final Stream<DocumentSnapshot> messageStream = LeagueDbRef
-        .doc(leagueId.toString())
-        .collection("messages")
-        .doc(gameweek.toString()).snapshots();
+    final Stream<DocumentSnapshot>? messageStream =
+        LeagueDbRef.doc(leagueId.toString())
+            .collection("messages")
+            .doc(gameweek.toString())
+            .snapshots();
 
     if (leagueId != null) {
       return Column(children: [
         StreamBuilder(
             stream: messageStream,
-            builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-              var obj = snapshot.data?.data()! as Map<String, dynamic>;
+            builder: (BuildContext context,
+                AsyncSnapshot<DocumentSnapshot> snapshot) {
+              var obj = snapshot.data?.data();
               if (snapshot.hasData) {
                 return chatWidget(
-                    data: obj,
+                    data: obj as Map<String, dynamic>?,
                     width: widget.chatBoxWidth,
                     gameweek: gameweek,
                     leagueId: leagueId,
                     user: currentUser);
               } else if (snapshot.connectionState == ConnectionState.waiting) {
                 return chatWidget(
-                  data: obj,
+                  data: obj as Map<String, dynamic>?,
                   hydrate: false,
                   width: widget.chatBoxWidth,
                   gameweek: gameweek,
@@ -67,9 +68,9 @@ class ChatState extends ConsumerState<Chat> {
 class chatWidget extends StatelessWidget {
   Map<String, dynamic>? data;
   bool hydrate = true;
-  double width;
-  double gameweek;
-  double leagueId;
+  final double width;
+  final double gameweek;
+  final double leagueId;
   Participant? user;
 
   chatWidget(
@@ -84,43 +85,103 @@ class chatWidget extends StatelessWidget {
   TextEditingController chatController = TextEditingController();
   ScrollController chatScroll = ScrollController();
 
-
   @override
   Widget build(BuildContext context) {
-    int msgLength = data?.length ?? 1;
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-          const Gap(5),
-          Text("Banter Zone", style: TextStyle(color: MaterialTheme.darkMediumContrastScheme().primary)), //TODO: Design Text
+    int msgLength = data?.length ?? 0;
+    List<Map<String, dynamic>> sortedMessages =
+        List<Map<String, dynamic>>.from(data?.values ?? []);
+    sortedMessages.sort((a, b) => a["timestamp"].compareTo(b['timestamp']));
+    return Column(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+      const Gap(5),
+      Text("Banter Zone",
+          style: TextStyle(
+              color: MaterialTheme.darkMediumContrastScheme()
+                  .primary)), //TODO: Design Text
       const Gap(5),
       SizedBox(
-        height: 300,
-        child: Scrollbar(
-            trackVisibility: true,
-            thickness: 4,
-            child:
-          SingleChildScrollView(
-            controller: chatScroll,
-            child:
-            Column(
-                children: List.generate(msgLength, (int index) {
-              return SizedBox(
-                  width: width,
-                  child: Card(
-                      margin: const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
-                      elevation: 8,
-                      color: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: Text(" " + data?.values.elementAt(index)['text'],
-                          textDirection: TextDirection.rtl,
-                          softWrap: true,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 11,
-                          ))));
-            }))))),
+          height: 300,
+          child: Scrollbar(
+              trackVisibility: true,
+              thickness: 4,
+              child: SingleChildScrollView(
+                  controller: chatScroll,
+                  child: Column(
+                      children: List.generate(msgLength, (int index) {
+                    Duration messageTimeStamp = DateTime.now().difference(
+                        DateTime.parse(sortedMessages
+                            .elementAt(index)["timestamp"]
+                            .toString()));
+                    return SizedBox(
+                        width: width,
+                        child: Card(
+                            margin:
+                                const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
+                            elevation: 8,
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(2),
+                            ),
+                            child: Padding(
+                                padding: const EdgeInsetsGeometry.fromLTRB(
+                                    4, 0, 4, 0),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          sortedMessages.length > index
+                                              ? " " +
+                                                  sortedMessages
+                                                      .elementAt(index)["from"]
+                                              : " ",
+                                          softWrap: true,
+                                          style: TextStyle(
+                                              color: MaterialTheme
+                                                      .darkMediumContrastScheme()
+                                                  .primary,
+                                              fontSize: 9,
+                                              fontStyle: FontStyle.italic)),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                                sortedMessages.length > index
+                                                    ? messageTimeStamp.inDays >
+                                                            0
+                                                        ? "${messageTimeStamp.inDays} days ago"
+                                                        : messageTimeStamp
+                                                                    .inHours >
+                                                                0
+                                                            ? "${messageTimeStamp.inHours} hours ago"
+                                                            : messageTimeStamp
+                                                                        .inMinutes >
+                                                                    0
+                                                                ? "${messageTimeStamp.inMinutes} minutes ago"
+                                                                : "${messageTimeStamp.inSeconds} seconds ago"
+                                                    : " ",
+                                                // textDirection: TextDirection.rtl,
+                                                softWrap: true,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 10,
+                                                )),
+                                            Text(
+                                                data != null
+                                                    ? " " +
+                                                        sortedMessages
+                                                            .elementAt(
+                                                                index)["text"]
+                                                    : " ",
+                                                // textDirection: TextDirection.rtl,
+                                                softWrap: true,
+                                                style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 11,
+                                                )),
+                                          ])
+                                    ]))));
+                  }))))),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -161,8 +222,7 @@ class chatWidget extends StatelessWidget {
                 autocorrect: false,
               )),
           IconButton(
-              onPressed: (
-                  ) async {
+              onPressed: () async {
                 Message message = Message(
                     id: const Uuid().v4obj().toString(),
                     from: user,

@@ -21,6 +21,7 @@ class Participant {
   String? location;
   String? password;
   String? error;
+  String? tier = "free";
   Map<String, dynamic>? history;
 
   Participant({
@@ -32,6 +33,7 @@ class Participant {
     this.location,
     this.password,
     this.history,
+    this.tier,
   });
 
   Future<UserCredential?> registerUser() async {
@@ -66,7 +68,8 @@ class Participant {
         "yearsPlayingFpl": yearsPlayingFpl,
         "location": location,
         "favoriteTeam": favoriteTeam,
-        // "username":username,
+        "username": username,
+        "tier": "free",
       });
       if (firebaseUser.user != null) {
         await firebaseUser.user?.sendEmailVerification();
@@ -96,7 +99,6 @@ class Participant {
             appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
             measurementId: "G-RCXFD9EQ9E",
             databaseURL: "https://default.firebaseio.com"));
-
     var auth = FirebaseAuth.instanceFor(
       app: app,
     );
@@ -193,17 +195,16 @@ class Participant {
       app: app,
     );
     auth.setPersistence(Persistence.LOCAL);
+
     //Save to users firestore collection
     if (participantId != null) {
-      CollectionReference userLeagueDbRef =
-          FirebaseFirestore.instance.collection("users");
-
-      DocumentReference temp = userLeagueDbRef.doc(participantId);
+      DocumentReference temp = userDbRef.doc(participantId);
       CollectionReference leagues = temp.collection("leagues");
 
       temp = leagues.doc(userLeague.leagueId.toString());
-      temp.set({"id": userLeague.leagueId},
-          SetOptions(merge: true)); // SetOptions caters to updates
+      temp.set({
+        "id": userLeague.leagueId.toString(),
+      }, SetOptions(merge: true)); // SetOptions caters to updates
     }
   }
 

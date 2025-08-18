@@ -45,9 +45,9 @@ class BenchMetricsState extends State<BenchMetrics> {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
+                              PlayMeInstead(data: widget.data),
                               JammyPointsCard(data: widget.data),
                               HighestPointsBenched(data: widget.data),
-                              PlayMeInstead(data: widget.data),
                             ])
                       ],
                     ))

@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+final funkyGradientProvider = Provider<LinearGradient>((ref) {
+  return const LinearGradient(
+    colors: [
+      Colors.purpleAccent,
+      Colors.greenAccent,
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+});
 
 class MaterialTheme {
-  // final textTheme = GoogleFonts.lektonTextTheme();
-  // final secondaryTextTheme = GoogleFonts.montserratTextTheme();
-  // final textTheme = primaryTextTheme.copyWith(
-  // displaySmall: secondaryTextTheme.displaySmall);
-
-  //final TextTheme textTheme ;
-  //MaterialTheme();
-
   static ColorScheme lightScheme() {
     return const ColorScheme(
         brightness: Brightness.light,
@@ -60,7 +65,7 @@ class MaterialTheme {
   }
 
   ThemeData light() {
-    return theme(lightScheme());
+    return theme(lightMediumContrastScheme());
   }
 
   static ColorScheme lightMediumContrastScheme() {
@@ -359,33 +364,77 @@ class MaterialTheme {
   }
 
   ThemeData theme(ColorScheme colorScheme) {
-    final primaryTextTheme = TextTheme(
-        displayLarge: const TextStyle(color: Colors.black, fontSize: 10),
-        displayMedium: TextStyle(color: Colors.black, fontSize: 10),
-        displaySmall: TextStyle(color: Colors.black, fontSize: 10),
-        headlineLarge: TextStyle(color: Colors.black, fontSize: 10),
-        headlineMedium: TextStyle(color: Colors.black, fontSize: 10),
-        headlineSmall: TextStyle(color: Colors.black, fontSize: 10),
-        titleLarge: TextStyle(color: Colors.black, fontSize: 10),
-        titleMedium: TextStyle(color: Colors.black, fontSize: 10),
-        titleSmall: TextStyle(color: Colors.black, fontSize: 10),
-        bodyLarge: TextStyle(color: Colors.black, fontSize: 10),
-        bodyMedium: TextStyle(color: Colors.black, fontSize: 10),
-        bodySmall: TextStyle(color: Colors.black, fontSize: 10),
-        labelLarge: TextStyle(color: Colors.black, fontSize: 10),
-        labelMedium: TextStyle(color: Colors.black, fontSize: 10),
-        labelSmall: TextStyle(color: Colors.black, fontSize: 10));
+    final textTheme = GoogleFonts.poppinsTextTheme().apply(
+      bodyColor: colorScheme.onSurface,
+      displayColor: colorScheme.onSurface,
+    );
 
     return ThemeData(
       useMaterial3: true,
       brightness: colorScheme.brightness,
       colorScheme: colorScheme,
-      textTheme: primaryTextTheme.apply(
-        bodyColor: colorScheme.onSurface,
-        displayColor: colorScheme.onSurface,
-      ),
+      textTheme: textTheme,
       scaffoldBackgroundColor: colorScheme.surface,
       canvasColor: colorScheme.surface,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
+        elevation: 0,
+      ),
+      // cardTheme: CardThemeData(
+      //   elevation: 2,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.circular(12),
+      //   ),
+      //   color: colorScheme.surfaceContainer,
+      // ),
+      // inputDecorationTheme: InputDecorationTheme(
+      //   border: OutlineInputBorder(
+      //     borderRadius: BorderRadius.circular(8),
+      //     borderSide: BorderSide(color: colorScheme.outline),
+      //   ),
+      //   labelStyle: textTheme.bodyMedium,
+      // ),
+
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          backgroundColor: colorScheme.primary,
+          foregroundColor: colorScheme.onPrimary,
+        ),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: colorScheme.inverseSurface,
+        contentTextStyle: textTheme.bodyMedium?.copyWith(
+          color: colorScheme.onInverseSurface,
+        ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: colorScheme.primary,
+        ),
+      ),
+      tabBarTheme: TabBarThemeData(
+        labelColor: colorScheme.primary,
+        unselectedLabelColor: colorScheme.onSurfaceVariant,
+        indicator: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              color: colorScheme.primary,
+              width: 2,
+            ),
+          ),
+        ),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: colorScheme.surface,
+        titleTextStyle: textTheme.titleLarge,
+      ),
+      expansionTileTheme: ExpansionTileThemeData(
+        iconColor: colorScheme.primary,
+      ),
     );
   }
 
@@ -457,98 +506,12 @@ class FplTheme extends ThemeExtension<FplTheme> {
         neutralColor: Color.lerp(neutralColor, other.neutralColor, t)!);
   }
 
-  // Scheme _scheme() {
-  //   final base = CorePalette.of(primaryColor.value);
-  //   final primary = base.primary;
-  //   final tertiary = CorePalette.of(tertiaryColor.value).primary;
-  //   final neutral = CorePalette.of(neutralColor.value).neutral;
-
-  //   return Scheme(
-  //     primary: primary.get(40), onPrimary: primary.get(100),
-  //     primaryContainer: primary.get(90),onPrimaryContainer: primary.get(10),
-  //   secondary: , onSecondary: ,
-  //   secondaryContainer:, onSecondaryContainer:,
-  //   tertiary: , onTertiary: ,
-  //   tertiaryContainer: , onTertiaryContainer: ,
-  //   error: base.error.get(40), onError:,
-  // errorContainer: , onErrorContainer: ,
-  // background: , onBackground: ,
-  // surface: neutral.get(), onSurface: neutral.get(),
-  // outline: , outlineVariant: ,
-  // surfaceVariant: base.neutralVariant.get(90),
-  // onSurfaceVariant: ,
-  // shadow: neutral.get(), scrim:,
-  // inverseSurface: neutral.get(20), inverseOnSurface: neutral.get(95),
-  // inversePrimary: primary.get(80)
-  //   );
-  // }
-
-  //allows scheme to switch based on brightness
-  // extension on _scheme() {
-  //   ColorScheme toColorScheme(Brightness brightness) {
-  //     return ColorScheme(
-  //       //primary: Color(primaryColor),
-  //       brightness: brightness;
-
-  //     );
-  //}
-  //}
-
-//Additionally colors can be pulled from images
-
   ThemeData toThemeData() {
-    //final colorScheme = _scheme().toColorScheme(Brightness.light);
-    //return _base(colorScheme).copyWith(brightness: colorScheme.brightness);
-
-    //customise elements from root
     return ThemeData(
         useMaterial3: true,
-        // appBarTheme: AppBarTheme(
-        //   backgroundColor: isLight ? neutralColor : colorScheme.surface
-        // ),
         chipTheme: const ChipThemeData(backgroundColor: Colors.greenAccent),
         cardTheme: CardThemeData(
           color: MaterialTheme.darkMediumContrastScheme().secondaryContainer,
         ));
   }
 }
-
-//Blend Color from Image
-// class ImageTheme extends StatelessWidget {
-//   const ImageTheme({
-//     super.key,
-//     required this.path,
-//     required this.child,
-//   });
-
-//   final String path;
-//   final Widget child;
-
-// Future<List<Int>?> imageToPixels(String path) async {
-//   try {
-//     final data = await rootBundle.load(path);
-//     final image = img.PngDecoder().decodeImage(data.buffer.asUint8List);
-//     if (image == null) return null;
-//     final bytes = image.getBytes(format: img.Format.rgb);
-//     final pixels = <int>[];
-//     for(var i = 0; i < bytes.length; i +=3) {
-//       pixels.add(img.getColor(bytes[i], bytes[i+1], bytes[i+2]));
-//     }
-//     return pixels;
-//   }
-// }
-
-// @override
-// Widget build(BuildContext context ) {
-//   final theme = Theme.of(context);
-//   return FutureBuilder(
-//     future: colorSchemeFromImage(theme.colorScheme, path),
-//     builder: (context, snapshot) {
-//       final scheme = snapshot.data ?? theme.colorScheme;
-//       return Theme(
-//         data: theme.copyWith(colorScheme: scheme),
-//         child: child,
-//         );
-//     },);
-//   }
-// }
