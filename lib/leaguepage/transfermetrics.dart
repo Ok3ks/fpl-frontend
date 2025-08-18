@@ -57,7 +57,8 @@ class TransferMetricsState extends State<TransferMetrics>
                     TransferOut(
                       data: widget.data?['leagueWeeklyReport']
                           ['mostTransferredOut'],
-                      index: index,),
+                      index: index,
+                    ),
                     TransferIn(
                       data: widget.data?['leagueWeeklyReport']
                           ['mostTransferredIn'],
