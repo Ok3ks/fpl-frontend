@@ -30,12 +30,18 @@ class LeagueListState extends ConsumerState<LeagueList> {
     return FutureBuilder(
         future: getParticipantLeagues(currUser?.participantId),
         builder: (BuildContext context, snapshot) {
+          // print(snapshot.data);
           if (snapshot.hasData) {
             List<League>? leagues = snapshot.data;
+            final leaguesLength = leagues?.length ?? 0;
             return Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: List.generate(
-                    currUser?.tier != 'pro' ? leaguesLength : 3, (index) {
+                    currUser?.tier == 'pro'
+                        ? leaguesLength
+                        : leaguesLength > 3
+                            ? 3
+                            : leaguesLength, (index) {
                   return SizedBox(
                       width: widget.width,
                       child: Card(
@@ -67,6 +73,7 @@ class LeagueListState extends ConsumerState<LeagueList> {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return const Text("Snapshot Connecting");
           } else {
+            print(snapshot.data);
             return const SizedBox.shrink();
           }
         });

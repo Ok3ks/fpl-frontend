@@ -7,7 +7,8 @@ import "package:fpl/graphql_schemas.dart";
 import "package:fpl/types.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 
-CollectionReference userDbRef = FirebaseFirestore.instance.collection("2526users");
+CollectionReference userDbRef =
+    FirebaseFirestore.instance.collection("2526users");
 CollectionReference LeagueDbRef =
     FirebaseFirestore.instance.collection("2526leagues/");
 
@@ -62,15 +63,12 @@ Future<List<League>> getParticipantLeagues(String? participantId) async {
       await userDbRef.doc(participantId).collection('leagues').get();
   List<League> temp2 = [];
 
-
-  for (var obj in userLeagues.docs) {
-    Map<String, dynamic>? temp = obj.data() as Map<String, dynamic>?;
-    temp2.add(
-        League(
-            leagueId: double.tryParse(temp?['id']),
-            name: temp?['name'])
-    );
-  }
+  userLeagues.docs.forEach((e) {
+    final obj = e.data() as Map<String, dynamic>;
+    final name = obj['name'] ?? "No name";
+    final leagueId = obj['id'];
+    temp2.add(League(leagueId: leagueId, name: name));
+  });
   return temp2;
 }
 
@@ -82,24 +80,25 @@ Future<dynamic> pullStats(
   // dynamic results = leagueRefResults?[gameweek.toString()];
 
   // if (results == null) {
-    try {
-      QueryResult results = await client.value.query(QueryOptions(
-          document: gql(AllQueries.getLeagueStats), //
-          fetchPolicy: null,
-          cacheRereadPolicy: null,
-          variables: {
-            "leagueId": leagueId, //538731,
-            "gameweek": gameweek, //3
-          }));
-      if (gameweek != null && leagueId != null && results.data != null) {
-        //add to global firestore cache
-        await addLeagueGlobal(leagueId, gameweek, results.data);
-        await addLeagueNameUser(participantId, leagueId, results.data?["leagueWeeklyReport"]["leagueName"]);
-      }
-      return results.data;
-    } catch (e) {
-      throw(e);
+  try {
+    QueryResult results = await client.value.query(QueryOptions(
+        document: gql(AllQueries.getLeagueStats), //
+        fetchPolicy: null,
+        cacheRereadPolicy: null,
+        variables: {
+          "leagueId": leagueId, //538731,
+          "gameweek": gameweek, //3
+        }));
+    if (gameweek != null && leagueId != null && results.data != null) {
+      //add to global firestore cache
+      await addLeagueGlobal(leagueId, gameweek, results.data);
+      await addLeagueNameUser(participantId, leagueId,
+          results.data?["leagueWeeklyReport"]["leagueName"]);
     }
+    return results.data;
+  } catch (e) {
+    throw (e);
+  }
   // }
   // return results;
 }
