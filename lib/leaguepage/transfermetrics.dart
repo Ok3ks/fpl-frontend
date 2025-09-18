@@ -121,40 +121,82 @@ class TransferTile extends ConsumerWidget {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            SizedBox(
-                                child: Center(
-                                    child: Row(children: [
-                              Text(
-                                "${data[index]['pointsDelta']}pts",
-                                style: TextStyle(
-                                    color: data[index]['pointsDelta'] > 0
-                                        ? Colors.green
-                                        : Colors.red,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              if (data[index]['pointHit'] > 0)
+                            Column(children: [
+                              SizedBox(
+                                  child: Center(
+                                      child: Row(children: [
                                 Text(
-                                  "( - ${data[index]['pointHit'] ?? 0}pts )",
-                                  style: const TextStyle(
-                                      color: Colors.grey,
-                                      fontWeight: FontWeight.w200,
-                                      fontSize: 10),
-                                ),
-                            ]))),
-                            SizedBox(
-                                child: TextButton(
-                              child: Text("${data[index]['teamName']}",
+                                  "${data[index]['pointsDelta']}pts",
                                   style: TextStyle(
-                                    color:
-                                        MaterialTheme.darkMediumContrastScheme()
-                                            .primary,
-                                    fontSize: 10,
-                                  )),
-                              onPressed: () {
-                                html.window.location.assign(
-                                    "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
-                              },
-                            )),
+                                      color: data[index]['pointsDelta'] > 0
+                                          ? Colors.green
+                                          : Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                if (data[index]['pointHit'] > 0)
+                                  Text(
+                                    "( - ${data[index]['pointHit'] ?? 0}pts )",
+                                    style: const TextStyle(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w200,
+                                        fontSize: 10),
+                                  ),
+                              ]))),
+                              SizedBox(
+                                  child: TextButton(
+                                child: Text("${data[index]['teamName']}",
+                                    style: TextStyle(
+                                      color: MaterialTheme
+                                              .darkMediumContrastScheme()
+                                          .primary,
+                                      fontSize: 10,
+                                    )),
+                                onPressed: () {
+                                  html.window.location.assign(
+                                      "https://fantasy.premierleague.com/entry/${data[index]['entryId']}/event/$gameweek");
+                                },
+                              )),
+                            ]),
+                            Row(
+                              children: [
+                                if (playerOutIds.isNotEmpty)
+                                  Column(
+                                      children: List.generate(
+                                          playerOutIds.length, (i) {
+                                    return playerName(
+                                      playerId: int.parse(
+                                          playerOutIds[i].toString() ?? "0"),
+                                      vertical: false,
+                                    );
+                                  })),
+                                const SizedBox(
+                                    width: 60,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Icon(
+                                          Icons.arrow_circle_right_sharp,
+                                          color: Colors.red,
+                                        ),
+                                        Icon(
+                                          Icons.arrow_circle_left_sharp,
+                                          color: Colors.green,
+                                        )
+                                      ],
+                                    )),
+                                if (playerInIds.isNotEmpty)
+                                  Column(
+                                      children: List.generate(
+                                          playerInIds.length, (i) {
+                                    return playerName(
+                                      playerId: int.parse(
+                                          playerInIds[i].toString() ?? "0"),
+                                      vertical: false,
+                                    );
+                                  }))
+                              ],
+                            )
                           ])))));
     } else {
       return SizedBox(

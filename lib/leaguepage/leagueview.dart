@@ -433,7 +433,7 @@ class LeagueStats extends StatelessWidget {
 
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 SizedBox(
-                    width: size.width * 0.7,
+                    width: orientation == Orientation.portrait ? size.width  : size.width * 0.7,
                     child: Container(
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
