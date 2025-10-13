@@ -238,6 +238,7 @@ class TransferTile extends ConsumerWidget {
                                 child: TextButton(
                               child: Text("${data[index]['teamName']}",
                                   style: TextStyle(
+                                    decoration: TextDecoration.underline,
                                     color:
                                         MaterialTheme.darkMediumContrastScheme()
                                             .primary,
