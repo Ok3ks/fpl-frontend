@@ -32,6 +32,7 @@ class BenchMetricsState extends State<BenchMetrics> {
                   color: Colors.black,
                   fontSize: 14,
                   decoration: TextDecoration.none,
+                  fontWeight: FontWeight.bold
                 )),
             Scrollbar(
                 thickness: 2,
@@ -99,9 +100,9 @@ class JammyPointsCard extends ConsumerWidget {
                         child: Text("Jammy Points ",
                             style: TextStyle(
                                 color: MaterialTheme.darkMediumContrastScheme()
-                                    .onSurface,
+                                    .primary,
                                 fontSize: 10))),
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 9),
                     Column(
                         children: List.generate(playersSubIn.length, (index) {
                       return Row(
@@ -171,12 +172,15 @@ class HighestPointsBenched extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
+                  const SizedBox(height: 9),
+                  SizedBox(
                       // width: 106,
                       child: Text("Highest Points Benched",
                           overflow: TextOverflow.clip,
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: Colors.grey, fontSize: 10))),
+                          style: TextStyle(color: MaterialTheme.darkMediumContrastScheme()
+                              .primary, fontSize: 10))),
+                  const SizedBox(height: 9),
                   playerName(
                       playerId: int.parse(highestBenchedPlayer ?? '0') ?? 0),
                 ],
@@ -222,13 +226,14 @@ class PlayMeInstead extends StatelessWidget {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 9),
                   Center(
                       child: Text("Most Points on the Bench",
                           style: TextStyle(
                               color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface,
+                                  .primary,
                               fontSize: 10))),
+                  const SizedBox(height: 9),
                   Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
