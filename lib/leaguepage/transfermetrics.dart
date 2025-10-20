@@ -109,6 +109,7 @@ class TransferTile extends ConsumerWidget {
       return SizedBox(
           // width: 600,
           child: Card(
+              margin:const EdgeInsetsGeometry.symmetric(vertical: 9),
               shape: RoundedRectangleBorder(
                   side: BorderSide(
                       width: 1.5,
@@ -117,7 +118,7 @@ class TransferTile extends ConsumerWidget {
               color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
               child: SingleChildScrollView(
                   child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -210,7 +211,7 @@ class TransferTile extends ConsumerWidget {
               color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
               child: SingleChildScrollView(
                   child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -311,7 +312,8 @@ class TransferOut extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8)),
             color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
             child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -359,7 +361,7 @@ class TransferIn extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8)),
             color: MaterialTheme.darkMediumContrastScheme().primaryContainer,
             child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

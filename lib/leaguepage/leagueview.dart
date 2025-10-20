@@ -462,7 +462,7 @@ class LeagueStats extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8)),
                             child: Column(children: [
                               PerformanceMetrics(data: data),
-                              const Text("Captain Stats"),
+                              const Text("Captain Stats", style: TextStyle(fontWeight: FontWeight.bold),),
                               CaptainMetrics(data: data),
                               const CustomDivider(),
                               BenchMetrics(data: data),

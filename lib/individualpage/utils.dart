@@ -21,7 +21,7 @@ class captainViceCaptainName extends ConsumerWidget {
     return SizedBox(
         // height: 60,
         child: TextButton(
-      child: Text("${playerName.split(" ").last}, $playerPoint",
+      child: Text("${playerName}, $playerPoint",
           textAlign: TextAlign.center,
           style: TextStyle(
               color: flag
