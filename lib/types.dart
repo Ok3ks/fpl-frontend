@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import "package:fpl/dataprovider.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:env.dart'
 
 class League {
   String? name;
@@ -36,19 +37,17 @@ class Participant {
     this.tier,
   });
 
-  Future<UserCredential?> registerUser() async {
-    await dotenv.load(fileName: ".env");
+  Future<UserCredential?> registerUser() async { 
     var app = await Firebase.initializeApp(
         // name: 'fpl-frontend',
         options: const FirebaseOptions(
-            apiKey: 'AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU',
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: "249818130331",
-            appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
-            measurementId: "G-RCXFD9EQ9E",
-            databaseURL: "https://default.firebaseio.com"));
+        apiKey: Env.apiKey ?? '<API_KEY>',
+          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+          projectId: Env.projectId ?? "<PROJECT_ID>",
+          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+          appId: Env.appId ?? "<APP_ID>",
+          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
@@ -88,17 +87,15 @@ class Participant {
   }
 
   Future<dynamic> retrieveUser(String password) async {
-    await dotenv.load(fileName: ".env");
     var app = await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: 'AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU',
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: "249818130331",
-            appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
-            measurementId: "G-RCXFD9EQ9E",
-            databaseURL: "https://default.firebaseio.com"));
+          apiKey: Env.apiKey ?? '<API_KEY>',
+          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+          projectId: Env.projectId ?? "<PROJECT_ID>",
+          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+          appId: Env.appId ?? "<APP_ID>",
+          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
     var auth = FirebaseAuth.instanceFor(
       app: app,
     );
@@ -123,14 +120,13 @@ class Participant {
   Future<bool?> sendEmailLink() async {
     var app = await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: 'AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU',
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: "249818130331",
-            appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
-            measurementId: "G-RCXFD9EQ9E",
-            databaseURL: "https://default.firebaseio.com"));
+          apiKey: Env.apiKey ?? '<API_KEY>',
+          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+          projectId: Env.projectId ?? "<PROJECT_ID>",
+          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+          appId: Env.appId ?? "<APP_ID>",
+          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
@@ -149,14 +145,13 @@ class Participant {
 
     var app = await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: 'AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU',
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: "249818130331",
-            appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
-            measurementId: "G-RCXFD9EQ9E",
-            databaseURL: "https://default.firebaseio.com"));
+          apiKey: Env.apiKey ?? '<API_KEY>',
+          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+          projectId: Env.projectId ?? "<PROJECT_ID>",
+          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+          appId: Env.appId ?? "<APP_ID>",
+          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
@@ -182,14 +177,14 @@ class Participant {
     """Adds user's associated leagueIds to Firestore and during session""";
     var app = await Firebase.initializeApp(
         options: const FirebaseOptions(
-            apiKey: 'AIzaSyBU0xCHvjrMs3iwhA03M4BBlunG9X0JzaU',
-            authDomain: 'fpl-frontend.firebaseapp.com',
-            projectId: 'fpl-frontend',
-            storageBucket: 'fpl-frontend.firebasestorage.app',
-            messagingSenderId: "249818130331",
-            appId: "1:249818130331:web:ce0ad28a94d06607d7a33e",
-            measurementId: "G-RCXFD9EQ9E",
-            databaseURL: "https://default.firebaseio.com"));
+          apiKey: Env.apiKey ?? '<API_KEY>',
+          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+          projectId: Env.projectId ?? "<PROJECT_ID>",
+          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+          appId: Env.appId ?? "<APP_ID>",
+          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>",
+          databaseURL: "https://default.firebaseio.com"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
