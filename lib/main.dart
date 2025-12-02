@@ -29,17 +29,16 @@ void main() async {
 
   await GetStorage.init();
 
-  // if (await Env['DEVELOPMENT'] == 'True') {
   var app = await Firebase.initializeApp(
       name: 'fpl-frontend',
       options: FirebaseOptions(
-          apiKey: Env['apiKey'] ?? '<API_KEY>',
-          authDomain: Env['authDomain'] ?? "<AUTH_DOMAIN>",
-          projectId: Env['projectId'] ?? "<PROJECT_ID>",
-          storageBucket: Env['storageBucket'] ?? "<STORAGE-BUCKET>",
-          messagingSenderId: Env['messagingSenderId'] ?? "<MESSENGER>",
-          appId: Env['appId'] ?? "<APP_ID>",
-          measurementId: Env['measurementId'] ?? "<MEASUREMENT_ID>"));
+          apiKey: Env.apiKey ?? '<API_KEY>',
+          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+          projectId: Env.projectId ?? "<PROJECT_ID>",
+          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+          appId: Env.appId ?? "<APP_ID>",
+          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
 
   var auth = FirebaseAuth.instanceFor(
     app: app,
