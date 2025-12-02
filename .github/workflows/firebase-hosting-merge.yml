@@ -22,13 +22,13 @@ jobs:
 
       - name: Build Flutter web
         run: flutter build web --release \
-          --dart-define=apiKey={{ secrets.APIKEY }} \
-          --dart-define=authDomain=fpl-frontend.firebaseapp.com \
-          --dart-define=projectId=fpl-frontend\
-          --dart-define=storageBucket={{ secrets.STORAGEBUCKET }}\
-          --dart-define=messagingSenderId={{ secrets.MESSAGINGSENDERID }}\
-          --dart-define=appId={{ secrets.APPID }}\
-          --dart-define=measurementId= {{ secrets.MEASUREMENTID }}
+          --dart-define=apiKey=${{ secrets.APIKEY }} \
+          --dart-define=authDomain=${{ secrets.AUTHDOMAIN }} \
+          --dart-define=projectId=${{ secrets.PROJECTID }}\
+          --dart-define=storageBucket=${{ secrets.STORAGEBUCKET }}\
+          --dart-define=messagingSenderId=${{ secrets.MESSAGINGSENDERID }}\
+          --dart-define=appId=${{ secrets.APPID }}\
+          --dart-define=measurementId=${{ secrets.MEASUREMENTID }}
 
 
       - uses: actions/setup-node@v4
