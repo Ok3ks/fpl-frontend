@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import "package:fpl/dataprovider.dart";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:env.dart'
+import 'package:fpl/env.dart';
 
 class League {
   String? name;
@@ -42,12 +42,12 @@ class Participant {
         // name: 'fpl-frontend',
         options: const FirebaseOptions(
         apiKey: Env.apiKey ?? '<API_KEY>',
-          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
-          projectId: Env.projectId ?? "<PROJECT_ID>",
-          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
-          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
-          appId: Env.appId ?? "<APP_ID>",
-          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
+        authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+        projectId: Env.projectId ?? "<PROJECT_ID>",
+        storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+        messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+        appId: Env.appId ?? "<APP_ID>",
+        measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
 
     var auth = FirebaseAuth.instanceFor(
       app: app,
