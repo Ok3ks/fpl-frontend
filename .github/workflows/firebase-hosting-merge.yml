@@ -21,14 +21,14 @@ jobs:
         run: flutter pub get
 
       - name: Build Flutter web
-        run: flutter build web --release \
+        run: |
+          flutter build web --release \
           --dart-define=apiKey=${{ secrets.APIKEY }} \
           --dart-define=authDomain=${{ secrets.AUTHDOMAIN }} \
-          --dart-define=projectId=${{ secrets.PROJECTID }}\
-          --dart-define=storageBucket=${{ secrets.STORAGEBUCKET }}\
-          --dart-define=messagingSenderId=${{ secrets.MESSAGINGSENDERID }}\
-          --dart-define=appId=${{ secrets.APPID }}\
-          --dart-define=measurementId=${{ secrets.MEASUREMENTID }}
+          --dart-define=projectId=${{ secrets.PROJECTID }} \
+          --dart-define=storageBucket=${{ secrets.STORAGEBUCKET }} \
+          --dart-define=messagingSenderId=${{ secrets.MESSAGINGSENDERID }} \
+          --dart-define=appId=${{ secrets.APPID }} \
 
 
       - uses: actions/setup-node@v4
