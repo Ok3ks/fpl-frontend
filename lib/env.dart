@@ -7,4 +7,5 @@ class Env {
       String.fromEnvironment('messagingSenderId');
   static const appId = String.fromEnvironment('appId');
   static const measurementId = String.fromEnvironment('measurementId');
+  static const prodUrl = String.fromEnvironment('prodUrl');
 }
