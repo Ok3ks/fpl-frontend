@@ -14,14 +14,22 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.35.0'   # choose your version
+          flutter-version: '3.35.0' 
           channel: 'main'
 
       - name: Install Flutter dependencies
         run: flutter pub get
 
       - name: Build Flutter web
-        run: flutter build web --release
+        run: flutter build web --release \
+          --dart-define=apiKey={{ secrets.APIKEY }} \
+          --dart-define=authDomain=fpl-frontend.firebaseapp.com \
+          --dart-define=projectId=fpl-frontend\
+          --dart-define=storageBucket={{ secrets.STORAGEBUCKET }}\
+          --dart-define=messagingSenderId={{ secrets.MESSAGINGSENDERID }}\
+          --dart-define=appId={{ secrets.APPID }}\
+          --dart-define=measurementId= {{ secrets.MEASUREMENTID }}
+
 
       - uses: actions/setup-node@v4
         with:
