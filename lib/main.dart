@@ -7,6 +7,7 @@ import 'package:fpl/themes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:fpl/env.dart';
 import 'package:fpl/leaguepage/leagueview.dart';
 import 'package:fpl/individualpage/participantview.dart';
 import 'package:fpl/gamepage/gameview.dart';
@@ -19,7 +20,6 @@ import 'package:get_storage/get_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure plugin services are initialized
   SystemChrome.setPreferredOrientations([
@@ -29,17 +29,16 @@ void main() async {
 
   await GetStorage.init();
 
-  // if (await dotenv.env['DEVELOPMENT'] == 'True') {
   var app = await Firebase.initializeApp(
       name: 'fpl-frontend',
       options: FirebaseOptions(
-          apiKey: dotenv.env['apiKey'] ?? '<API_KEY>',
-          authDomain: dotenv.env['authDomain'] ?? "<AUTH_DOMAIN>",
-          projectId: dotenv.env['projectId'] ?? "<PROJECT_ID>",
-          storageBucket: dotenv.env['storageBucket'] ?? "<STORAGE-BUCKET>",
-          messagingSenderId: dotenv.env['messagingSenderId'] ?? "<MESSENGER>",
-          appId: dotenv.env['appId'] ?? "<APP_ID>",
-          measurementId: dotenv.env['measurementId'] ?? "<MEASUREMENT_ID>"));
+          apiKey: Env.apiKey ?? '<API_KEY>',
+          authDomain: Env.authDomain ?? "<AUTH_DOMAIN>",
+          projectId: Env.projectId ?? "<PROJECT_ID>",
+          storageBucket: Env.storageBucket ?? "<STORAGE-BUCKET>",
+          messagingSenderId: Env.messagingSenderId ?? "<MESSENGER>",
+          appId: Env.appId ?? "<APP_ID>",
+          measurementId: Env.measurementId ?? "<MEASUREMENT_ID>"));
 
   var auth = FirebaseAuth.instanceFor(
     app: app,
