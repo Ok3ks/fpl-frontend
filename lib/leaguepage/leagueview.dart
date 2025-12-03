@@ -430,9 +430,10 @@ class LeagueStats extends StatelessWidget {
                 data: data,
                 hydrate: hydrate,
               ),
+
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 SizedBox(
-                    width: size.width * 0.7,
+                    width: orientation == Orientation.portrait ? size.width  : size.width * 0.7,
                     child: Container(
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -461,7 +462,7 @@ class LeagueStats extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8)),
                             child: Column(children: [
                               PerformanceMetrics(data: data),
-                              const Text("Captain Stats"),
+                              const Text("Captain Stats", style: TextStyle(fontWeight: FontWeight.bold),),
                               CaptainMetrics(data: data),
                               const CustomDivider(),
                               BenchMetrics(data: data),
@@ -485,6 +486,7 @@ class LeagueStats extends StatelessWidget {
                                           LandingPage(),
                                         ])))
                             ])))),
+                if (orientation == Orientation.landscape)
                 SizedBox(
                     width: chatBoxWidth,
                     // height: 300,
