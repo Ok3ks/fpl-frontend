@@ -2,12 +2,10 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 //import 'package:flutter/foundation.dart';
 import "constants.dart";
 import "package:flutter/material.dart";
+import "package:fpl/env.dart";
 
 final HttpLink _httpLink = HttpLink(
-  Constants.prodUrl,
-  // defaultHeaders: {
-  //   'AuthorizationSource': 'API',
-  // },
+  Env.prodUrl,
 );
 
 final ValueNotifier<GraphQLClient> client = ValueNotifier(GraphQLClient(
