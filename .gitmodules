@@ -1,0 +1,3 @@
+[submodule "gameview-frontend"]
+	path = wrapped_frontend
+	url = https://github.com/Ok3ks/wrapped_frontend.git
