@@ -250,10 +250,11 @@ class playerName extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                     SizedBox(
-                        // width: 75,
+                        width: 80,
                         child: TextButton(
                       child: Text(
-                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          "${obj.data?['player']['info']['playerName']}",
+                          maxLines: 2,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: MaterialTheme.darkMediumContrastScheme()
@@ -276,10 +277,10 @@ class playerName extends ConsumerWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                     SizedBox(
-                        // width: 75,
+                        width: 80,
                         child: TextButton(
                       child: Text(
-                          "${obj.data?['player']['info']['playerName'].toString().split(" ").last}",
+                          "${obj.data?['player']['info']['playerName']}",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: MaterialTheme.darkMediumContrastScheme()

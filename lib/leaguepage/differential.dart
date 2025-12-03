@@ -34,8 +34,9 @@ class Differentials extends StatelessWidget {
                       child: Text("Differentials of the Week",
                           style: TextStyle(
                               color: MaterialTheme.darkMediumContrastScheme()
-                                  .onSurface,
+                                  .primary,
                               fontSize: 10))),
+                  const SizedBox(height: 6),
                   Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceAround,

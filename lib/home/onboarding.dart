@@ -41,6 +41,8 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
   String? yearsPlaying;
   String? password;
   String? _error;
+  bool toggled = true;
+
 
   final List<Map<String, String>> steps = [
     {
@@ -360,6 +362,12 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
     );
   }
 
+  void toggleObscurePassword() {
+    setState(() {
+      toggled = !toggled;
+    });
+  }
+
   Widget _addPassword() {
     return Form(
         key: _formKey,
@@ -367,12 +375,16 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
           _buildFeatureItem(Icons.key, 'A safe needs a passkey'),
           TextFormField(
             style: GoogleFonts.poppins(),
-            obscureText: true,
+            obscureText: toggled,
             decoration: InputDecoration(
               labelText: 'password',
               errorText: _error,
               border: const OutlineInputBorder(),
               labelStyle: GoogleFonts.poppins(),
+              suffixIcon: IconButton(
+                onPressed: toggleObscurePassword,
+                icon: const Icon(Icons.remove_red_eye),
+              ),
             ),
             onChanged: (String? value) {
               setState(() {
@@ -382,6 +394,31 @@ class _OnboardingFlowState extends ConsumerState<OnboardingFlow> {
             validator: (value) {
               if (value == null || value.isEmpty || value.length < 4) {
                 return 'Please enter a password with 4+ characters';
+              }
+              return null;
+            },
+            onSaved: (value) => password = value,
+          ),
+          const SizedBox(height: 35),
+          TextFormField(
+            style: GoogleFonts.poppins(),
+            obscureText: toggled,
+            decoration: InputDecoration(
+              labelText: 'confirm Password',
+              errorText: _error,
+              border: const OutlineInputBorder(),
+              labelStyle: GoogleFonts.poppins(),
+              suffixIcon: IconButton(
+                onPressed: toggleObscurePassword,
+                icon: const Icon(Icons.remove_red_eye),
+              ),
+            ),
+
+            onChanged: (String? value) {
+            },
+            validator: (value) {
+              if (value != password ) {
+                return 'Password does not match earlier password';
               }
               return null;
             },

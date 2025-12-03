@@ -99,7 +99,7 @@ class chatWidget extends StatelessWidget {
                   .primary)), //TODO: Design Text
       const Gap(5),
       SizedBox(
-          height: 300,
+          // height: 300,
           child: Scrollbar(
               trackVisibility: true,
               thickness: 4,
@@ -112,7 +112,7 @@ class chatWidget extends StatelessWidget {
                             .elementAt(index)["timestamp"]
                             .toString()));
                     return SizedBox(
-                        width: width,
+                        // width: width,
                         child: Card(
                             margin:
                                 const EdgeInsetsGeometry.fromLTRB(7, 10, 7, 0),
@@ -166,7 +166,9 @@ class chatWidget extends StatelessWidget {
                                                   color: Colors.black,
                                                   fontSize: 10,
                                                 )),
-                                            Text(
+                                            SizedBox(width: 10),
+                                            Flexible(
+                                                child: Text(
                                                 data != null
                                                     ? " " +
                                                         sortedMessages
@@ -178,8 +180,9 @@ class chatWidget extends StatelessWidget {
                                                 style: const TextStyle(
                                                   color: Colors.black,
                                                   fontSize: 11,
+                                                  overflow: TextOverflow.clip,
                                                 )),
-                                          ])
+                                            )])
                                     ]))));
                   }))))),
       Row(

@@ -75,11 +75,11 @@ Future<List<League>> getParticipantLeagues(String? participantId) async {
 Future<dynamic> pullStats(
     double? leagueId, double? gameweek, String participantId) async {
   // First check firebase store, otherwise check backend
-  // Map<String, dynamic>? leagueRefResults =
-  //     await getLeagueGlobal(leagueId) as Map<String, dynamic>?;
-  // dynamic results = leagueRefResults?[gameweek.toString()];
+  Map<String, dynamic>? leagueRefResults =
+      await getLeagueGlobal(leagueId) as Map<String, dynamic>?;
+  dynamic results = leagueRefResults?[gameweek.toString()];
 
-  // if (results == null) {
+  if (results == null) {
   try {
     QueryResult results = await client.value.query(QueryOptions(
         document: gql(AllQueries.getLeagueStats), //
@@ -99,8 +99,8 @@ Future<dynamic> pullStats(
   } catch (e) {
     throw (e);
   }
-  // }
-  // return results;
+  }
+  return results;
 }
 
 Future<dynamic> pullPlayerStats(int? playerId, double? gameweek) async {
